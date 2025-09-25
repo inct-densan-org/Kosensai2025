@@ -1,0 +1,15 @@
+{
+  "name": "kosensai2025",
+  "private": true,
+  "scripts": {
+    "dev": "turbo run dev --filter=front --filter=api --parallel"
+  },
+  "devDependencies": {
+    "turbo": "^2.1.1"
+  },
+  "packageManager": "pnpm@10.17.1",
+  "workspaces": [
+    "front",
+    "api"
+  ]
+}
