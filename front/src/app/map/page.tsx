@@ -12,7 +12,7 @@ export default function Page(){
   }
   return (
     <div>
-      <Pin data={sample}/>
+      <Pin data={sample} icon={image} size={150}/>
       <ShopCard data={sample}/>
     </div>
   )}

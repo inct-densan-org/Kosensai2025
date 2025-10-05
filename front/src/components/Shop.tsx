@@ -3,6 +3,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "./ui/
 import { MapPin } from "lucide-react";
 import Image from "next/image"
 import { Separator } from "./ui/separator";
+import { cn } from "@/lib/utils";
 
 function Place(place:string|null|undefined){
   if(!place) return
@@ -14,9 +15,9 @@ function Place(place:string|null|undefined){
   )
 }
 
-export function ShopCard({data, width=100, height=100}:{data:ShopData,width?:number,height?:number}){
+export function ShopCard({data, width=100, height=100 ,className=undefined}:{data:ShopData,width?:number,height?:number,className?:string|undefined}){
   return(
-    <Card className="sm:max-w-[425px]">
+    <Card className={cn("sm:max-w-[425px]",className)}>
       <CardContent>
         <CardHeader>
           <CardTitle>{data.name}</CardTitle>
