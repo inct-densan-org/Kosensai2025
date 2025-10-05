@@ -1,4 +1,5 @@
 import { Pin } from "@/components/Map";
+import { ShopCard } from "@/components/Shop";
 import { ShopData } from "@/types/type";
 import image from "public/image.png"
 
@@ -9,5 +10,9 @@ export default function Page(){
     description:"何でも売ってますまる",
     image:image
   }
-  return <Pin data={sample}/>
-}
+  return (
+    <div>
+      <Pin data={sample}/>
+      <ShopCard data={sample}/>
+    </div>
+  )}

@@ -5,10 +5,10 @@ import {
   DialogContent,
   DialogHeader,
   DialogTitle,
-  DialogDescription,
 } from "./ui/dialog";
 import { ShopData } from "@/types/type";
-import Image from "next/image";
+import { VisuallyHidden } from "@radix-ui/react-visually-hidden"
+import { ShopCard } from "./Shop";
 
 function Place(place:string|null|undefined){
   if(!place) return
@@ -19,20 +19,20 @@ function Place(place:string|null|undefined){
     </div>
   )
 }
-export function Pin({data, width=100, height=100 }:{data:ShopData, width?:number, height?:number}){
+export function Pin({data}:{data:ShopData}){
   return (
     <Dialog>
       <form>
         <DialogTrigger asChild className="m-6">
           <button className="hover:bg-gray-100 rounded-md"><MapPin size={40}/></button>
         </DialogTrigger>
-        <DialogContent className="sm:max-w-[425px]">
+        <DialogContent className="sm:max-w-[425px]" showCloseButton={false}>
           <DialogHeader>
-            <DialogTitle>{data.name}</DialogTitle>
+            <VisuallyHidden>
+              <DialogTitle>a</DialogTitle>
+            </VisuallyHidden>
           </DialogHeader>
-          <DialogDescription>{Place(data.place)}</DialogDescription>
-          <div>{data.description}</div>
-          <Image src={data.image} alt="shop image" width={width} height={height} className="mx-auto"/>
+          <ShopCard data={data}/>
         </DialogContent>
       </form>
     </Dialog>
