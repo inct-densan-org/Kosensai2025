@@ -16,9 +16,9 @@ function Place(place:string|null|undefined){
   if(!place) return
   return(
     <div className="flex items-center">
-      <MapPin/>
+      <MapPin/>a
       <div>{place}</div>
-    </div>
+    </div>  
   )
 }
 export function Pin({data,icon=undefined,size=100}:{data:ShopData,icon?:undefined|string|StaticImageData,size?:number}){
