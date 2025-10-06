@@ -1,4 +1,5 @@
 import "./globals.css";
+import GrainyFilter from "@/components/GrainyFilter";
 
 
 export default function RootLayout({
@@ -9,6 +10,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
+      <GrainyFilter />
         {children}
       </body>
     </html>
