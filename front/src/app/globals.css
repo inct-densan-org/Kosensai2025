@@ -5,6 +5,7 @@
 
 @theme inline {
     --color-background: var(--background);
+    --color-dark-background: var(--dark-background);
     --color-foreground: var(--foreground);
     --font-sans: var(--font-geist-sans);
     --font-mono: var(--font-geist-mono);
@@ -44,7 +45,6 @@
 }
 
 
-
 @layer components {
     /* ローディングオーバーレイの基本スタイル */
     .loading-overlay {
@@ -64,7 +64,7 @@
 @keyframes reveal-from-top-left {
     /* 開始時：左上に半径0の透明な円でクリッピング */
     from {
-        clip-path: circle(0% at 0 0) 
+        clip-path: circle(0% at 0 0)
     }
     /* 終了時：左上から画面全体を覆う半径の円でクリッピング（完全に見える）*/
     to {
@@ -75,8 +75,10 @@
 /*配色はここを変えればok*/
 :root {
     --radius: 0.625rem;
-    --background: oklch(0.2357 0.0704 281.91);
-    --foreground: oklch(0.9551 0 0); /* 文字色は正式にはforeground(前景色) */
+    --background: oklch(0.9556 0.025464 232.974);
+    --dark-background: oklch(0.2357 0.0704 281.91);
+    /*--foreground: oklch(0.9551 0 0); !* 文字色は正式にはforeground(前景色) *!*/
+    --foreground: #252525; /* 文字色は正式にはforeground(前景色) */
     --card: var(--background);
     --card-foreground: var(--foreground);
     --popover: var(--background);
@@ -140,39 +142,33 @@
     /*--sidebar-border: oklch(0.922 0 0);*/
     /*--sidebar-ring: oklch(0.708 0 0);*/
 
-    --mesh-gradient:
-        /* 右上のオレンジ (楕円に変更・サイズ拡大) */
-            radial-gradient(ellipse 50vmax 30vmax at 15% 10%, rgba(243, 162, 228, 0.5), transparent 70%),
-
-                /* 中央のピンク (楕円に変更・サイズ拡大) */
-            radial-gradient(ellipse 35vmax 45vmax at 45% 30%, rgba(255, 200, 150, 0.6), transparent 70%),
-
-                /* 左中央の水色 (サイズ・位置調整) */
-            radial-gradient(ellipse 20vmax 30vmax at 70% 65%, rgba(32, 225, 174, 0.3), transparent 75%),
-
-                /* 左下の青 (楕円に変更・サイズ拡大) */
-            radial-gradient(ellipse 40vmax 30vmax at 85% 85%, rgba(180, 210, 255, 0.6), transparent 70%);
+    --mesh-gradient: /* 右上のオレンジ (楕円に変更・サイズ拡大) */ radial-gradient(ellipse 50vmax 30vmax at 15% 10%, rgba(243, 162, 228, 0.5), transparent 70%),
+        /* 中央のピンク (楕円に変更・サイズ拡大) */ radial-gradient(ellipse 35vmax 45vmax at 45% 30%, rgba(255, 200, 150, 0.6), transparent 70%),
+        /* 左中央の水色 (サイズ・位置調整) */ radial-gradient(ellipse 20vmax 30vmax at 70% 65%, rgba(32, 225, 174, 0.3), transparent 75%),
+        /* 左下の青 (楕円に変更・サイズ拡大) */ radial-gradient(ellipse 40vmax 30vmax at 85% 85%, rgba(180, 210, 255, 0.6), transparent 70%);
 }
+
 .load-title {
     /* 文字色は透明にして背景が見えるようにする */
     color: transparent;
     font-size: 60px;
     
 
+
     /* オレンジと黒が50%の位置で切り替わるグラデーション */
-    background: linear-gradient(to right, white 50%, #1e2939 50%) 100%;
+    background: linear-gradient(to right, white 50%, var(--dark-background) 50%) 100%;
     /* 背景をテキストで切り抜く */
     background-clip: text;
 
     /* 横幅は200%にしてグラデーションの青部分は見えないようにする */
     background-size: 200% 100%;
-    
+
     animation: load-title 1.25s ease-in-out forwards .5s;
 }
 
 @keyframes load-title {
     from {
-        
+
     }
     30% {
         background-position: 0 100%;
@@ -182,7 +178,7 @@
     }
     90% {
         background-position: -100% 0;
-        
+
     }
     99% {
         background-position: -100% 0;
@@ -190,9 +186,8 @@
     }
     to {
         background-position: -100% 0;
+        display: none;
         opacity: 0;
-        
-    
     }
 }
 
@@ -209,19 +204,69 @@
 }
 
 .sun {
-    --sun-size: 0vmax;
-    --sun-spread: 10%;
-    background-image: radial-gradient(ellipse var(--sun-size) var(--sun-size) at 0% 50%, white, transparent var(--sun-spread));
-    animation: sun .75s ease-in forwards 1.75s;
+    --sun-size: 0em;
+    --sun-spread: 0;
+    background-image: radial-gradient(ellipse var(--sun-size) var(--sun-size) at calc(50% + 7.7em) calc(50% - 1em), var(--background), transparent var(--sun-spread));
+    animation: sun 1s ease-in forwards 2s;
+    position: relative;
+}
+.sun::after {
+    content: "";
+    position: absolute;
+    border-radius: 100%;
+    background: white;
+    left: calc(50% + 7.7em - 4px);
+    top: calc(50% - 1em - 4px);
+    
+    width: 8px;
+    height: 8px;
+    opacity: 0;
+    animation: sun-appear 1.2s linear backwards 1s;
+    
+}
+@keyframes sun-appear {
+    1% {
+        opacity: 1;
+    }
+    to {
+        opacity: 1;
+    }
+    
 }
 
 @keyframes sun {
+    0% {
+        
+    }
     
-    to {
+    60% {
         --sun-size: 100vmax;
         --sun-spread: 200%;
+        opacity: 1;
+    }
+    100% {
+        --sun-size: 100vmax;
+        --sun-spread: 200%;
+        opacity: 0;
     }
 }
+
+@keyframes noise {
+    from {
+        background-position: 0 0;
+    }
+    to {
+        background-position: 100% 100%;
+    }
+}
+
+
+.noise {
+    background: repeating-conic-gradient(transparent 0% 25%, black 0% 50%);
+    background-size: 4px 4px;
+    /*animation: noise 1s infinite linear;*/
+}
+
 .dark {
     --background: oklch(0.145 0 0);
     --foreground: oklch(0.985 0 0);
@@ -265,3 +310,5 @@
         @apply bg-background text-foreground;
     }
 }
+
+
