@@ -1,6 +1,6 @@
-import {ReactElement} from "react";
+import {ReactElement, ReactNode} from "react";
 
-export function Window({title, children, subtitle}: {title: string, children: ReactElement,  subtitle?: string}) {
+export function Window({title, children, subtitle}: {title: string, children: ReactNode,  subtitle?: string}) {
     return (
         <div className={"border-black border-[1px] rounded-sm m-8 w-auto h-fit bg-[rgba(255,255,255,0.5)]  text-foreground   font-['Mplus 1p'] "}>
             {/*上部のフチ*/}
