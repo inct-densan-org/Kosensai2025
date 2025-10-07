@@ -1,6 +1,7 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 
+
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {
@@ -206,10 +207,11 @@
 .sun {
     --sun-size: 0em;
     --sun-spread: 0;
-    background-image: radial-gradient(ellipse var(--sun-size) var(--sun-size) at calc(50% + 7.7em) calc(50% - 1em), var(--background), transparent var(--sun-spread));
-    animation: sun 1s ease-in forwards 2s;
+    background-image: radial-gradient(ellipse var(--sun-size) var(--sun-size) at 50% 50%, var(--background), transparent var(--sun-spread));
+    animation: sun .75s ease-in forwards 2.45s;
     position: relative;
 }
+
 .sun::after {
     content: "";
     position: absolute;
@@ -221,25 +223,50 @@
     width: 8px;
     height: 8px;
     opacity: 0;
-    animation: sun-appear 1.2s linear backwards 1s;
-    
+    /*               appear      move         fade out */
+    animation: sun-appear 0.05s linear forwards 1.5s, sun-dot-move 0.7s ease-in forwards 1.75s, sun-dot-fade-out 0.1s linear forwards 2.45s;
 }
+
+div:has(.sun) {
+    animation: disappear .1s linear forwards 3s;
+}
+
 @keyframes sun-appear {
-    1% {
-        opacity: 1;
-    }
     to {
         opacity: 1;
     }
-    
 }
+
+@keyframes sun-dot-move {
+    0% {
+        /* Start position is implicitly set by .sun::after */
+    }
+    25% {
+        top: calc(50% - 6em); /* Go higher */
+        left: calc(50% + 5em);
+    }
+    100% {
+        top: 50%;
+        left: 50%;
+    }
+}
+
+@keyframes sun-dot-fade-out {
+    from {
+        opacity: 1;
+    }
+    to {
+        opacity: 0;
+    }
+}
+
 
 @keyframes sun {
     0% {
         
     }
     
-    60% {
+    50% {
         --sun-size: 100vmax;
         --sun-spread: 200%;
         opacity: 1;
@@ -248,7 +275,14 @@
         --sun-size: 100vmax;
         --sun-spread: 200%;
         opacity: 0;
+        display: none;
     }
+}
+@keyframes disappear {
+    to {
+        display: none;
+    }
+    
 }
 
 @keyframes noise {
@@ -311,4 +345,12 @@
     }
 }
 
+.hidden-scrollbar {
+    -ms-overflow-style: none; /* IE, Edge 対応 */
+    scrollbar-width: none; /* Firefox 対応 */
+}
+.hidden-scrollbar::-webkit-scrollbar {
+    /* Chrome, Safari 対応 */
+    display: none;
+}
 

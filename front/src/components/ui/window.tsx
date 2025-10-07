@@ -10,7 +10,7 @@ export function Window({title, children, subtitle}: {title: string, children: Re
             </div>
             
             {/*コンテンツ*/}
-            <div className={"px-4 pt-2 pb-4 text-[.8rem]"}>
+            <div className={"px-4 pt-2 pb-4 text-[0.875rem] leading-[1.5rem]"}>
             {children}
                 
             </div>
