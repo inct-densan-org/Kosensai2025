@@ -87,6 +87,9 @@ importers:
       react-scroll:
         specifier: ^1.9.3
         version: 1.9.3(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
+      swiper:
+        specifier: ^12.0.2
+        version: 12.0.2
       tailwind-merge:
         specifier: ^3.3.1
         version: 3.3.1
@@ -1133,6 +1136,10 @@ packages:
       babel-plugin-macros:
         optional: true
 
+  swiper@12.0.2:
+    resolution: {integrity: sha512-y8F6fDGXmTVVgwqJj6I00l4FdGuhpFJn0U/9Ucn1MwWOw3NdLV8aH88pZOjyhBgU/6PyBlUx+JuAQ5KMWz906Q==}
+    engines: {node: '>= 4.7.0'}
+
   tailwind-merge@3.3.1:
     resolution: {integrity: sha512-gBXpgUm/3rp1lMZZrM/w7D8GKqshif0zAymAhbCyIt8KMe+0v9DQ7cdYLR4FHH/cKpdTXb+A/tKKU3eolfsI+g==}
 
@@ -2037,6 +2044,8 @@ snapshots:
     dependencies:
       client-only: 0.0.1
       react: 19.1.0
+
+  swiper@12.0.2: {}
 
   tailwind-merge@3.3.1: {}
 
