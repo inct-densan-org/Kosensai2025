@@ -6,6 +6,7 @@ import {FadeInWhenVisible} from "@/components/top/FadeInWhenVisible";
 import Scroller from "@/components/top/Scroller";
 import Navigation from "@/components/top/Navigation";
 import {dotGothic16Font} from "@/app/layout";
+import { Posters } from "@/components/top/Posters";
 
 import {M_PLUS_1p, DotGothic16} from "next/font/google";
 import { Modal } from "@/components/Modal";
@@ -97,8 +98,13 @@ export default function Home() {
                 
                 <section className={"scroll-section  h-screen overflow-x-hidden overflow-y-scroll hidden-scrollbar"}>
                     <Navigation/>
-                    {/*ポスターズ*/}
-                    
+                    {/*ポスターズ*/} 
+                    <Posters />
+                    {/*<div*/}
+                    {/*    className={"mx-auto my-6 block flex-row flex-wrap justify-center object-center overflow-hidden"}*/}
+                    {/*    id={"articlesWrapper"}> /!*コンテナ*!/*/}
+                    {/*    <ArticlesLoader/>*/}
+                    {/*</div>*/}
                     
                     <FadeInWhenVisible>
                         <Window title={"WELCOME!!"} subtitle={"校長挨拶"}>
@@ -131,13 +137,6 @@ export default function Home() {
                                 </div>
 
                                 <p className={"inline indent-2 lg:pt-4 text-[0.875rem] pt-1"}>
-                                    本校は今年度, 創立60周年の記念すべき年であり, 例年にもまして多彩な屋台や企画がずらりと並びます.
-                                    また, 全国高専の中でも強豪と氷弁のロボコンの活動, 科学と触れ合うサイエンスカフェ,
-                                    学生たちによる地域の課題の解決を目指した取り組みなど,
-                                    本校は今年度, 創立60周年の記念すべき年であり, 例年にもまして多彩な屋台や企画がずらりと並びます,
-                                    また, 全国高専の中でも競合とs
-                                    本校は今年度, 総理tう60周年の記念すべき年であり, 例年にもまして多彩な屋台や企画がずらりと並びます.
-                                    また、全国高専の中でも競合と評判のロボコンの活動,
                                     本校は今年度、創立60周年の記念すべき年であり、例年にも増して多彩な屋台や企画がずらりと並びます。
                                 </p>
                                 <p className={"inline indent-2 lg:pt-4 text-[0.875rem] pt-1"}>
