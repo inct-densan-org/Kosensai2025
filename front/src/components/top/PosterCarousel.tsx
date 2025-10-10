@@ -3,6 +3,7 @@
 import {animate, motion, MotionValue, PanInfo, useMotionValue, useTransform} from "motion/react";
 import {PosterCard} from "./PosterCard";
 import {useEffect, useState} from "react";
+import {clamp} from "motion";
 
 type Poster = {
     id: number;
@@ -17,24 +18,26 @@ interface PosterCarouselProps {
 
 
 // SP
-// const POSTER_WIDTH = 210;
-// const POSTER_HEIGHT = 297;
-// const CONTAINER_HEIGHT = 450;
-// const DISTANCE = 200;
-// const RADIUS = 900;
-// const TILT_ANGLE = -8;
-
-// PC
 const POSTER_WIDTH = 210;
 const POSTER_HEIGHT = 297;
 const CONTAINER_HEIGHT = 450;
-const DISTANCE = 300;
-const RADIUS = 1000;
+const DISTANCE = 200;
+const RADIUS = 900;
 const TILT_ANGLE = -8;
+const MAX_ROTATION_SPEED = 3000;
+
+// PC
+// const POSTER_WIDTH = 210;
+// const POSTER_HEIGHT = 297;
+// const CONTAINER_HEIGHT = 450;
+// const DISTANCE = 300;
+// const RADIUS = 1000;
+// const TILT_ANGLE = -8;
+
 // RADIUSを横幅pxと同じくらいにすると第四象限だけ見える?
 // const TILT_ANGLE = -90;
 
-const DRAG_FACTOR = -13000; // Controls drag sensitivity. 1.0 creates a 1:1 mapping.
+const DRAG_FACTOR = -1300; // 小さいほどよく回る
 
 /**
  * A component that renders a single poster with billboarding and perspective scaling.
@@ -42,15 +45,13 @@ const DRAG_FACTOR = -13000; // Controls drag sensitivity. 1.0 creates a 1:1 mapp
 function BillboardPoster({
                              poster,
                              angle,
-                             tiltAngle,
-                             radius,
                              yRotation,
+                             onPosterClick,
                          }: {
     poster: Poster;
     angle: number;
-    tiltAngle: number;
-    radius: number,
     yRotation: MotionValue<number>;
+    onPosterClick: (event: MouseEvent | TouchEvent | PointerEvent) => boolean | undefined;
 }) {
     const currentAngle = useTransform(yRotation, (y) => y + angle);
 
@@ -82,6 +83,7 @@ function BillboardPoster({
 
     return (
         <motion.div
+            onTap={onPosterClick}
             className="absolute "
             style={{
                 transformOrigin: "bottom",
@@ -119,8 +121,9 @@ export function PosterCarousel({posters, onDraggingChange}: PosterCarouselProps)
     const onPan = (event: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
         if (info.velocity.x + info.velocity.y == 0) return
         // yRotation.set(yRotation.get() - info.offset.x * Math.abs(info.velocity.x) / DRAG_FACTOR);
-        yRotation.set(yRotation.get() - info.offset.x * Math.abs(info.velocity.x) / DRAG_FACTOR);
+        yRotation.set(yRotation.get() - clamp(-MAX_ROTATION_SPEED, MAX_ROTATION_SPEED, info.velocity.x * Math.abs(info.delta.x)) / DRAG_FACTOR);
         console.log(info.velocity)
+        console.log(info)
     };
 
     const onPanEnd = (event: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
@@ -144,6 +147,41 @@ export function PosterCarousel({posters, onDraggingChange}: PosterCarouselProps)
             damping: 30,
             velocity: velocityInDegrees,
         });
+    };
+
+    const isPosterInFront = (posterIndex: number) => {
+        const numPosters = posters.length;
+        if (numPosters === 0) return false;
+
+        const anglePerPoster = 360 / numPosters;
+        const posterAngle = (yRotation.get() + posterIndex * anglePerPoster) % 360;
+
+        // 角度が0度に近いか（許容誤差を設ける）
+        const tolerance = 5; // 5度以内を正面とみなす
+        console.log(posterAngle)
+        return Math.abs(posterAngle) < tolerance || Math.abs(posterAngle - 360) < tolerance || Math.abs(posterAngle + 360) < tolerance;
+    };
+    
+    const handlePosterClick = (event: MouseEvent | TouchEvent | PointerEvent, posterIndex: number) => {
+        if (isPosterInFront(posterIndex)) {
+            // 既に正面にある場合は何もしない（クリックイベントを透過させ、ダイアログを開かせる）
+            return true;
+        }
+        // 正面にない場合は、デフォルトのクリックイベント（ダイアログ表示）をキャンセル
+        event.preventDefault();
+        event.stopPropagation();
+
+        // クリックされたポスターが正面に来るようにアニメーション
+        const anglePerPoster = 360 / posters.length;
+        const snapRotation = posterIndex * -anglePerPoster;
+
+        // yRotationの値を直接変更するのではなく、アニメーションさせる
+        animate(yRotation, snapRotation, {
+            type: "spring",
+            stiffness: 300,
+            damping: 40, // 少し弾みを抑える
+        });
+        return false;
     };
 
     const largestPosterScale = 1.0;
@@ -194,8 +232,7 @@ export function PosterCarousel({posters, onDraggingChange}: PosterCarouselProps)
                         key={poster.id}
                         poster={poster}
                         angle={(360 / posters.length) * index}
-                        tiltAngle={TILT_ANGLE}
-                        radius={RADIUS}
+                        onPosterClick={(event) => handlePosterClick(event, index)}
                         yRotation={yRotation}
                     />
                 ))}
