@@ -1,3 +1,2 @@
-import { hc } from "hono/client"
-import { AppType } from "@api/index"
-export const client = hc<AppType>("http://localhost:8000")
+import { createClient } from "@api/client"
+export const client = createClient("http://localhost:8000")
