@@ -8,7 +8,7 @@ export const request = z.object({
 export type NewsData = {
   id:string
   title:string
-  description:string|null
+  tag:string|null
   body:string
   createdAt:string
   updatedAt:string
@@ -17,6 +17,6 @@ export type NewsData = {
 export type NewsList = {
   id:string
   title:string
-  description:string|null
+  tag:string|null
   createdAt:string
 }
