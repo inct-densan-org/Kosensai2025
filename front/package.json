@@ -16,6 +16,7 @@
     "@radix-ui/react-visually-hidden": "^1.2.3",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
+    "dompurify": "^3.3.0",
     "hono": "^4.9.8",
     "lucide-react": "^0.544.0",
     "next": "15.5.4",
