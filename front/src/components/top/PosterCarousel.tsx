@@ -45,11 +45,15 @@ const DRAG_FACTOR = -1300; // 小さいほどよく回る
 function BillboardPoster({
                              poster,
                              angle,
+                             tiltAngle,
+                             radius,
                              yRotation,
                              onPosterClick,
                          }: {
     poster: Poster;
     angle: number;
+    tiltAngle: number;
+    radius: number,
     yRotation: MotionValue<number>;
     onPosterClick: (event: MouseEvent | TouchEvent | PointerEvent) => boolean | undefined;
 }) {
@@ -232,6 +236,8 @@ export function PosterCarousel({posters, onDraggingChange}: PosterCarouselProps)
                         key={poster.id}
                         poster={poster}
                         angle={(360 / posters.length) * index}
+                        tiltAngle={TILT_ANGLE}
+                        radius={RADIUS}
                         onPosterClick={(event) => handlePosterClick(event, index)}
                         yRotation={yRotation}
                     />
