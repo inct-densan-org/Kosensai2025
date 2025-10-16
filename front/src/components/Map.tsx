@@ -5,7 +5,7 @@ import {
   DialogContent,
   DialogHeader,
   DialogTitle,
-} from "./ui/dialog";
+} from "./ui/empty-dialog";
 import { ShopData } from "@/types/type";
 import { VisuallyHidden } from "@radix-ui/react-visually-hidden"
 import { ShopCard } from "./Shop";
