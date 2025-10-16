@@ -13,7 +13,7 @@ export function NewsTable({data}:{data:NewsList}){
         <CardContent>
           <CardHeader>
               <div className="flex items-end">
-                <div className="rounded bg-gray-300 p-1 font-semibold w-[18ch] mr-6">{data.description}</div>
+                <div className="rounded bg-gray-300 p-1 font-semibold w-[18ch] mr-6">{data.tag}</div>
                 <div className="">{data.createdAt.slice(0,10)}</div>
               </div>
               <CardTitle className="text-3xl text-left">{data.title}</CardTitle>
