@@ -1,5 +1,4 @@
 import "./globals.css";
-import GrainyFilter from "@/components/GrainyFilter";
 import {DotGothic16} from "next/font/google";
 
 
