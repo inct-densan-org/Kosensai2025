@@ -42,7 +42,7 @@ const Scroller = () => {
         Events.scrollEvent.register('begin', () => {
             setIsScrolling(true);
             document.documentElement.style.setProperty('--scrolling', 'true');
-            document.body.style.overflow = 'hidden';
+            document.body.style.overflow = 'hidsden';
         });
         Events.scrollEvent.register('end', () => {
             setIsScrolling(false);
