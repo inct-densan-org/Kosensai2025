@@ -1,84 +1,57 @@
-"use client";
+'use client';
 
 import {animate, motion, MotionValue, PanInfo, useMotionValue, useTransform} from "motion/react";
-import {PosterCard} from "./PosterCard";
-import {JSX, ReactNode, useCallback, useEffect, useRef, useState} from "react";
+import {useEffect, useRef, useState} from "react";
 import {clamp} from "motion";
+import Image from "next/image";
+import {ControllableModal} from "@/components/ControllableModal";
 
-
-type Poster = {
+// The data structure received from the parent
+type PosterData = {
     id: number;
     title: string;
-    images: JSX.Element[]; // path to image
+    desc: string;
+    imagePath: string;
 };
 
+// The content for the modal
+type ModalContent = {
+    title: string;
+    desc: string;
+} | null;
 
 interface PosterCarouselProps {
-    posters: Poster[];
-    onDraggingChange?: (isDragging: boolean) => void;
-    isModalOpen: boolean;
+    posters: PosterData[];
     onSelectedIndexChange?: (index: number) => void;
 }
 
-
-// SP
-const POSTER_WIDTH = 210;
 const POSTER_HEIGHT = 297;
-
-// const TILT_ANGLE = -8;
 const TILT_ANGLE = 0;
 const MAX_ROTATION_SPEED = 3000;
-const AUTOROTATE_DURATION = 150;
+const DRAG_FACTOR = -1300;
 
-// PC
-// const POSTER_WIDTH = 210;
-// const POSTER_HEIGHT = 297;
-// const DISTANCE = 200;
-// const RADIUS = 900;
-// const TILT_ANGLE = 90;
-// const MAX_ROTATION_SPEED = 3000;
-
-
-const DRAG_FACTOR = -1300; // 小さいほどよく回る
-
-/**
- * A component that renders a single poster with billboarding and perspective scaling.
- */
-function BillboardPoster({
-                             poster,
-                             radius,
-                             offset,
-                             angle,
-                             yRotation,
-                             onPosterClick,
-                         }: {
-    poster: Poster;
-    radius: number;
-    offset: number
-    angle: number;
-    yRotation: MotionValue<number>;
-    onPosterClick: (event: MouseEvent | TouchEvent | PointerEvent) => boolean | undefined;
-}) {
+function BillboardPoster(
+    {
+        poster,
+        radius,
+        offset,
+        angle,
+        yRotation,
+        onPosterClick,
+    }: {
+        poster: PosterData;
+        radius: number;
+        offset: number;
+        angle: number;
+        yRotation: MotionValue<number>;
+        onPosterClick: (event: MouseEvent | TouchEvent | PointerEvent) => void;
+    }) {
     const currentAngle = useTransform(yRotation, (y) => y + angle);
 
-    // --- Final, Declarative Implementation ---
-
     const z = useTransform(currentAngle, (a) => Math.cos(a * (Math.PI / 180)));
-
-    // Use a declarative mapping to handle the final "pop" of the focused poster.
-    // This avoids the pitfalls of
-    // imperative if/else logic with spring animations.
-    const scale = useTransform(
-        z, // Input: z-depth from -1 (back) to 1 (front)
-        // [-1, 0.5, 0.99, 1], // Input range
-        // [0.6, 0.7, 0.8, 1.1]  // Output range: The scale jumps from 1.5x to 2.0x in the last 1% of movement.
-        // [0.3, 0.4, 0.5, 1.5]  // Output range: The scale jumps from 1.5x to 2.0x in the last 1% of movement.
-        [-1, 1],
-        [0.75, 1]
-    );
-
+    const scale = useTransform(z, [-1, 1], [0.75, 1]);
     const opacity = useTransform(z, [-1, 0, 0.85, 1], [0.5, 0.7, 0.8, 1]);
-    const zIndex = useTransform(z, [-1, 1], [-100, 100])
+    const zIndex = useTransform(z, [-1, 1], [-100, 100]);
 
     const transform = useTransform(
         [currentAngle, scale],
@@ -95,138 +68,104 @@ function BillboardPoster({
 
     return (
         <motion.div
-            onTap={onPosterClick}
-            className="absolute "
-            style={{
-                transformOrigin: "bottom",
-                transform: transform,
-                opacity: opacity,
-
-                zIndex: zIndex,
-            }}
+            onTap={onPosterClick} // Use onTap to distinguish from pan gestures
+            className="absolute"
+            style={{transformOrigin: "bottom", transform, opacity, zIndex}}
         >
-            {/*<PosterCard poster={poster}/>*/}
-            {poster.images}
+            <div
+                className="relative w-[277px] h-[392px] md:w-[400px] md:h-[566px] bg-gray-200 rounded-lg overflow-hidden shadow-lg select-none drop-shadow-xl drop-shadow-gray-800">
+                {poster.imagePath && (
+                    <Image
+                        src={poster.imagePath}
+                        alt={poster.title}
+                        fill={true}
+                        sizes="400px"
+                        className="absolute! object-fill! w-full! h-full!"
+                        draggable={false}
+                    />
+                )}
+            </div>
         </motion.div>
     );
 }
 
-export function PosterCarousel({posters, onDraggingChange, isModalOpen, onSelectedIndexChange}: PosterCarouselProps) {
+export function PosterCarousel({posters, onSelectedIndexChange}: PosterCarouselProps) {
     const yRotation = useMotionValue(0);
-    const [screenSize, setScreenSize] = useState({width: 0, height: 0});
-    const scrollTimeoutRef = useRef<number | null>(null);
+    const [isPc, setIsPc] = useState(false);
+    const [modalContent, setModalContent] = useState<ModalContent>(null);
+
     const carouselRef = useRef<HTMLDivElement>(null);
-    const autoRotateTimeoutRef = useRef<number | null>(null);
-    const isAutoRotating = useRef(false);
-
-    const resetAutoRotationTimer = useCallback(() => {
-        if (isAutoRotating.current) {
-            yRotation.stop();
-            isAutoRotating.current = false;
-        }
-        if (autoRotateTimeoutRef.current) {
-            window.clearTimeout(autoRotateTimeoutRef.current);
-        }
-        autoRotateTimeoutRef.current = window.setTimeout(() => {
-            if (screenSize.width <= screenSize.height && !isModalOpen) {
-                isAutoRotating.current = true;
-                animate(yRotation, yRotation.get() - 360, {
-                    duration: AUTOROTATE_DURATION,
-                    repeat: Infinity,
-                    ease: "linear",
-                });
-            }
-        }, 3000);
-    }, [isModalOpen, screenSize.height, screenSize.width, yRotation]);
-
-    useEffect(() => {
-        resetAutoRotationTimer();
-        return () => {
-            if (autoRotateTimeoutRef.current) {
-                window.clearTimeout(autoRotateTimeoutRef.current);
-            }
-            yRotation.stop();
-        };
-    }, [resetAutoRotationTimer]);
+    const wheelSnapTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
     useEffect(() => {
         const handleResize = () => {
-            setScreenSize({width: window.innerWidth, height: window.innerHeight});
+            setIsPc(window.innerWidth >= 1024);
         };
-
         handleResize();
         window.addEventListener("resize", handleResize);
-
         return () => window.removeEventListener("resize", handleResize);
     }, []);
 
     useEffect(() => {
-        const onWheelScroll = (event: WheelEvent) => {
-            resetAutoRotationTimer();
-            event.preventDefault();
-            event.stopPropagation();
-            if (scrollTimeoutRef.current) {
-                window.clearTimeout(scrollTimeoutRef.current);
-            }
-
-            yRotation.stop();
-            const direction = event.deltaY > 0 ? 1 : -1;
-            const currentPosterIndex = Math.round(-yRotation.get() / (360 / posters.length));
-            const nextPosterIndex = (currentPosterIndex + direction + posters.length) % posters.length;
-
-
-            // N枚目から0枚目に戻る場合やその逆の場合、最短距離で回転するように調整
-            let rawSnapRotation = nextPosterIndex * -(360 / posters.length);
-            let currentRotation = yRotation.get();
-            let diff = rawSnapRotation - currentRotation;
-            if (diff > 180) rawSnapRotation -= 360;
-            if (diff < -180) rawSnapRotation += 360;
-            const snapRotation = rawSnapRotation;
-
+        const snapToClosest = () => {
+            const numPosters = posters.length;
+            if (numPosters === 0) return;
+            const anglePerPoster = 360 / numPosters;
+            const closestPosterIndex = Math.round(-yRotation.get() / anglePerPoster);
+            const snapRotation = closestPosterIndex * -anglePerPoster;
 
             animate(yRotation, snapRotation, {
                 type: "spring",
                 stiffness: 300,
                 damping: 30,
                 onComplete: () => {
-                    onSelectedIndexChange?.(nextPosterIndex);
+                    const finalIndex = (closestPosterIndex % numPosters + numPosters) % numPosters;
+                    onSelectedIndexChange?.(finalIndex);
                 }
             });
+        };
 
+        const onWheelScroll = (event: WheelEvent) => {
+            event.preventDefault();
+
+            if (wheelSnapTimeoutRef.current) {
+                clearTimeout(wheelSnapTimeoutRef.current);
+            }
+
+            yRotation.stop();
+            yRotation.set(yRotation.get() - event.deltaY * 0.05); // Adjusted sensitivity
+
+            wheelSnapTimeoutRef.current = setTimeout(() => {
+                snapToClosest();
+            }, 150);
         };
 
         const carouselElement = carouselRef.current;
-        if (carouselElement) {
-            carouselElement.addEventListener("wheel", onWheelScroll as any, {passive: false});
+        if (carouselElement && isPc) {
+            carouselElement.addEventListener("wheel", onWheelScroll, {passive: false});
         }
 
         return () => {
             if (carouselElement) {
-                carouselElement.removeEventListener("wheel", onWheelScroll as any);
+                carouselElement.removeEventListener("wheel", onWheelScroll);
+            }
+            if (wheelSnapTimeoutRef.current) {
+                clearTimeout(wheelSnapTimeoutRef.current);
             }
         };
-    }, [yRotation, posters, resetAutoRotationTimer, onSelectedIndexChange]);
+    }, [yRotation, posters, onSelectedIndexChange, isPc]);
 
-    const onPanStart = () => {
-        resetAutoRotationTimer();
-        onDraggingChange?.(true);
-    };
-
-    const onPan = (_: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
-        if (info.velocity.x + info.velocity.y == 0) return
+    const onPan = (_: any, info: PanInfo) => {
         yRotation.set(yRotation.get() - clamp(-MAX_ROTATION_SPEED, MAX_ROTATION_SPEED, info.velocity.y * Math.abs(info.delta.y)) / DRAG_FACTOR);
     };
 
-    const onPanEnd = (_: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
-        onDraggingChange?.(false);
+    const onPanEnd = (_: any, info: PanInfo) => {
         const numPosters = posters.length;
+        if (numPosters === 0) return;
         const anglePerPoster = 360 / numPosters;
 
-        // Convert pixel velocity to degrees/sec
         const velocityInDegrees = -info.velocity.y / DRAG_FACTOR;
-
-        // Project the rotation forward based on velocity to determine the target poster
-        const projectionTime = 0.1; // Project 100ms into the future
+        const projectionTime = 0.1;
         const projectedRotation = yRotation.get() + velocityInDegrees * projectionTime;
 
         const closestPosterIndex = Math.round(-projectedRotation / anglePerPoster);
@@ -247,80 +186,85 @@ export function PosterCarousel({posters, onDraggingChange, isModalOpen, onSelect
     const isPosterInFront = (posterIndex: number) => {
         const numPosters = posters.length;
         if (numPosters === 0) return false;
-
         const anglePerPoster = 360 / numPosters;
-        const posterAngle = (yRotation.get() + posterIndex * anglePerPoster) % 360;
-
-        // 角度が0度に近いか（許容誤差を設ける）
-        const tolerance = 5; // 5度以内を正面とみなす
-        console.log(posterAngle)
-        return Math.abs(posterAngle) < tolerance || Math.abs(posterAngle - 360) < tolerance || Math.abs(posterAngle + 360) < tolerance;
+        const posterAngle = yRotation.get() + posterIndex * anglePerPoster;
+        const normalizedAngle = (posterAngle % 360 + 540) % 360 - 180;
+        const tolerance = anglePerPoster / 2.1;
+        return Math.abs(normalizedAngle) < tolerance;
     };
 
     const handlePosterClick = (event: MouseEvent | TouchEvent | PointerEvent, posterIndex: number) => {
-        resetAutoRotationTimer();
         if (isPosterInFront(posterIndex)) {
-            // 既に正面にある場合は何もしない（クリックイベントを透過させ、ダイアログを開かせる）
-            return true;
+            if (!isPc) {
+                const poster = posters[posterIndex];
+                setModalContent({title: poster.title, desc: poster.desc});
+            }
+            return;
         }
-        // 正面にない場合は、デフォルトのクリックイベント（ダイアログ表示）をキャンセル
-        event.preventDefault();
-        event.stopPropagation();
 
-        // クリックされたポスターが正面に来るようにアニメーション
-        const anglePerPoster = 360 / posters.length;
-        const snapRotation = posterIndex * -anglePerPoster;
+        // If a non-front poster is tapped, animate it to the front.
+        // This is triggered by `onTap`, which doesn't fire during a pan.
+        const numPosters = posters.length;
+        if (numPosters === 0) return;
+        const anglePerPoster = 360 / numPosters;
+        let snapRotation = posterIndex * -anglePerPoster;
 
-        // yRotationの値を直接変更するのではなく、アニメーションさせる
+        let currentRotation = yRotation.get();
+        let diff = snapRotation - currentRotation;
+        if (diff > 180) snapRotation -= 360;
+        if (diff < -180) snapRotation += 360;
+
         animate(yRotation, snapRotation, {
             type: "spring",
             stiffness: 300,
-            damping: 40, // 少し弾みを抑える
+            damping: 40,
             onComplete: () => {
                 onSelectedIndexChange?.(posterIndex);
             }
         });
-        return false;
     };
 
-    const radius = POSTER_HEIGHT * 16
+    const radius = POSTER_HEIGHT * 16;
     const offset = -radius;
-    // const offset = 0;
 
     return (
-        <motion.div
-            ref={carouselRef}
-            onPanStart={onPanStart}
-            onPan={onPan}
-            onPanEnd={onPanEnd}
-            className="w-full h-dvh flex items-center  justify-center  cursor-grab active:cursor-grabbing pt-0 touch-none overflow-hidden z-100 overscroll-none"
-            style={{
-                perspective: `${1000}px`,
+        <>
+            {modalContent && (
+                <ControllableModal isOpen={!!modalContent} onClose={() => setModalContent(null)}>
+                    <h2 className="text-2xl font-bold">{modalContent.title}</h2>
+                    <p className="whitespace-pre-wrap">{modalContent.desc}</p>
+                </ControllableModal>
+            )}
 
-            }}
-        >
             <motion.div
-                className="relative"
-                style={{
-                    width: "1px",
-                    height: "1px",
-                    transformStyle: "preserve-3d",
-                    transform: ` rotateX(${TILT_ANGLE}deg) `,
-                }}
+                ref={carouselRef}
+                onPan={isPc ? undefined : onPan}
+                onPanEnd={isPc ? undefined : onPanEnd}
+                className="w-full h-dvh flex items-center justify-center cursor-grab active:cursor-grabbing pt-0 touch-none overflow-hidden z-100 overscroll-none"
+                style={{perspective: `${1000}px`}}
             >
-
-                {posters.map((poster, index) => (
-                    <BillboardPoster
-                        key={poster.id}
-                        poster={poster}
-                        offset={offset}
-                        radius={radius}
-                        angle={(360 / posters.length) * index}
-                        onPosterClick={(event) => handlePosterClick(event, index)}
-                        yRotation={yRotation}
-                    />
-                ))}
+                <motion.div
+                    className="relative"
+                    style={{
+                        width: "1px",
+                        height: "1px",
+                        transformStyle: "preserve-3d",
+                        transform: `rotateX(${TILT_ANGLE}deg)`,
+                    }}
+                >
+                    {posters.map((poster, index) => (
+                        <BillboardPoster
+                            key={poster.id}
+                            poster={poster}
+                            offset={offset}
+                            radius={radius}
+                            angle={(360 / posters.length) * index}
+                            onPosterClick={(event) => handlePosterClick(event, index)}
+                            yRotation={yRotation}
+                        />
+                    ))}
+                </motion.div>
             </motion.div>
-        </motion.div>
+        </>
     );
 }

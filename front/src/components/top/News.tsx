@@ -5,43 +5,43 @@ import {ReactNode} from "react";
 export function News() {
     return (
         <FadeInWhenVisible>
-        <Window title={"News"} color={"white"}
-                className={"overflow-y-auto h-[calc(50dvh_-_0px)] md:h-[calc(100dvh_-_128px)] md:w-full"}>
-            {/*news欄が半分におさまらない*/}
+            <Window title={"News"} color={"white"}
+                    className={"overflow-y-auto h-[calc(50dvh_-_0px)] md:h-[calc(100dvh_-_128px)] md:w-full"}>
+                {/*news欄が半分におさまらない*/}
                 <NewsCard day={"2025/10/14"}>
                     2025年度版の公式サイトを公開しました！<br/>
                     徐々に情報が追加されていきますのでお見逃しなく！
                 </NewsCard>
 
 
-            <NewsCard day={"2025/10/14"}>
-                2025年度版の公式サイトを公開しました！<br/>
-                徐々に情報が追加されていきますのでお見逃しなく！
-            </NewsCard>
+                <NewsCard day={"2025/10/14"}>
+                    2025年度版の公式サイトを公開しました！<br/>
+                    徐々に情報が追加されていきますのでお見逃しなく！
+                </NewsCard>
 
 
-            <NewsCard day={"2025/10/14"}>
-                2025年度版の公式サイトを公開しました！<br/>
-                徐々に情報が追加されていきますのでお見逃しなく！
-            </NewsCard>
+                <NewsCard day={"2025/10/14"}>
+                    2025年度版の公式サイトを公開しました！<br/>
+                    徐々に情報が追加されていきますのでお見逃しなく！
+                </NewsCard>
 
 
-            <NewsCard day={"2025/10/21"}>
-                waaa
-            </NewsCard>
+                <NewsCard day={"2025/10/21"}>
+                    waaa
+                </NewsCard>
 
 
-            <NewsCard day={"2025/10/21"}>
-                waaa
-            </NewsCard>
+                <NewsCard day={"2025/10/21"}>
+                    waaa
+                </NewsCard>
 
 
-            <NewsCard day={"2025/10/21"}>
-                waaa
-            </NewsCard>
+                <NewsCard day={"2025/10/21"}>
+                    waaa
+                </NewsCard>
 
 
-        </Window>
+            </Window>
         </FadeInWhenVisible>
     )
 }
