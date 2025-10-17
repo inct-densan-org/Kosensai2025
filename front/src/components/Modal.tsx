@@ -16,7 +16,7 @@ export function Modal({
   return(
     <Dialog defaultOpen={defaultOpen}>
       <DialogTrigger asChild>
-        <button>
+        <button className={"relative w-full h-full"}>
           {button}
         </button>
       </DialogTrigger>
