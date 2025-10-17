@@ -1,5 +1,6 @@
 import {Window} from "@/components/ui/window";
 import {FadeInWhenVisible} from "@/components/top/FadeInWhenVisible";
+import {ReactNode} from "react";
 
 export function News() {
     return (
@@ -45,7 +46,7 @@ export function News() {
     )
 }
 
-function NewsCard({day, children}: { day: string, children: string }) {
+function NewsCard({day, children}: { day: string, children: ReactNode }) {
     return (
         <div className={"flex flex-col justify-start items-start  border-t-[1px] border-white first:border-none py-2"}>
             <div className={"flex justify-start items-center w-full gap-2"}>
