@@ -183,45 +183,27 @@ export function PosterCarousel({posters, onSelectedIndexChange}: PosterCarouselP
         });
     };
 
+    // A robust, tolerance-based check for the front poster.
     const isPosterInFront = (posterIndex: number) => {
         const numPosters = posters.length;
         if (numPosters === 0) return false;
         const anglePerPoster = 360 / numPosters;
         const posterAngle = yRotation.get() + posterIndex * anglePerPoster;
         const normalizedAngle = (posterAngle % 360 + 540) % 360 - 180;
-        const tolerance = anglePerPoster / 2.1;
+        const tolerance = anglePerPoster / 2.1; // A generous tolerance
         return Math.abs(normalizedAngle) < tolerance;
     };
 
     const handlePosterClick = (event: MouseEvent | TouchEvent | PointerEvent, posterIndex: number) => {
+        // The sole responsibility of a tap is to open the modal if the poster is in front.
         if (isPosterInFront(posterIndex)) {
             if (!isPc) {
                 const poster = posters[posterIndex];
                 setModalContent({title: poster.title, desc: poster.desc});
             }
-            return;
         }
-
-        // If a non-front poster is tapped, animate it to the front.
-        // This is triggered by `onTap`, which doesn't fire during a pan.
-        const numPosters = posters.length;
-        if (numPosters === 0) return;
-        const anglePerPoster = 360 / numPosters;
-        let snapRotation = posterIndex * -anglePerPoster;
-
-        let currentRotation = yRotation.get();
-        let diff = snapRotation - currentRotation;
-        if (diff > 180) snapRotation -= 360;
-        if (diff < -180) snapRotation += 360;
-
-        animate(yRotation, snapRotation, {
-            type: "spring",
-            stiffness: 300,
-            damping: 40,
-            onComplete: () => {
-                onSelectedIndexChange?.(posterIndex);
-            }
-        });
+        // If the poster is not in front, do nothing on tap. The user can pan/swipe to rotate.
+        // This separation of concerns prevents event conflicts and ensures stability.
     };
 
     const radius = POSTER_HEIGHT * 16;
