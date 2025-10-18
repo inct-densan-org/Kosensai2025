@@ -166,11 +166,14 @@
     "images": [
       "/img/posters/20b.webp"
     ]
-  }, ,
+  },
   {
     "mapId": 21,
     "title": "総合技研",
-    "desc": "みんなを乗せて出発進行！"
+    "desc": "みんなを乗せて出発進行！",
+    "images": [
+      "/img/posters/21.webp"
+    ]
   },
   {
     "mapId": 22,
@@ -215,7 +218,7 @@
   },
   {
     "mapId": 28,
-    "title": "28",
+    "title": "海外研修･派遣発表会",
     "desc":  "",
     "images": [
       "/img/posters/28.webp"
@@ -279,16 +282,24 @@
   },
   {
     "mapId": 36,
-    "title": "36",
-    "desc":  "",
+    "title": "総合科学領域 教育研究紹介",
+    "desc": "",
     "images": [
       "/img/posters/36.webp"
     ]
   },
   {
+    "mapId": 37,
+    "title": "機械・知能系",
+    "desc": "",
+    "images": [
+      "/img/posters/37.webp"
+    ]
+  },
+  {
     "mapId": 38,
-    "title": "38",
-    "desc":  "",
+    "title": "化学・バイオ系 アクアリウム・ラボ",
+    "desc": "一関高専「STEAM-nitic」と高知高専「TGK」のコラボ企画です！",
     "images": [
       "/img/posters/38.webp"
     ]
@@ -311,8 +322,8 @@
   },
   {
     "mapId": 40,
-    "title": "40",
-    "desc":  "",
+    "title": "純喫茶 後援会 R7",
+    "desc": "",
     "images": [
       "/img/posters/40.webp"
     ]
@@ -355,7 +366,7 @@
     "title": "軽音楽部",
     "desc":  "ステージ・音響・照明、それぞれにこだわりを持って作り上げました",
     "images": [
-      "/img/posters/49.webp"
+      "/img/posters/47.webp"
     ]
   },
   {
@@ -384,34 +395,18 @@
   },
   {
     "mapId": 53,
-    "title": "53",
-    "desc":  "",
+    "title": "NOCツアー",
+    "desc":  "ネットワークの裏側見てみませんか？\nご参加お待ちしています！",
     "images": [
       "/img/posters/53.webp"
     ]
   },
   {
     "mapId": 54,
-    "title": "54",
-    "desc":  "",
+    "title": "電気・電子系",
+    "desc":  "電気のおもしろさを伝える展示・デモを行います。",
     "images": [
       "/img/posters/54.webp"
-    ]
-  },
-  {
-    "mapId": 55,
-    "title": "55",
-    "desc":  "",
-    "images": [
-      "/img/posters/55.webp"
-    ]
-  },
-  {
-    "mapId": 56,
-    "title": "56",
-    "desc":  "",
-    "images": [
-      "/img/posters/56.webp"
     ]
   }
 ]
