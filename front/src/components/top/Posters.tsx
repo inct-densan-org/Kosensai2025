@@ -1,6 +1,6 @@
 'use client'
 import Image from "next/image";
-import {postersData} from "@/components/top/posters.data";
+import {postersData} from "@/posters.data";
 import {PosterCarousel} from "@/components/top/PosterCarousel";
 
 export function Posters({ onSelectedIndexChange }: { onSelectedIndexChange: (index: number) => void }) {

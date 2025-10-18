@@ -5,7 +5,7 @@ import {Posters} from "@/components/top/Posters";
 import Image from "next/image";
 import {FadeInWhenVisible} from "@/components/top/FadeInWhenVisible";
 import {dotGothic16Font} from "@/app/layout";
-import {postersData} from "@/components/top/posters.data";
+import {postersData} from "@/posters.data";
 
 export function PostersSection() {
     const [selectedIndex, setSelectedIndex] = useState(0);
