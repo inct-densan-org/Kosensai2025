@@ -1,62 +1,163 @@
 import {LandingLoadAnimation} from "@/components/top/LandingLoadAnimation";
-import Scroller from "@/components/top/Scroller";
 import {ChairmanMessage, PrincipalMessage} from "@/components/top/Messages";
 import {News} from "@/components/top/News";
 import Navigation from "@/components/top/Navigation";
 import {MessagesWrapper} from "@/components/top/MessageWrapper";
 import {Hero} from "@/components/top/Hero";
 import {PostersSection} from "@/components/top/PostersSection";
+import {Suspense} from "react";
+import {AnimatedContentSection} from "@/components/top/AnimatedContentSection";
 
 
 export default function Home() {
 
 
     return (
-        // <Suspense fallback={<div className={"bg-dark-background inset-0 h-screen w-screen"}/>}>
-        <>
+        <Suspense fallback={<div className={"bg-dark-background inset-0 h-screen w-screen"}/>}>
+            {/*<>*/}
             <LandingLoadAnimation/>
 
+            {/*ヒーローセクション*/}
+            <section className={"scroll-section relative w-full min-h-screen overflow-hidden z-[300] "}>
+                <Hero/>
+            </section>
             <main
-                className={"relative w-screen min-h-dvh flex-col overflow-x-hidden  items-center justify-between  bg-[#0072C3] bg-no-repeat  bg-(image:--mesh-gradient) blur-in-3xl hidden-scrollbar"}
+                className={"scroll-section relative w-screen min-h-dvh flex-col overflow-x-hidden overflow-y-auto  items-center justify-between  bg-[#0072C3] bg-no-repeat  bg-(image:--mesh-gradient) blur-in-3xl hidden-scrollbar"}
 
             >
                 {/*className={"flex min-h-screen flex-col items-center justify-between p-24 bg-linear-to-br/hsl from-[hsl(195,90%,91%)] to-[hsl(243,81%,78%)] "}>*/}
 
-                {/*ヒーローセクション*/}
-                <section className={"scroll-section relative w-full min-h-screen overflow-hidden "}>
 
-                    <Hero/>
+                {/*<div className={" overflow-y-auto relative h-dvh hidden-scrollbar w-full"}>*/}
+                <Navigation/>
 
+                <section className={"w-full h-dvh md:w-1/2  md:float-left"}>
+                    <MessagesWrapper>
+                        <PrincipalMessage/>
+                        <ChairmanMessage/>
+                    </MessagesWrapper>
+                </section>
+                <section
+                    className={"w-full h-dvh  md:w-[calc(50%-64px)] md:float-left md:h-[calc(100%-128px)]"}>
+                    <News/>
                 </section>
 
-                <div className={"scroll-section overflow-y-auto relative h-dvh hidden-scrollbar w-full"}>
-                    <Navigation/>
-                    <section
-                        className={"w-full overflow-x-hidden h-dvh pt-12 translate-y-[-64px] md:flex md:flex-row  "}>
-                        <MessagesWrapper>
-                            <PrincipalMessage/>
-                            <ChairmanMessage/>
-                        </MessagesWrapper>
-                        <News/>
-                    </section>
-                    <PostersSection/>
-                </div>
-                <div className={"scroll-section overflow-y-auto relative h-dvh hidden-scrollbar w-full"}>
-                    <section
-                        className={"w-full overflow-x-hidden h-dvh pt-12 translate-y-[-64px] flex items-center justify-center text-white"}>
-                        <h2 className="text-4xl font-bold">フリーWi-Fiの提供について</h2>
-                    </section>
+                <AnimatedContentSection title="PV" colorReverseAnim={"tb"} className={"scroll-section"}>
+                    <h2 className="text-4xl font-bold">PV</h2>
 
-                    <section
-                        className={"w-full overflow-x-hidden h-dvh pt-12 translate-y-[-64px] flex items-center justify-center text-white"}>
-                        <h2 className="text-4xl font-bold">アクセス/雨天時の対応</h2>
-                    </section>
-                </div>
-                
+                </AnimatedContentSection>
+
+                <section
+                    className={"w-full overflow-x-hidden h-dvh scroll-section"}>
+                    <PostersSection/>
+                </section>
+                <AnimatedContentSection title="注意事項 / フリーWi-Fiの提供について" className={"scroll-section"}>
+                    <div className="flex gap-16 text-left max-w-4xl px-4 mx-auto">
+                        <div>
+                            <h3 className="text-2xl font-bold mb-4">フリーWi-Fiの提供について</h3>
+                            <p>今年度の高専祭ではフリーWi-Fiの提供を行っております！</p>
+                            <br/>
+                            <p className="font-bold">規約</p>
+                            <ul className="list-disc list-inside space-y-2 mt-2">
+                                <li>Wi-Fiを利用しての法令・公序良俗に反する行為はおやめください。</li>
+                                <li>問題行動に対しては、当該機器の通信を遮断する場合がございます。</li>
+                                <li>運用上、必要なログやデータの収集を行います。収集したログ・データを利用して情報共有を行う場合は、個人を識別できない形で行います。</li>
+                                <li>本ネットワークの利用により発生した損失・損害等につきましては、一切の責任を負いかねます。</li>
+                            </ul>
+                            <br/>
+                            <p>接続に関する情報、及びトラブル時の連絡先につきましては、受付にて配布されますパンフレットの物理媒体、または校内にて掲示中のポスターをご参照くださいませ。</p>
+                        </div>
+                        <div>
+                            <h3 className="text-2xl font-bold mb-4">構内における注意事項について</h3>
+                            <ul className="list-disc list-inside space-y-2">
+                                <li>敷地内は禁煙となっております。喫煙はご遠慮ください。</li>
+                                <li>ゴミは各所に設置のゴミ箱へお捨てください。分別指示に沿ったゴミ箱に廃棄されますようお願いいたします。</li>
+                                <li>(お車でお越しの来場者様へ)
+                                    構内での車両は一方通行となっております。屋外マップの経路でご案内いたしますので、誘導員の指示に従って徐行をお願いいたします。
+                                </li>
+                                <li>歩きながらのスマートフォン操作 (歩きスマホ) は危険ですので、ご遠慮ください。</li>
+                                <li>荷物や貴重品の管理には十分ご注意ください。落とし物は受付でお預かりいたします。</li>
+                                <li>迷子を見かけた際は受付までお知らせください。</li>
+                            </ul>
+                        </div>
+                    </div>
+                </AnimatedContentSection>
+
+                <AnimatedContentSection title="アクセス" className={"scroll-section"}>
+                    <div className="w-full max-w-6xl mx-auto px-4">
+                        <div className="mb-12">
+                            <h3 className="text-3xl font-bold mb-4 text-center">無料送迎バス</h3>
+                            <p className="mb-4 text-center">一関駅 -
+                                一関高専間での無料シャトルバスの運行がございます。ぜひご利用ください。(料金無料)</p>
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                                <div className="bg-white/10 rounded-lg p-4">
+                                    <h4 className="text-xl font-bold mb-2 text-center">一ノ関駅西口 発</h4>
+                                    <div className="grid grid-cols-3 gap-2 text-center">
+                                        {["9:20", "10:35", "11:25", "12:35", "13:40", "14:40", "15:40", "16:25", "17:10"].map(time =>
+                                            <div key={time} className="bg-white/10 p-2 rounded">{time}</div>)}
+                                    </div>
+                                </div>
+                                <div className="bg-white/10 rounded-lg p-4">
+                                    <h4 className="text-xl font-bold mb-2 text-center">一関高専 発</h4>
+                                    <div className="grid grid-cols-3 gap-2 text-center">
+                                        {["9:00", "10:10", "11:00", "12:15", "13:30", "14:15", "15:15", "16:05", "16:45"].map(time =>
+                                            <div key={time} className="bg-white/10 p-2 rounded">{time}</div>)}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div className="mb-12">
+                            <h3 className="text-3xl font-bold mb-4 text-center">列車時刻表 (一ノ関駅発)</h3>
+                            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                                <div className="bg-white/10 rounded-lg p-4">
+                                    <h4 className="text-lg font-bold mb-2 text-center">東北本線上り<br/>(小牛田・仙台方面)
+                                    </h4>
+                                    <div className="grid grid-cols-3 auto-rows-min gap-2 text-center">
+                                        {["5:56", "7:00", "7:54", "9:00", "10:39", "12:44", "13:50", "14:41", "15:51", "16:39", "17:42", "18:56", "19:56", "21:06"].map(time =>
+                                            <div key={time} className="bg-white/10 p-2 rounded">{time}</div>)}
+                                    </div>
+                                </div>
+                                <div className="bg-white/10 rounded-lg p-4">
+                                    <h4 className="text-lg font-bold mb-2 text-center">東北本線下り<br/>(花巻・盛岡方面)
+                                    </h4>
+                                    <div className="grid grid-cols-3 auto-rows-min gap-2 text-center">
+                                        {["5:32", "6:02", "6:43", "7:30", "8:55", "10:15", "11:30", "12:46", "13:45", "14:42", "15:44", "16:27", "17:21", "18:27", "19:38", "20:29", "21:17", "22:13"].map(time =>
+                                            <div key={time} className="bg-white/10 p-2 rounded">{time}</div>)}
+                                    </div>
+                                </div>
+                                <div className="bg-white/10 rounded-lg p-4">
+                                    <h4 className="text-lg font-bold mb-2 text-center">大船渡線<br/>(気仙沼方面)</h4>
+                                    <div className="grid grid-cols-3 auto-rows-min gap-2 text-center">
+                                        {["5:41", "7:18", "10:18", "12:46", "14:40", "16:34", "18:41", "20:35"].map(time =>
+                                            <div key={time} className="bg-white/10 p-2 rounded">{time}</div>)}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div className="text-center">
+                            <h3 className="text-3xl font-bold mb-4">雨天時の対応</h3>
+                            <p>雨天時も高専祭は開催されますが、一部の屋外企画が変更または中止になる場合があります。<br/>詳細は当サイトまたは公式SNSでご確認ください。
+                            </p>
+                        </div>
+                    </div>
+                </AnimatedContentSection>
+                <section
+                    className={"w-full overflow-x-hidden h-dvh pt-12  flex items-center justify-center text-white scroll-section"}>
+                    <h2 className="text-4xl font-bold">パンフレット</h2>
+                </section>
+                <section
+                    className={"w-full overflow-x-hidden h-dvh pt-12  flex items-center justify-center text-[#666666] scroll-section"}>
+                    <h2 className="text-4xl font-bold">協賛</h2>
+                </section>
+                {/*</div>*/}
+                {/*<div className={"overflow-y-auto relative h-dvh hidden-scrollbar w-full"}>*/}
+
+                {/*</div>*/}
+
             </main>
-            <Scroller/>
-        </>
-        // </Suspense>
+            {/*<Scroller/>*/}
+            {/*</>*/}
+        </Suspense>
     );
 
     // モーダル使用例

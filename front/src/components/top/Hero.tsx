@@ -5,10 +5,10 @@ export function Hero() {
     return (
         <>
             <Image
-                src={"/top/poster/poster-background-line-dotted.webp"}
+                src={"/top/poster/poster-background-line.webp"}
                 alt={"ポスター"}
                 fill={true}
-                className={"absolute w-screen! h-full! object-cover md:object-fill after:pointer-events-none drag-none select-none pointer-events-none  "}
+                className={"absolute w-screen! h-full! object-cover md:object-fill after:pointer-events-none drag-none select-none pointer-events-none "}
             />
             <Parts />
             <Title />
@@ -204,7 +204,7 @@ function Title() {
                     <MotionDivInClient isImg={false} initial={{y: -100, opacity: 0}} animate={{y: 0, opacity: 1}}
                                        transition={{type: "spring", stiffness: 120, damping: 20, delay: LOADTIME + .25}}
                     >
-                        <h1 className={dotGothic16Font.className + " drop-shadow-2xl/50 w-full text-center text-[min(20vw,20vh)] text-[#f5ff71] tracking-widest font-light"}>高専祭</h1>
+                        <h1 className={dotGothic16Font.className + " drop-shadow-2xl/100 w-full text-center text-[min(20vw,20vh)] text-[#f5ff71] tracking-widest font-light"}>高専祭</h1>
                     </MotionDivInClient>
                 </div>
                 <div className={"block w-full h-fit"}>
@@ -214,7 +214,7 @@ function Title() {
 
                         transition={{type: "spring", stiffness: 120, damping: 20, delay: LOADTIME + .25}}
                     >
-                        <p className={dotGothic16Font.className + " drop-shadow-2xl/100 w-full text-center  text-[min(6vw,6vh)] text-white tracking-widest font-light"}>一関工業高等専門学校</p>
+                        <p className={dotGothic16Font.className + " drop-shadow-2xl/60 w-full text-center  text-[min(6vw,6vh)] text-white tracking-widest font-light"}>一関工業高等専門学校</p>
                     </MotionDivInClient>
                 </div>
             </div>

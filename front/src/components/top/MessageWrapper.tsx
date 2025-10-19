@@ -17,14 +17,14 @@ export function MessagesWrapper({children}: { children: ReactNode[] }) {
                     modules={[Navigation, Pagination]}
                     navigation
                     pagination={{clickable: true}}
-                    className={"max-h-1/2 md:max-h-full md:w-1/2 md:m-0"}
+                    className={"md:max-h-full md:w-1/2 md:m-0"}
                     autoHeight={false}
             >
                 {children.map(element => {
                     return (
                         <SwiperSlide>
 
-                            <FadeInWhenVisible className={"overflow-y-scroll"}>
+                            <FadeInWhenVisible className={""}>
                                 {element}
                             </FadeInWhenVisible>
                         </SwiperSlide>

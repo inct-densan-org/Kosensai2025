@@ -4,9 +4,9 @@ import {ReactNode} from "react";
 
 export function News() {
     return (
-        <FadeInWhenVisible>
+        <FadeInWhenVisible className={""}>
             <Window title={"News"} color={"white"}
-                    className={"overflow-y-auto h-[calc(50dvh_-_0px)] md:h-[calc(100dvh_-_128px)] md:w-full"}>
+                    className={"overflow-y-scroll h-full md:h-[calc(100dvh_-_128px)] md:w-full"}>
                 {/*news欄が半分におさまらない*/}
                 <NewsCard day={"2025/10/14"}>
                     2025年度版の公式サイトを公開しました！<br/>

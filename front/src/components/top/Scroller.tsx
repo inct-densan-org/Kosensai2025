@@ -3,7 +3,6 @@ import {useEffect, useState} from "react";
 import {animateScroll, Events} from "react-scroll";
 
 
-
 const Scroller = () => {
     const [isScrolling, setIsScrolling] = useState(false);
 
@@ -22,13 +21,13 @@ const Scroller = () => {
                     if (scrolling === 'true') {
                         return;
                     }
-
+                    
                     // セクションが画面内に入ったらそっちへスクロール
                     animateScroll.scrollTo(window.scrollY + e.target.getBoundingClientRect().top, {
-                        duration: 750,
+                        duration: 500,
                         smooth: 'easeOutCubic',
-                    });
-                    
+                    })
+
                 }
             }
         }, {threshold: 0.01});
@@ -42,7 +41,7 @@ const Scroller = () => {
         Events.scrollEvent.register('begin', () => {
             setIsScrolling(true);
             document.documentElement.style.setProperty('--scrolling', 'true');
-            document.body.style.overflow = 'hidsden';
+            document.body.style.overflow = 'hidden';
         });
         Events.scrollEvent.register('end', () => {
             setIsScrolling(false);
