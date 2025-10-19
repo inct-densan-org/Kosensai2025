@@ -1,8 +1,7 @@
 'use client';
 
-import {animate, motion, MotionValue, PanInfo, useMotionValue, useTransform} from "motion/react";
+import {animate, motion, MotionValue, useMotionValue, useTransform} from "motion/react";
 import {useEffect, useRef} from "react";
-import {clamp} from "motion";
 import {PosterCard} from "./PosterCard";
 
 // The data structure received from the parent, matching PosterCard
@@ -43,6 +42,8 @@ function BillboardPoster(
     const scale = useTransform(z, [-1, 1], [0.75, 1]);
     const opacity = useTransform(z, [-1, 0, 0.85, 1], [0.5, 0.7, 0.8, 1]);
     const zIndex = useTransform(z, [-1, 1], [-100, 100]);
+    // 視界の外にあるポスターの描画を抑制
+    const visibility = useTransform(z, (val) => (val < 0.3 ? 'hidden' : 'visible'));
 
     const transform = useTransform(
         [currentAngle, scale],
@@ -60,7 +61,15 @@ function BillboardPoster(
     return (
         <motion.div
             className="absolute"
-            style={{transformOrigin: "bottom", transform, opacity, zIndex}}
+            style={{
+                transformOrigin: "bottom",
+                transform,
+                opacity,
+                zIndex,
+                // ブラウザに最適化を促し、描画を抑制
+                visibility: visibility,
+                willChange: 'transform, opacity, z-index, visibility',
+            }}
         >
             {/* Disable modal on PC layout */}
             <PosterCard poster={poster} modalDisabled={true}/>
@@ -72,7 +81,6 @@ export function PosterCarousel({posters, onSelectedIndexChange}: PosterCarouselP
     const yRotation = useMotionValue(0);
 
     const carouselRef = useRef<HTMLDivElement>(null);
-    const wheelSnapTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
     useEffect(() => {
         const snapToClosest = () => {
@@ -81,24 +89,17 @@ export function PosterCarousel({posters, onSelectedIndexChange}: PosterCarouselP
             const anglePerPoster = 360 / numPosters;
             const closestPosterIndex = Math.round(-yRotation.get() / anglePerPoster);
             const snapRotation = closestPosterIndex * -anglePerPoster;
-
+            const finalIndex = (closestPosterIndex % numPosters + numPosters) % numPosters;
+            onSelectedIndexChange?.(finalIndex);
             animate(yRotation, snapRotation, {
                 type: "spring",
                 stiffness: 300,
                 damping: 30,
-                onComplete: () => {
-                    const finalIndex = (closestPosterIndex % numPosters + numPosters) % numPosters;
-                    onSelectedIndexChange?.(finalIndex);
-                }
             });
         };
 
         const onWheelScroll = (event: WheelEvent) => {
             event.preventDefault();
-
-            if (wheelSnapTimeoutRef.current) {
-                clearTimeout(wheelSnapTimeoutRef.current);
-            }
 
             yRotation.stop();
             animate(yRotation, yRotation.get() - event.deltaY * 0.1, {
@@ -106,9 +107,7 @@ export function PosterCarousel({posters, onSelectedIndexChange}: PosterCarouselP
                 stiffness: 300,
                 damping: 30,
                 onComplete: () => {
-                    wheelSnapTimeoutRef.current = setTimeout(() => {
-                        snapToClosest();
-                    }, 150);
+                    snapToClosest();
                 }
             });
         };
@@ -123,13 +122,9 @@ export function PosterCarousel({posters, onSelectedIndexChange}: PosterCarouselP
             if (carouselElement) {
                 carouselElement.removeEventListener("wheel", onWheelScroll);
             }
-            if (wheelSnapTimeoutRef.current) {
-                clearTimeout(wheelSnapTimeoutRef.current);
-            }
         };
     }, [yRotation, posters, onSelectedIndexChange]);
-
-    // Pan gestures are disabled for the PC component.
+    
     const onPan = undefined;
     const onPanEnd = undefined;
 

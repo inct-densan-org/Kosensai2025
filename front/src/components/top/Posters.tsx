@@ -2,7 +2,7 @@
 import {postersData} from "@/posters.data";
 import {PosterCarousel} from "@/components/top/PosterCarousel";
 import {PosterCarouselSP} from "@/components/top/PosterCarousel-sp";
-import {useEffect, useState} from "react";
+import {useEffect, useMemo, useState} from "react";
 
 export function Posters({onSelectedIndexChange}: { onSelectedIndexChange: (index: number) => void }) {
     const [isMounted, setIsMounted] = useState(false);
@@ -17,23 +17,21 @@ export function Posters({onSelectedIndexChange}: { onSelectedIndexChange: (index
         window.addEventListener("resize", handleResize);
         return () => window.removeEventListener("resize", handleResize);
     }, []);
-
-    // To prevent hydration mismatch, we only render the carousel on the client after mounting.
-    if (!isMounted) {
-        return null;
-    }
-
-    const posters = postersData.map((e, index) => ({
+    
+    const posters = useMemo(() => postersData.map((e, index) => ({
         id: index,
         title: e.title,
         desc: e.desc,
         images: (e.images && e.images.length > 0) ? e.images : [],
-    }));
+    })), []);
+    
+    if (!isMounted) {
+        return null;
+    }
 
     if (isPc) {
         return <PosterCarousel posters={posters} onSelectedIndexChange={onSelectedIndexChange}/>;
     } else {
-        // @ts-ignore
         return <PosterCarouselSP posters={posters}/>;
     }
 }

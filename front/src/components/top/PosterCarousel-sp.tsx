@@ -2,7 +2,7 @@
 
 import {animate, motion, MotionValue, PanInfo, useMotionValue, useTransform} from "motion/react";
 import {PosterCard} from "./PosterCard";
-import {useEffect, useState} from "react";
+import {memo, useCallback, useEffect, useState} from "react";
 import {clamp} from "motion";
 
 // Updated Poster type to match PosterCard
@@ -29,21 +29,29 @@ const TILT_ANGLE = -8;
 const MAX_ROTATION_SPEED = 3000;
 const DRAG_FACTOR = -1300; // Controls drag sensitivity
 
-function BillboardPoster({
-                             poster,
-                             angle,
-                             yRotation,
-                             onPosterClick,
-                         }: {
+// --- Child Component ---
+// BillboardPoster is defined at the top level of the module to prevent it from being
+// recreated on every render of the parent component.
+const BillboardPoster = memo(function BillboardPoster({
+    poster,
+    angle,
+    yRotation,
+    onPosterClick,
+    index,
+}: {
     poster: Poster;
     angle: number;
     yRotation: MotionValue<number>;
-    onPosterClick: (event: MouseEvent | TouchEvent | PointerEvent) => boolean | void;
+    onPosterClick: (event: MouseEvent | TouchEvent | PointerEvent, index: number) => boolean | void;
+    index: number;
 }) {
     const currentAngle = useTransform(yRotation, (y) => y + angle);
     const z = useTransform(currentAngle, (a) => Math.cos(a * (Math.PI / 180)));
     const scale = useTransform(z, [-1, 0.5, 0.99, 1], [0.6, 0.7, 0.8, 1.2]);
     const opacity = useTransform(z, [-1, 0, 0.85, 1], [0.5, 0.7, 0.8, 1]);
+    const zIndex = useTransform(z, [-1, 1], [-100, 100]);
+    // 視界の外にあるポスターの描画を抑制
+    const visibility = useTransform(z, (val) => (val < 0.1 ? 'hidden' : 'visible'));
 
     const transform = useTransform(
         [currentAngle, scale],
@@ -56,23 +64,35 @@ function BillboardPoster({
     `
     );
 
+    const handleClick = (event: MouseEvent | TouchEvent | PointerEvent) => {
+        onPosterClick(event, index);
+    };
+
     return (
         <motion.div
-            onTap={onPosterClick}
+            onTap={handleClick}
             className="absolute "
             style={{
                 transformOrigin: "bottom",
                 transform: transform,
                 opacity: opacity,
+                zIndex: zIndex,
                 left: `calc(0px - ${POSTER_WIDTH / 2}px)`,
                 top: `calc(0px - ${POSTER_HEIGHT / 2}px)`,
+                // ブラウザに最適化を促し、描画を抑制
+                visibility: visibility,
+                willChange: 'transform, opacity, z-index, visibility',
             }}
         >
             <PosterCard poster={poster}/>
         </motion.div>
     );
-}
+});
+// Assigning a display name is good practice for debugging memoized components.
+BillboardPoster.displayName = 'BillboardPoster';
 
+
+// --- Main Carousel Component ---
 export function PosterCarouselSP({posters, onDraggingChange}: PosterCarouselProps) {
     const yRotation = useMotionValue(0);
     const [screenSize, setScreenSize] = useState({width: 0, height: 0});
@@ -115,34 +135,31 @@ export function PosterCarouselSP({posters, onDraggingChange}: PosterCarouselProp
         });
     };
 
-    const isPosterInFront = (posterIndex: number) => {
+    const handlePosterClick = useCallback((event: MouseEvent | TouchEvent | PointerEvent, posterIndex: number) => {
         const numPosters = posters.length;
         if (numPosters === 0) return false;
+
         const anglePerPoster = 360 / numPosters;
         const posterAngle = yRotation.get() + posterIndex * anglePerPoster;
         const normalizedAngle = (posterAngle % 360 + 540) % 360 - 180;
-        const tolerance = anglePerPoster / 2.1; // A generous tolerance
-        return Math.abs(normalizedAngle) < tolerance;
-    };
+        const tolerance = anglePerPoster / 2.1;
+        const isInFront = Math.abs(normalizedAngle) < tolerance;
 
-    const handlePosterClick = (event: MouseEvent | TouchEvent | PointerEvent, posterIndex: number) => {
-        if (isPosterInFront(posterIndex)) {
-            return true; // Allow event to bubble up and trigger modal in PosterCard
+        if (isInFront) {
+            return true;
         }
 
         event.preventDefault();
         event.stopPropagation();
 
-        const anglePerPoster = 360 / posters.length;
         const snapRotation = posterIndex * -anglePerPoster;
-
         animate(yRotation, snapRotation, {
             type: "spring",
             stiffness: 300,
             damping: 40,
         });
         return false;
-    };
+    }, [posters.length, yRotation]);
 
     const largestPosterScale = 1.0;
     let carouselScale;
@@ -182,7 +199,8 @@ export function PosterCarouselSP({posters, onDraggingChange}: PosterCarouselProp
                         key={poster.id}
                         poster={poster}
                         angle={(360 / posters.length) * index}
-                        onPosterClick={(event) => handlePosterClick(event, index)}
+                        onPosterClick={handlePosterClick}
+                        index={index}
                         yRotation={yRotation}
                     />
                 ))}
