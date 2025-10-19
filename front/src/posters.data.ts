@@ -366,9 +366,15 @@ export const postersData = [
         title: "軽音楽部",
         desc: "ステージ・音響・照明、それぞれにこだわりを持って作り上げました",
         images: [
-            "/shops/posters/49.webp"
+            "/shops/posters/47.webp"
         ]
     },
+    {
+        "mapId": 48,
+        "title": "ダンス部公演",
+        "desc": "",
+        "images": []
+    },    
     {
         mapId: 49,
         title: "ブラバン2025",
@@ -377,6 +383,12 @@ export const postersData = [
             "/shops/posters/49.webp"
         ]
     },
+    {
+        "mapId": 50,
+        "title": "ロボコン",
+        "desc": "",
+        "images": []
+    },    
     {
         mapId: 51,
         title: "I scream",
@@ -408,5 +420,17 @@ export const postersData = [
         images: [
             "/shops/posters/54.webp"
         ]
-    }
+    },
+    {
+        "mapId": 25,
+        "title": "学生会企画/地産地消講談師 地伏亭金目 字幕付き公演",
+        "desc": "",
+        "images": []
+    },
+    {
+        "mapId": 42,
+        "title": "入試関係相談コーナー",
+        "desc": "",
+        "images": []
+    },          
 ]

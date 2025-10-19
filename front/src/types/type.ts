@@ -1,8 +1,26 @@
 import { StaticImageData } from "next/image"
 
 export type ShopData = {
-  name: string
-  place?:string
-  description:string
-  image: string|StaticImageData
+  mapId:number
+  title: string
+  desc:string
+  images: (string|StaticImageData)[]
+}
+
+export type Shop = {
+  idx:number,
+  x:number,
+  y:number,
+  color?:"red"|"blue"|"green"
+}
+export type Label = {
+  name:string
+  x:number
+  y:number
+}
+export type Static = {
+  id:string
+  x:number,
+  y:number,
+  color?:"red"|"blue"|"green"
 }

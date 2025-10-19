@@ -366,7 +366,15 @@ export const postersData = [
         "title": "軽音楽部",
         "desc": "ステージ・音響・照明、それぞれにこだわりを持って作り上げました",
         "images": [
-            "/img/posters/49.webp"
+            "/img/posters/47.webp"
+        ]
+    },
+    {
+        "mapId": 48,
+        "title": "ダンス部公演",
+        "desc": "",
+        "images": [
+            "/img/posters/47.webp"
         ]
     },
     {
@@ -376,6 +384,12 @@ export const postersData = [
         "images": [
             "/img/posters/49.webp"
         ]
+    },
+    {
+        "mapId": 50,
+        "title": "ロボコン",
+        "desc": "",
+        "images": []
     },
     {
         "mapId": 51,
