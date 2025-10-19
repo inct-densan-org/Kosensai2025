@@ -2,7 +2,7 @@ import Image from "next/image";
 import {Window} from "@/components/ui/window";
 export function PrincipalMessage() {
     return (
-        <Window title={"WELCOME!!"} subtitle={"校長挨拶"} color={"white"}>
+        <Window title={"WELCOME!!"} subtitle={"校長挨拶"} color={"white"} className={"m-4 mt-8"}>
             <div className={"flex flex-col "}>
                 <div
                     className="w-full h-[100px] left-0 top-[51px]  items-center gap-8 inline-flex">
@@ -45,7 +45,7 @@ export function PrincipalMessage() {
 
 export function ChairmanMessage() {
     return (
-        <Window title={"MESSAGE"} subtitle={"代表挨拶"} color={"white"}>
+        <Window title={"MESSAGE"} subtitle={"代表挨拶"} color={"white"} className={"m-4 mt-8"}>
             <div className={"w-full flex flex-col"}>
                 <div
                     className="w-full h-[100px] left-0 top-[51px]   items-center gap-8 inline-flex">

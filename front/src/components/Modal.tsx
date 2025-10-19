@@ -1,5 +1,5 @@
 import React from "react";
-import { Dialog, DialogContent, DialogTrigger } from "./ui/dialog";
+import {Dialog, DialogContent, DialogTitle, DialogTrigger} from "./ui/dialog";
 import { cn } from "@/lib/utils";
 import { Window } from "@/components/ui/window"; // Import the updated Window component
 
@@ -25,7 +25,7 @@ export function Modal({
           {button}
         </button>
       </DialogTrigger>
-      {/* DialogContent acts as a transparent, centered container */}
+      <DialogTitle >{title}</DialogTitle>
       <DialogContent className="bg-transparent border-none shadow-none p-0 w-auto max-w-none">
         <Window title={title} subtitle={subtitle} className={cn("max-h-[80vh] w-[90vw] md:w-[60vw]", className)}>
           {children}

@@ -6,7 +6,7 @@ export function News() {
     return (
         <FadeInWhenVisible className={""}>
             <Window title={"News"} color={"white"}
-                    className={"overflow-y-scroll h-full md:h-[calc(100dvh_-_128px)] md:w-full"}>
+                    className={"overflow-y-scroll h-full md:h-[calc(100dvh_-_128px)] md:w-full m-4 mt-8"}>
                 {/*news欄が半分におさまらない*/}
                 <NewsCard day={"2025/10/14"}>
                     2025年度版の公式サイトを公開しました！<br/>
