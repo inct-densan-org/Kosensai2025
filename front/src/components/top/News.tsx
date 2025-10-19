@@ -1,52 +1,45 @@
+"use client"
 import {Window} from "@/components/ui/window";
 import {FadeInWhenVisible} from "@/components/top/FadeInWhenVisible";
-import {ReactNode} from "react";
+import {useEffect, useState} from "react";
+
+// Mock data with the required fields
+const mockNewsData = [
+    {
+        id: "1",
+        createdAt: new Date("2025/10/20").toISOString(),
+        title: "2025年度版の公式サイトを公開しました！<br/>徐々に情報が追加されていきますのでお見逃しなく！",
+    },
+
+];
+
+type NewsData = {
+    id: string;
+    createdAt: string;
+    title: string;
+}
 
 export function News() {
+    const [data, setData] = useState<NewsData[] | null>(null)
+    useEffect(() => {
+        setData(mockNewsData);
+    }, [])
+
     return (
         <FadeInWhenVisible className={""}>
             <Window title={"News"} color={"white"}
-                    className={"overflow-y-scroll h-full md:h-[calc(100dvh_-_128px)] md:w-full m-4 mt-8"}>
-                {/*news欄が半分におさまらない*/}
-                <NewsCard day={"2025/10/14"}>
-                    2025年度版の公式サイトを公開しました！<br/>
-                    徐々に情報が追加されていきますのでお見逃しなく！
-                </NewsCard>
-
-
-                <NewsCard day={"2025/10/14"}>
-                    2025年度版の公式サイトを公開しました！<br/>
-                    徐々に情報が追加されていきますのでお見逃しなく！
-                </NewsCard>
-
-
-                <NewsCard day={"2025/10/14"}>
-                    2025年度版の公式サイトを公開しました！<br/>
-                    徐々に情報が追加されていきますのでお見逃しなく！
-                </NewsCard>
-
-
-                <NewsCard day={"2025/10/21"}>
-                    waaa
-                </NewsCard>
-
-
-                <NewsCard day={"2025/10/21"}>
-                    waaa
-                </NewsCard>
-
-
-                <NewsCard day={"2025/10/21"}>
-                    waaa
-                </NewsCard>
-
-
+                    className={"overflow-y-scroll hidden-scrollbar h-full md:h-[calc(100dvh_-_128px)] md:w-full m-4 mt-8"}>
+                {data ? data.map((news) => (
+                    <NewsCard key={news.id} day={new Date(news.createdAt).toLocaleDateString('ja-JP')} title={news.title} />
+                )) : (
+                    <p className={"text-white"}>Loading...</p>
+                )}
             </Window>
         </FadeInWhenVisible>
     )
 }
 
-function NewsCard({day, children}: { day: string, children: ReactNode }) {
+function NewsCard({day, title}: { day: string, title: string }) {
     return (
         <div className={"flex flex-col justify-start items-start  border-t-[1px] border-white first:border-none py-2"}>
             <div className={"flex justify-start items-center w-full gap-2"}>
@@ -57,9 +50,9 @@ function NewsCard({day, children}: { day: string, children: ReactNode }) {
                 </svg>
                 <p>{day}</p>
             </div>
-            <p className={"w-full text-[1em] leading-[1.3em] mt-1 ml-[1em]"}>
-                {children}
-            </p>
+            <p className={"w-full text-[1em] leading-[1.3em] mt-1 ml-[1em]"}
+               dangerouslySetInnerHTML={{ __html: title }}
+            />
         </div>
     )
 }

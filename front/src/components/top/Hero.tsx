@@ -1,6 +1,6 @@
 import {MotionDivInClient} from "@/components/MotionDivInClient";
 import Image from "next/image";
-import {dotGothic16Font} from "@/app/layout";
+
 export function Hero() {
     return (
         <>
@@ -204,7 +204,7 @@ function Title() {
                     <MotionDivInClient isImg={false} initial={{y: -100, opacity: 0}} animate={{y: 0, opacity: 1}}
                                        transition={{type: "spring", stiffness: 120, damping: 20, delay: LOADTIME + .25}}
                     >
-                        <h1 className={dotGothic16Font.className + " drop-shadow-2xl/100 w-full text-center text-[min(20vw,20vh)] text-[#f5ff71] tracking-widest font-light"}>高専祭</h1>
+                        <h1 className={"drop-shadow-2xl/100 w-full text-center text-[min(20vw,20vh)] text-[#f5ff71] tracking-widest font-light"}>高専祭</h1>
                     </MotionDivInClient>
                 </div>
                 <div className={"block w-full h-fit"}>
@@ -214,7 +214,7 @@ function Title() {
 
                         transition={{type: "spring", stiffness: 120, damping: 20, delay: LOADTIME + .25}}
                     >
-                        <p className={dotGothic16Font.className + " drop-shadow-2xl/60 w-full text-center  text-[min(6vw,6vh)] text-white tracking-widest font-light"}>一関工業高等専門学校</p>
+                        <p className={"drop-shadow-2xl/60 w-full text-center  text-[min(6vw,6vh)] text-white tracking-widest font-light"}>一関工業高等専門学校</p>
                     </MotionDivInClient>
                 </div>
             </div>

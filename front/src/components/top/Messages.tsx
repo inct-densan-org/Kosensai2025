@@ -7,11 +7,12 @@ export function PrincipalMessage() {
                 <div
                     className="w-full h-[100px] left-0 top-[51px]  items-center gap-8 inline-flex">
                     <Image
-                        className="rounded-full"
-                        width={100}
-                        height={100}
+                        className="rounded-full object-contain! "
+                        width={51}
+                        height={51}
+                        
                         alt={"校長"}
-                        src="/top/poster/poster-part-taiyaki-m.webp"
+                        src="/top/principal.webp"
                     />
                     <div
                         className="w-[180px] h-[76px] flex-col justify-between items-start inline-flex lg:w-full">
@@ -51,11 +52,11 @@ export function ChairmanMessage() {
                     className="w-full h-[100px] left-0 top-[51px]   items-center gap-8 inline-flex">
 
                     <Image
-                        className="rounded-full"
-                        width={100}
-                        height={100}
-                        alt={"president"}
-                        src="/top/poster/poster-part-taiyaki-m.webp"
+                        className="rounded-full object-contain! "
+                        width={51}
+                        height={51}
+                        alt={"実行委員長"}
+                        src="/top/chairman.webp"
                     />
                     <div
                         className="w-[180px] h-[76px] flex-col justify-between items-start inline-flex lg:w-full">

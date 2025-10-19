@@ -10,6 +10,7 @@ import {AnimatedContentSection} from "@/components/top/AnimatedContentSection";
 import Scroller from "@/components/top/Scroller";
 import ScrollContextProvider from "@/components/top/ScrollContextProvider";
 import {SponsorsSection} from "@/components/top/SponsorsSection";
+import Image from "next/image";
 
 
 export default function Home() {
@@ -52,9 +53,22 @@ export default function Home() {
                 </section>
                 <AnimatedContentSection title="注意事項 / フリーWi-Fiの提供について" sensibility={.2} className={"text-white"}>
                     <div className="flex flex-col md:flex-row gap-8 md:gap-16 text-left max-w-4xl px-4 mx-auto">
+                        <div>
+                            <h3 className="text-2xl font-bold mb-4">注意事項について</h3>
+                            <ul className="list-disc list-inside space-y-2">
+                                <li>敷地内は禁煙となっております。喫煙はご遠慮ください。</li>
+                                <li>ゴミは各所に設置のゴミ箱へお捨てください。分別指示に沿ったゴミ箱に廃棄されますようお願いいたします。</li>
+                                <li>(お車でお越しの来場者様へ)
+                                    高専祭期間中、構内の車道は一方通行となります。誘導員の指示に従い、徐行をお願いいたします。
+                                </li>
+                                <li>歩きながらのスマートフォン操作 (歩きスマホ) は危険ですので、ご遠慮ください。</li>
+                                <li>荷物や貴重品の管理には十分ご注意ください。落とし物は受付でお預かりいたします。</li>
+                                <li>迷子を見かけた際は受付までお知らせください。</li>
+                            </ul>
+                        </div>
                         <div className="mb-8 md:mb-0">
                             <h3 className="text-2xl font-bold mb-4">フリーWi-Fiの提供について</h3>
-                            <p>今年度の高専祭ではフリーWi-Fiの提供を行っております！</p>
+                            <p className={"mb-4"}>今年度の高専祭では、有志学生チームによるフリーWi-Fiの提供を行っております！</p>
                             <p>接続に関する情報、及びトラブル時の連絡先につきましては、受付にて配布されますパンフレットの物理媒体、または校内にて掲示中のポスターをご参照くださいませ。</p>
                             <br/>
                             <p className="font-bold">規約</p>
@@ -64,21 +78,18 @@ export default function Home() {
                                 <li>運用上、必要なログやデータの収集を行います。収集したログ・データを利用して情報共有を行う場合は、個人を識別できない形で行います。</li>
                                 <li>本ネットワークの利用により発生した損失・損害等につきましては、一切の責任を負いかねます。</li>
                             </ul>
-                            <br/>
+                            <div className={"relative w-full h-auto aspect-square rounded-lg"}>
+                                
+                            <Image
+                                src={"/top/NOCIchinoseki.webp"}
+                                alt={"NOCIchinoseki"}
+                                fill
+                                className="rounded-lg p-4 object-contain"
+                            />
+                            </div>
+                            
                         </div>
-                        <div>
-                            <h3 className="text-2xl font-bold mb-4">構内における注意事項について</h3>
-                            <ul className="list-disc list-inside space-y-2">
-                                <li>敷地内は禁煙となっております。喫煙はご遠慮ください。</li>
-                                <li>ゴミは各所に設置のゴミ箱へお捨てください。分別指示に沿ったゴミ箱に廃棄されますようお願いいたします。</li>
-                                <li>(お車でお越しの来場者様へ)
-                                    構内での車両は一方通行となっております。屋外マップの経路でご案内いたしますので、誘導員の指示に従って徐行をお願いいたします。
-                                </li>
-                                <li>歩きながらのスマートフォン操作 (歩きスマホ) は危険ですので、ご遠慮ください。</li>
-                                <li>荷物や貴重品の管理には十分ご注意ください。落とし物は受付でお預かりいたします。</li>
-                                <li>迷子を見かけた際は受付までお知らせください。</li>
-                            </ul>
-                        </div>
+
                     </div>
                 </AnimatedContentSection>
 
@@ -160,7 +171,7 @@ export default function Home() {
                 <section
                     className={"w-full overflow-x-hidden h-dvh pt-12  flex  flex-col items-center justify-center text-[#666666] "}>
                     <h2 className="text-4xl font-bold mb-8">パンフレット</h2>
-                    <p className="text-4xl font-bold">Coming Soon</p>
+                    <p className="text-4xl font-bold">Coming Soon...</p>
                 </section>
                 {/*</div>*/}
                 {/*<div className={"overflow-y-auto relative h-dvh hidden-scrollbar w-full"}>*/}
