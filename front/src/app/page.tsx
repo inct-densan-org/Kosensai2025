@@ -7,6 +7,8 @@ import {Hero} from "@/components/top/Hero";
 import {PostersSection} from "@/components/top/PostersSection";
 import {Suspense} from "react";
 import {AnimatedContentSection} from "@/components/top/AnimatedContentSection";
+import Scroller from "@/components/top/Scroller";
+import ScrollContextProvider from "@/components/top/ScrollContextProvider";
 
 
 export default function Home() {
@@ -21,37 +23,33 @@ export default function Home() {
             <section className={"scroll-section relative w-full min-h-screen overflow-hidden z-[300] "}>
                 <Hero/>
             </section>
-            <main
-                className={"scroll-section relative w-screen min-h-dvh flex-col overflow-x-hidden overflow-y-auto  items-center justify-between  bg-[#0072C3] bg-no-repeat  bg-(image:--mesh-gradient) blur-in-3xl hidden-scrollbar"}
+            <ScrollContextProvider
+                className={"scroll-section relative w-screen h-auto flex-col pt-16 overflow-x-hidden overflow-y-auto  items-center justify-between  bg-[#0072C3] bg-no-repeat  bg-(image:--mesh-gradient) blur-in-3xl hidden-scrollbar"}
 
             >
-                {/*className={"flex min-h-screen flex-col items-center justify-between p-24 bg-linear-to-br/hsl from-[hsl(195,90%,91%)] to-[hsl(243,81%,78%)] "}>*/}
-
-
-                {/*<div className={" overflow-y-auto relative h-dvh hidden-scrollbar w-full"}>*/}
                 <Navigation/>
 
-                <section className={"w-full h-dvh md:w-1/2  md:float-left"}>
+                <section className={"w-full h-full md:w-1/2  md:float-left"}>
                     <MessagesWrapper>
                         <PrincipalMessage/>
                         <ChairmanMessage/>
                     </MessagesWrapper>
                 </section>
                 <section
-                    className={"w-full h-dvh  md:w-[calc(50%-64px)] md:float-left md:h-[calc(100%-128px)]"}>
+                    className={"md:w-[calc(50%-64px)] md:float-left md:h-[calc(100%-128px)]"}>
                     <News/>
                 </section>
 
-                <AnimatedContentSection title="PV" colorReverseAnim={"tb"} className={"scroll-section"}>
+                <AnimatedContentSection title="PV" colorReverseAnim={"tb"} className={""}>
                     <h2 className="text-4xl font-bold">PV</h2>
 
                 </AnimatedContentSection>
 
                 <section
-                    className={"w-full overflow-x-hidden h-dvh scroll-section"}>
+                    className={"w-full overflow-x-hidden h-dvh "}>
                     <PostersSection/>
                 </section>
-                <AnimatedContentSection title="注意事項 / フリーWi-Fiの提供について" className={"scroll-section"}>
+                <AnimatedContentSection title="注意事項 / フリーWi-Fiの提供について" className={""}>
                     <div className="flex gap-16 text-left max-w-4xl px-4 mx-auto">
                         <div>
                             <h3 className="text-2xl font-bold mb-4">フリーWi-Fiの提供について</h3>
@@ -83,7 +81,7 @@ export default function Home() {
                     </div>
                 </AnimatedContentSection>
 
-                <AnimatedContentSection title="アクセス" className={"scroll-section"}>
+                <AnimatedContentSection title="アクセス" className={""}>
                     <div className="w-full max-w-6xl mx-auto px-4">
                         <div className="mb-12">
                             <h3 className="text-3xl font-bold mb-4 text-center">無料送迎バス</h3>
@@ -142,11 +140,11 @@ export default function Home() {
                     </div>
                 </AnimatedContentSection>
                 <section
-                    className={"w-full overflow-x-hidden h-dvh pt-12  flex items-center justify-center text-white scroll-section"}>
+                    className={"w-full overflow-x-hidden h-dvh pt-12  flex items-center justify-center text-white "}>
                     <h2 className="text-4xl font-bold">パンフレット</h2>
                 </section>
                 <section
-                    className={"w-full overflow-x-hidden h-dvh pt-12  flex items-center justify-center text-[#666666] scroll-section"}>
+                    className={"w-full overflow-x-hidden h-dvh pt-12  flex items-center justify-center text-[#666666] "}>
                     <h2 className="text-4xl font-bold">協賛</h2>
                 </section>
                 {/*</div>*/}
@@ -154,8 +152,8 @@ export default function Home() {
 
                 {/*</div>*/}
 
-            </main>
-            {/*<Scroller/>*/}
+            </ScrollContextProvider>
+            <Scroller/>
             {/*</>*/}
         </Suspense>
     );

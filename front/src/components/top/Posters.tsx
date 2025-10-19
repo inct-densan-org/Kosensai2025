@@ -1,20 +1,37 @@
 'use client'
-import Image from "next/image";
 import {postersData} from "@/posters.data";
 import {PosterCarousel} from "@/components/top/PosterCarousel";
+import {PosterCarouselSP} from "@/components/top/PosterCarousel-sp";
+import {useEffect, useState} from "react";
 
-export function Posters({ onSelectedIndexChange }: { onSelectedIndexChange: (index: number) => void }) {
+export function Posters({onSelectedIndexChange}: { onSelectedIndexChange: (index: number) => void }) {
+    const [isPc, setIsPc] = useState(true);
 
-    // Map the data to a structure that PosterCarousel can use.
-    // We are only passing the data, not the components themselves.
-    const posters = postersData.map((e, index) => ({
-        id: index, // Use index as unique ID
-        title: e.title,
-        desc: e.desc,
-        imagePath: (e.images && e.images.length > 0) ? e.images[0] : "", // Pass only the image path
-    }));
+    useEffect(() => {
+        const handleResize = () => {
+            setIsPc(window.innerWidth >= 1024);
+        };
+        handleResize();
+        window.addEventListener("resize", handleResize);
+        return () => window.removeEventListener("resize", handleResize);
+    }, []);
 
-    return (
-        <PosterCarousel posters={posters} onSelectedIndexChange={onSelectedIndexChange}/>
-    );
+
+    if (isPc) {
+        const postersForPc = postersData.map((e, index) => ({
+            id: index,
+            title: e.title,
+            desc: e.desc,
+            imagePath: (e.images && e.images.length > 0) ? e.images[0] : "",
+        }));
+        return <PosterCarousel posters={postersForPc} onSelectedIndexChange={onSelectedIndexChange}/>;
+    } else {
+        const postersForSp = postersData.map((e, index) => ({
+            id: index,
+            title: e.title,
+            image: (e.images && e.images.length > 0) ? e.images[0] : "",
+        }));
+        // @ts-ignore
+        return <PosterCarouselSP posters={postersForSp}/>;
+    }
 }

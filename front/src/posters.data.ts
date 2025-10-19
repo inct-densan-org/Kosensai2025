@@ -388,7 +388,7 @@ export const postersData = [
     {
         mapId: 52,
         title: "よさこい",
-        desc: "元気よく踊らさせていただきます！お昼のお供にでも！ぜひお越しください！",
+        desc: "元気よく踊らせていただきます！お昼のお供にでも！ぜひお越しください！",
         images: [
             "/shops/posters/52.webp"
         ]

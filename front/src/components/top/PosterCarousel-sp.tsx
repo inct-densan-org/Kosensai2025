@@ -18,22 +18,22 @@ interface PosterCarouselProps {
 
 
 // SP
-// const POSTER_WIDTH = 210;
-// const POSTER_HEIGHT = 297;
-// const CONTAINER_HEIGHT = 450;
-// const DISTANCE = 200;
-// const RADIUS = 900;
-// const TILT_ANGLE = -8;
-// const MAX_ROTATION_SPEED = 3000;
-
-// PC
 const POSTER_WIDTH = 210;
 const POSTER_HEIGHT = 297;
 const CONTAINER_HEIGHT = 450;
-const DISTANCE = 200;
-const RADIUS = 900;
-const TILT_ANGLE = 90;
+const DISTANCE = 600;
+const RADIUS = 1200;
+const TILT_ANGLE = -8;
 const MAX_ROTATION_SPEED = 3000;
+
+// PC
+// const POSTER_WIDTH = 210;
+// const POSTER_HEIGHT = 297;
+// const CONTAINER_HEIGHT = 450;
+// const DISTANCE = 300;
+// const RADIUS = 1000;
+// const TILT_ANGLE = -8;
+
 // RADIUSを横幅pxと同じくらいにすると第四象限だけ見える?
 // const TILT_ANGLE = -90;
 
@@ -45,11 +45,15 @@ const DRAG_FACTOR = -1300; // 小さいほどよく回る
 function BillboardPoster({
                              poster,
                              angle,
+                             tiltAngle,
+                             radius,
                              yRotation,
                              onPosterClick,
                          }: {
     poster: Poster;
     angle: number;
+    tiltAngle: number;
+    radius: number,
     yRotation: MotionValue<number>;
     onPosterClick: (event: MouseEvent | TouchEvent | PointerEvent) => boolean | undefined;
 }) {
@@ -64,7 +68,7 @@ function BillboardPoster({
     const scale = useTransform(
         z, // Input: z-depth from -1 (back) to 1 (front)
         [-1, 0.5, 0.99, 1], // Input range
-        [0.6, 0.7, 0.8, 1.1]  // Output range: The scale jumps from 1.5x to 2.0x in the last 1% of movement.
+        [0.6, 0.7, 0.8, 1.2]  // Output range: The scale jumps from 1.5x to 2.0x in the last 1% of movement.
         // [0.3, 0.4, 0.5, 1.5]  // Output range: The scale jumps from 1.5x to 2.0x in the last 1% of movement.
     );
 
@@ -98,7 +102,7 @@ function BillboardPoster({
     );
 }
 
-export function PosterCarousel({posters, onDraggingChange}: PosterCarouselProps) {
+export function PosterCarouselSP({posters, onDraggingChange}: PosterCarouselProps) {
     const yRotation = useMotionValue(0);
     const [screenSize, setScreenSize] = useState({width: 0, height: 0});
 
@@ -161,7 +165,7 @@ export function PosterCarousel({posters, onDraggingChange}: PosterCarouselProps)
         console.log(posterAngle)
         return Math.abs(posterAngle) < tolerance || Math.abs(posterAngle - 360) < tolerance || Math.abs(posterAngle + 360) < tolerance;
     };
-    
+
     const handlePosterClick = (event: MouseEvent | TouchEvent | PointerEvent, posterIndex: number) => {
         if (isPosterInFront(posterIndex)) {
             // 既に正面にある場合は何もしない（クリックイベントを透過させ、ダイアログを開かせる）
@@ -232,6 +236,8 @@ export function PosterCarousel({posters, onDraggingChange}: PosterCarouselProps)
                         key={poster.id}
                         poster={poster}
                         angle={(360 / posters.length) * index}
+                        tiltAngle={TILT_ANGLE}
+                        radius={RADIUS}
                         onPosterClick={(event) => handlePosterClick(event, index)}
                         yRotation={yRotation}
                     />

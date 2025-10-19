@@ -133,11 +133,19 @@ export function PosterCarousel({posters, onSelectedIndexChange}: PosterCarouselP
             }
 
             yRotation.stop();
-            yRotation.set(yRotation.get() - event.deltaY * 0.05); // Adjusted sensitivity
+            // yRotation.set(yRotation.get() - event.deltaY * 0.05); // Adjusted sensitivity
+            animate(yRotation, yRotation.get() - event.deltaY * 0.1, {
+                type: "spring",
+                stiffness: 300,
+                damping: 30,
+                onComplete: () => {
+                    wheelSnapTimeoutRef.current = setTimeout(() => {
+                        snapToClosest();
+                    }, 150);
+                }
+            });
 
-            wheelSnapTimeoutRef.current = setTimeout(() => {
-                snapToClosest();
-            }, 150);
+            
         };
 
         const carouselElement = carouselRef.current;
@@ -197,10 +205,10 @@ export function PosterCarousel({posters, onSelectedIndexChange}: PosterCarouselP
     const handlePosterClick = (event: MouseEvent | TouchEvent | PointerEvent, posterIndex: number) => {
         // The sole responsibility of a tap is to open the modal if the poster is in front.
         if (isPosterInFront(posterIndex)) {
-            if (!isPc) {
+            // if (!isPc) {
                 const poster = posters[posterIndex];
                 setModalContent({title: poster.title, desc: poster.desc});
-            }
+            // }
         }
         // If the poster is not in front, do nothing on tap. The user can pan/swipe to rotate.
         // This separation of concerns prevents event conflicts and ensures stability.
