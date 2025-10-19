@@ -17,7 +17,7 @@ export function Hero() {
 }
 
 
-const LOADTIME = 1.75 // 秒
+const LOADTIME = 3.1 // 秒
 function Parts() {
     
     return (
