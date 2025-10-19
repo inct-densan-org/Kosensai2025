@@ -1,70 +1,56 @@
-// import Image from "next/image";
-// import {ShopData} from "@/types/type";
-// import {Modal} from "@/components/Modal";
-//
-// type Poster = {
-//     id: number;
-//     title: string;
-//     image: string; // path to image
-// };
-//
-// export function PosterCard({poster}: { poster: Poster }) {
-//     const data: ShopData = {
-//         name: poster.title,
-//         // place?:string
-//         description: poster.title,
-//         image: poster.image,
-//     }
-//     return (
-//         <div
-//             className="relative w-[277px] h-[392px] md:w-[400px] md:h-[566px]  bg-gray-200 rounded-lg overflow-hidden shadow-lg select-none drop-shadow-xl drop-shadow-gray-800">
-//             <Modal button={
-//                 <Image
-//                     src={poster.image}
-//                     alt={poster.title}
-//
-//                     fill={true}
-//                     sizes="400px"
-//                     className="absolute! object-fill! w-full! h-full!"
-//                 />
-//             }>
-//                 <li>hoge</li>
-//                 <li>huga</li>
-//                 <li>poo</li>
-//             </Modal>
-//         </div>
-//     );
-// }
+'use client';
 
+import Image from "next/image";
+import { Modal } from "@/components/Modal";
 
-import Image, {StaticImageData} from "next/image";
-import {Pin} from "@/components/Map";
-import {ShopData} from "@/types/type";
-
+// The data structure for a poster
 type Poster = {
     id: number;
     title: string;
-    image: string; // path to image
+    desc: string;
+    images: string[]; // Array of image paths
 };
 
-export function PosterCard({ poster }: { poster: Poster }) {
-    const data: ShopData = {
-        name: poster.title,
-        // place?:string
-        description: poster.title,
-        image: poster.image,
+interface PosterCardProps {
+    poster: Poster;
+    modalDisabled?: boolean;
+}
+
+export function PosterCard({ poster, modalDisabled = false }: PosterCardProps) {
+    // Do not render if there are no images
+    if (!poster.images || poster.images.length === 0) {
+        return null;
     }
+
+    const PosterImage = () => (
+        <Image
+            src={poster.images[0]} // Use the first image as the trigger
+            alt={poster.title}
+            fill={true}
+            sizes="(max-width: 768px) 277px, 400px"
+            className="absolute! object-fill! w-full! h-full!"
+            draggable={false}
+        />
+    );
+
     return (
-        <div className="w-[210px] h-[297px] bg-gray-200 rounded-lg overflow-hidden shadow-lg select-none ">
-            <Pin data={data} icon={poster.image} width={210} height={297} />
-            {/*<Image*/}
-            {/*  src={poster.image}*/}
-            {/*  alt={poster.title}*/}
-            {/*  */}
-            {/*  width={210}*/}
-            {/*  height={297}*/}
-            {/*  className="object-cover w-full h-full"*/}
-            {/*/>*/}
+        <div
+            className="relative w-[277px] h-[392px] md:w-[400px] md:h-[566px] bg-gray-200 rounded-lg overflow-hidden shadow-lg select-none drop-shadow-xl drop-shadow-gray-800">
+            {modalDisabled ? (
+                <PosterImage />
+            ) : (
+                <Modal button={<PosterImage />} title={poster.title}>
+                    <p className="whitespace-pre-wrap">{poster.desc}</p>
+                    {/* A simple gallery for other images */}
+                    {poster.images.length > 1 && (
+                        <div className="flex mt-4 space-x-2 overflow-x-auto">
+                            {poster.images.slice(1).map((img, index) => (
+                                <Image key={index} src={img} alt={`${poster.title} - image ${index + 2}`} width={100} height={100} className="object-cover rounded" />
+                            ))}
+                        </div>
+                    )}
+                </Modal>
+            )}
         </div>
     );
 }

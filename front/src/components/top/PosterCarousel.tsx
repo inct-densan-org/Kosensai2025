@@ -1,31 +1,24 @@
 'use client';
 
 import {animate, motion, MotionValue, PanInfo, useMotionValue, useTransform} from "motion/react";
-import {useEffect, useRef, useState} from "react";
+import {useEffect, useRef} from "react";
 import {clamp} from "motion";
-import Image from "next/image";
-import {ControllableModal} from "@/components/ControllableModal";
+import {PosterCard} from "./PosterCard";
 
-// The data structure received from the parent
+// The data structure received from the parent, matching PosterCard
 type PosterData = {
     id: number;
     title: string;
     desc: string;
-    imagePath: string;
+    images: string[];
 };
-
-// The content for the modal
-type ModalContent = {
-    title: string;
-    desc: string;
-} | null;
 
 interface PosterCarouselProps {
     posters: PosterData[];
     onSelectedIndexChange?: (index: number) => void;
 }
 
-const POSTER_HEIGHT = 297;
+const POSTER_HEIGHT = 566; // Adjusted to match PosterCard's large height
 const TILT_ANGLE = 0;
 const MAX_ROTATION_SPEED = 3000;
 const DRAG_FACTOR = -1300;
@@ -37,14 +30,12 @@ function BillboardPoster(
         offset,
         angle,
         yRotation,
-        onPosterClick,
     }: {
         poster: PosterData;
         radius: number;
         offset: number;
         angle: number;
         yRotation: MotionValue<number>;
-        onPosterClick: (event: MouseEvent | TouchEvent | PointerEvent) => void;
     }) {
     const currentAngle = useTransform(yRotation, (y) => y + angle);
 
@@ -68,43 +59,20 @@ function BillboardPoster(
 
     return (
         <motion.div
-            onTap={onPosterClick} // Use onTap to distinguish from pan gestures
             className="absolute"
             style={{transformOrigin: "bottom", transform, opacity, zIndex}}
         >
-            <div
-                className="relative w-[277px] h-[392px] md:w-[400px] md:h-[566px] bg-gray-200 rounded-lg overflow-hidden shadow-lg select-none drop-shadow-xl drop-shadow-gray-800">
-                {poster.imagePath && (
-                    <Image
-                        src={poster.imagePath}
-                        alt={poster.title}
-                        fill={true}
-                        sizes="400px"
-                        className="absolute! object-fill! w-full! h-full!"
-                        draggable={false}
-                    />
-                )}
-            </div>
+            {/* Disable modal on PC layout */}
+            <PosterCard poster={poster} modalDisabled={true}/>
         </motion.div>
     );
 }
 
 export function PosterCarousel({posters, onSelectedIndexChange}: PosterCarouselProps) {
     const yRotation = useMotionValue(0);
-    const [isPc, setIsPc] = useState(false);
-    const [modalContent, setModalContent] = useState<ModalContent>(null);
 
     const carouselRef = useRef<HTMLDivElement>(null);
     const wheelSnapTimeoutRef = useRef<NodeJS.Timeout | null>(null);
-
-    useEffect(() => {
-        const handleResize = () => {
-            setIsPc(window.innerWidth >= 1024);
-        };
-        handleResize();
-        window.addEventListener("resize", handleResize);
-        return () => window.removeEventListener("resize", handleResize);
-    }, []);
 
     useEffect(() => {
         const snapToClosest = () => {
@@ -133,7 +101,6 @@ export function PosterCarousel({posters, onSelectedIndexChange}: PosterCarouselP
             }
 
             yRotation.stop();
-            // yRotation.set(yRotation.get() - event.deltaY * 0.05); // Adjusted sensitivity
             animate(yRotation, yRotation.get() - event.deltaY * 0.1, {
                 type: "spring",
                 stiffness: 300,
@@ -144,12 +111,11 @@ export function PosterCarousel({posters, onSelectedIndexChange}: PosterCarouselP
                     }, 150);
                 }
             });
-
-            
         };
 
         const carouselElement = carouselRef.current;
-        if (carouselElement && isPc) {
+        // This component is only for PC, so we always attach the wheel event.
+        if (carouselElement) {
             carouselElement.addEventListener("wheel", onWheelScroll, {passive: false});
         }
 
@@ -161,100 +127,43 @@ export function PosterCarousel({posters, onSelectedIndexChange}: PosterCarouselP
                 clearTimeout(wheelSnapTimeoutRef.current);
             }
         };
-    }, [yRotation, posters, onSelectedIndexChange, isPc]);
+    }, [yRotation, posters, onSelectedIndexChange]);
 
-    const onPan = (_: any, info: PanInfo) => {
-        yRotation.set(yRotation.get() - clamp(-MAX_ROTATION_SPEED, MAX_ROTATION_SPEED, info.velocity.y * Math.abs(info.delta.y)) / DRAG_FACTOR);
-    };
+    // Pan gestures are disabled for the PC component.
+    const onPan = undefined;
+    const onPanEnd = undefined;
 
-    const onPanEnd = (_: any, info: PanInfo) => {
-        const numPosters = posters.length;
-        if (numPosters === 0) return;
-        const anglePerPoster = 360 / numPosters;
-
-        const velocityInDegrees = -info.velocity.y / DRAG_FACTOR;
-        const projectionTime = 0.1;
-        const projectedRotation = yRotation.get() + velocityInDegrees * projectionTime;
-
-        const closestPosterIndex = Math.round(-projectedRotation / anglePerPoster);
-        const snapRotation = closestPosterIndex * -anglePerPoster;
-
-        animate(yRotation, snapRotation, {
-            type: "spring",
-            stiffness: 300,
-            damping: 30,
-            velocity: velocityInDegrees,
-            onComplete: () => {
-                const finalIndex = (closestPosterIndex % numPosters + numPosters) % numPosters;
-                onSelectedIndexChange?.(finalIndex);
-            }
-        });
-    };
-
-    // A robust, tolerance-based check for the front poster.
-    const isPosterInFront = (posterIndex: number) => {
-        const numPosters = posters.length;
-        if (numPosters === 0) return false;
-        const anglePerPoster = 360 / numPosters;
-        const posterAngle = yRotation.get() + posterIndex * anglePerPoster;
-        const normalizedAngle = (posterAngle % 360 + 540) % 360 - 180;
-        const tolerance = anglePerPoster / 2.1; // A generous tolerance
-        return Math.abs(normalizedAngle) < tolerance;
-    };
-
-    const handlePosterClick = (event: MouseEvent | TouchEvent | PointerEvent, posterIndex: number) => {
-        // The sole responsibility of a tap is to open the modal if the poster is in front.
-        if (isPosterInFront(posterIndex)) {
-            // if (!isPc) {
-                const poster = posters[posterIndex];
-                setModalContent({title: poster.title, desc: poster.desc});
-            // }
-        }
-        // If the poster is not in front, do nothing on tap. The user can pan/swipe to rotate.
-        // This separation of concerns prevents event conflicts and ensures stability.
-    };
-
-    const radius = POSTER_HEIGHT * 16;
+    const radius = POSTER_HEIGHT * 8.5; // Increased multiplier to spread out posters
     const offset = -radius;
 
     return (
-        <>
-            {modalContent && (
-                <ControllableModal isOpen={!!modalContent} onClose={() => setModalContent(null)}>
-                    <h2 className="text-2xl font-bold">{modalContent.title}</h2>
-                    <p className="whitespace-pre-wrap">{modalContent.desc}</p>
-                </ControllableModal>
-            )}
-
+        <motion.div
+            ref={carouselRef}
+            onPan={onPan}
+            onPanEnd={onPanEnd}
+            className="w-full h-dvh flex items-center justify-center cursor-grab active:cursor-grabbing pt-0 touch-none overflow-hidden z-100 overscroll-none"
+            style={{perspective: `${2000}px`}} // Increased perspective for larger items
+        >
             <motion.div
-                ref={carouselRef}
-                onPan={isPc ? undefined : onPan}
-                onPanEnd={isPc ? undefined : onPanEnd}
-                className="w-full h-dvh flex items-center justify-center cursor-grab active:cursor-grabbing pt-0 touch-none overflow-hidden z-100 overscroll-none"
-                style={{perspective: `${1000}px`}}
+                className="relative"
+                style={{
+                    width: "1px",
+                    height: "1px",
+                    transformStyle: "preserve-3d",
+                    transform: `rotateX(${TILT_ANGLE}deg)`,
+                }}
             >
-                <motion.div
-                    className="relative"
-                    style={{
-                        width: "1px",
-                        height: "1px",
-                        transformStyle: "preserve-3d",
-                        transform: `rotateX(${TILT_ANGLE}deg)`,
-                    }}
-                >
-                    {posters.map((poster, index) => (
-                        <BillboardPoster
-                            key={poster.id}
-                            poster={poster}
-                            offset={offset}
-                            radius={radius}
-                            angle={(360 / posters.length) * index}
-                            onPosterClick={(event) => handlePosterClick(event, index)}
-                            yRotation={yRotation}
-                        />
-                    ))}
-                </motion.div>
+                {posters.map((poster, index) => (
+                    <BillboardPoster
+                        key={poster.id}
+                        poster={poster}
+                        offset={offset}
+                        radius={radius}
+                        angle={(360 / posters.length) * index}
+                        yRotation={yRotation}
+                    />
+                ))}
             </motion.div>
-        </>
+        </motion.div>
     );
 }
