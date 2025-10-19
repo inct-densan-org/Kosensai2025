@@ -366,7 +366,7 @@ export const postersData = [
         title: "軽音楽部",
         desc: "ステージ・音響・照明、それぞれにこだわりを持って作り上げました",
         images: [
-            "/shops/posters/49.webp"
+            "/shops/posters/47.webp"
         ]
     },
     {
