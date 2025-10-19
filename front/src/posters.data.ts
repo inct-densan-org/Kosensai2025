@@ -337,6 +337,13 @@ export const postersData = [
         ]
     },
     {
+        mapId: 42,
+        title: "入試関係相談コーナー",
+        desc: "",
+        images: [
+        ]
+    },
+    {
         mapId: 43,
         title: "一関国際空港 Hangar-01",
         desc: "飛行機好き、集合！\n小さな空港へようこそ",
