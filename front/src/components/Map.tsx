@@ -16,17 +16,17 @@ function Place(place:string|null|undefined){
   if(!place) return
   return(
     <div className="flex items-center">
-      <MapPin/>
+      <MapPin/>a
       <div>{place}</div>
-    </div>
+    </div>  
   )
 }
-export function Pin({data,icon=undefined,size=100}:{data:ShopData,icon?:undefined|string|StaticImageData,size?:number}){
+export function Pin({data,icon=undefined,width=100,height=100}:{data:ShopData,icon?:undefined|string|StaticImageData,width?:number, height?:number}){
   return (
     <Dialog>
       <form>
-        <DialogTrigger asChild className="m-6">
-          <button className="hover:bg-gray-100 rounded-md">{icon?<Image src={icon} alt="shop image" width={size} height={size}/>:<MapPin size={40}/>}</button>
+        <DialogTrigger asChild className="">
+          <button className=" rounded-md">{icon?<Image src={icon} alt="shop image" width={width} height={height}/>:<MapPin size={40}/>}</button>
         </DialogTrigger>
         <DialogContent className="sm:max-w-[425px]" showCloseButton={false}>
           <DialogHeader>
