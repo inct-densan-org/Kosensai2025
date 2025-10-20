@@ -221,13 +221,12 @@
 .sun::after {
     content: "";
     position: absolute;
-    border-radius: 100%;
     background: white;
-    left: calc(50% + 7.7em - 4px);
-    top: calc(50% - 1em - 4px);
+    left: calc(50% + 7.7em - 5px);
+    top: calc(50% - 1em - 3px);
     
-    width: 8px;
-    height: 8px;
+    width: 5px;
+    height: 10px;
     opacity: 0;
     /*               appear      move         fade out */
     animation: sun-appear 0.05s linear forwards 1.5s, sun-dot-move 0.7s ease-in forwards 1.75s, sun-dot-fade-out 0.1s linear forwards 2.45s;
