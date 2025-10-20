@@ -21,7 +21,7 @@ export const metadata: Metadata = {
         type: "website",
         locale: "ja_JP",
         images: [{
-            url: "/ogp/thumbnail.webp",
+            url: "https://kosensai.ichinoseki.ac.jp/ogp/thumbnail.webp",
             width: 512,
             height: 512
         }],
