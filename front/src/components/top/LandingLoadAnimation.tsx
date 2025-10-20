@@ -1,3 +1,5 @@
+import './LandingLoadAnimation.sass';
+
 export function LandingLoadAnimation() {
     return (
         <div className="fixed inset-0 h-screen w-screen overflow-hidden hidden-scrollbar z-[999] ">

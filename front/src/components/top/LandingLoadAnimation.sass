@@ -1,0 +1,109 @@
+
+@function getPointX($t, $x1, $x2, $x3)
+  $tp: 1 - $t
+  $x: $t * $t * $x3 + 2 * $t * $tp * $x2 + $tp * $tp * $x1
+  @return $x + px
+
+@function getPointY($t, $y1, $y2, $y3)
+  $tp: 1 - $t
+  $y: $t * $t * $y3 + 2 * $t * $tp * $y2 + $tp * $tp * $y1
+  @return $y + px
+
+@mixin object-keyframes($startX, $startY, $ctrlX, $ctrlY, $endX, $endY)
+  @for $i from 0 through 100
+    #{$i}%
+      transform: translate(getPointX($i * 0.01, $startX, $ctrlX, $endX), getPointY($i * 0.01, $startY, $ctrlY, $endY))
+
+.load-title
+  /* 文字色は透明にして背景が見えるようにする */
+  color: transparent
+  font-size: 60px
+
+  /* オレンジと黒が50%の位置で切り替わるグラデーション */
+  background: linear-gradient(to right, white 50%, var(--dark-background) 50%) 100%
+  /* 背景をテキストで切り抜く */
+  background-clip: text
+
+  /* 横幅は200%にしてグラデーションの青部分は見えないようにする */
+  background-size: 200% 100%
+
+  animation: load-title 1.25s ease-in-out forwards .5s
+
+@keyframes load-title
+  from
+
+  30%
+    background-position: 0 100%
+  70%
+    background-position: 0 100%
+  90%
+    background-position: -100% 0
+  99%
+    background-position: -100% 0
+    opacity: 1
+  to
+    background-position: -100% 0
+    display: none
+    opacity: 0
+
+@property --sun-size
+  syntax: '<length>'
+  inherits: false
+  initial-value: 0vmax
+
+@property --sun-spread
+  syntax: '<percentage>'
+  inherits: false
+  initial-value: 10%
+
+.sun
+  --sun-size: 0em
+  --sun-spread: 0
+  background-image: radial-gradient(ellipse var(--sun-size) var(--sun-size) at 50% 50%, var(--background), transparent var(--sun-spread))
+  animation: sun .75s ease-in forwards 2.45s
+  position: relative
+
+.sun::after
+  content: ""
+  position: absolute
+  background: white
+  left: calc(50% + 7.7em - 5px)
+  top: calc(50% - 1em - 3px)
+  width: 5px
+  height: 10px
+  opacity: 0
+  /*               appear      move         fade out */
+  animation: sun-appear 0.05s linear forwards 1.5s, parabolic-move 0.7s ease-in forwards 1.75s, sun-dot-fade-out 0.1s linear forwards 2.45s
+
+div:has(.sun)
+  animation: disappear .1s linear forwards 3s
+
+@keyframes sun-appear
+  to
+    opacity: 1
+
+@keyframes parabolic-move
+  @include object-keyframes(0, 0, -38.2, -231, -118.2, 19)
+
+@keyframes sun-dot-fade-out
+  from
+    opacity: 1
+  to
+    opacity: 0
+
+@keyframes sun
+  0%
+
+  50%
+    --sun-size: 100vmax
+    --sun-spread: 200%
+    opacity: 1
+  100%
+    --sun-size: 100vmax
+    --sun-spread: 200%
+    opacity: 0
+    display: none
+
+@keyframes disappear
+  to
+    display: none
