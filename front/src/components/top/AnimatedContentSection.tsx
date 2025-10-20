@@ -44,7 +44,7 @@ export function AnimatedContentSection({ title, children, sensibility = 1, color
   return (
     <motion.section
       ref={sectionRef}
-      className={`w-full overflow-hidden py-24 flex flex-col items-center justify-center text-white relative ${className || ''} ${initialBgColor}`}>
+      className={`w-full overflow-hidden py-6 flex flex-col items-center justify-center text-white relative ${className || ''} ${initialBgColor}`}>
       {/* Background Gradient Animation Overlay */}
       {colorReverseAnim && (
         <motion.div
