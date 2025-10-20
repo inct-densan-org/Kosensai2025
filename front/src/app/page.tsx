@@ -11,6 +11,7 @@ import Scroller from "@/components/top/Scroller";
 import ScrollContextProvider from "@/components/top/ScrollContextProvider";
 import {SponsorsSection} from "@/components/top/SponsorsSection";
 import Image from "next/image";
+import Link from "next/link";
 
 
 export default function Home() {
@@ -168,15 +169,51 @@ export default function Home() {
                     className={"w-full overflow-x-hidden min-h-dvh py-12 flex items-center justify-center text-white"}>
                     <SponsorsSection />
                 </section>
-                <section
-                    className={"w-full overflow-x-hidden h-dvh pt-12  flex  flex-col items-center justify-center text-[#666666] "}>
-                    <h2 className="text-4xl font-bold mb-8">パンフレット</h2>
-                    <p className="text-4xl font-bold">Coming Soon...</p>
-                </section>
-                {/*</div>*/}
-                {/*<div className={"overflow-y-auto relative h-dvh hidden-scrollbar w-full"}>*/}
+                <section className="w-full overflow-x-hidden min-h-dvh py-12 flex flex-col items-center justify-center text-[#666666]">
+                    <h2 className="text-4xl font-bold mb-8 md:hidden">パンフレット</h2>
+                    <div className="container mx-auto px-4">
+                        <div className="flex flex-col md:flex-row gap-8 md:gap-16 items-center justify-center">
+                            {/* Left Column (Desktop) */}
+                            <div className="hidden md:flex flex-col items-center justify-center text-center md:text-left">
+                                <h2 className="text-4xl font-bold mb-4">パンフレット</h2>
+                                <p  className="text-xl ">制作: 高専祭実行委員会 広報係</p>
+                                <p  className="text-xl mb-4">絵: <span className={"text-sm"}>3年化学･バイオ系</span> 狩原ほなみ<span className={"text-sm"}>さん</span></p>
+                                <Link
+                                    href="/top/R7IchinosekiKosensaiPanf.pdf"
+                                    locale={false}
+                                    className="bg-[#3D81DB] text-white rounded-full py-3 px-12 text-lg hover:opacity-75 cursor-pointer"
+                                >
+                                    ダウンロード
+                                </Link>
+                            </div>
 
-                {/*</div>*/}
+                            {/* Right Column (Desktop) / Main Content (Mobile) */}
+                            <div className="w-full max-w-sm flex flex-col items-center">
+                                {/* Image */}
+                                <div className="w-full">
+                                    <Image
+                                        src={"/top/panf-cover.webp"}
+                                        alt={"panf-cover"}
+                                        width={500}
+                                        height={707}
+                                        className="rounded-lg object-contain"
+                                    />
+                                </div>
+                                <p  className="md:hidden text-xl mt-2">制作: 高専祭実行委員会広報係</p>
+                                <p  className="md:hidden text-xl mb-2">絵: <span className={"text-sm"}>3年化学･バイオ系</span> 狩原ほなみ<span className={"text-sm"}>さん</span></p>
+                                {/* Download Button (Mobile only) */}
+                                <Link
+                                    href="/top/R7IchinosekiKosensaiPanf.pdf"
+                                    locale={false}
+                                    className="md:hidden w-full bg-[#3D81DB] text-white rounded-full py-3 mt-4 text-lg hover:opacity-75 cursor-pointer text-center"
+                                >
+                                    ダウンロード
+                                </Link>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                
 
             </ScrollContextProvider>
             <Scroller/>
