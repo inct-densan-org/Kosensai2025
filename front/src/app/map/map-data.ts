@@ -6,6 +6,7 @@ import image3 from "public/img/maps/map3.png"
 import image4 from "public/img/maps/map4.png"
 import image5 from "public/img/maps/map5.png"
 type Data = {
+  id:string
   image:StaticImageData
   shops:Shop[]
   labels:Label[]
@@ -13,6 +14,7 @@ type Data = {
 }
 
 export const map1:Data = {
+  id:"map1",
   image:image1,
   shops:[
     { idx:0, x:42, y:92 },
@@ -35,7 +37,7 @@ export const map1:Data = {
     { idx:17, x:51.5, y:48 },
     { idx:18, x:51.5, y:43 },
     { idx:19, x:51.5, y:38 },
-    // フォーミュラの取り扱い要確認
+    { idx:20, x:51.5, y:33 },
     { idx:21, x:42.8, y:78.2 },
     { idx:22, x:36.5, y:49 },
     { idx:45, x:37, y:26 },
@@ -49,13 +51,19 @@ export const map1:Data = {
     { name:"第一体育館", x:39.2, y:20 },
     { name:"第二体育館", x:13.5, y:22 },
     { name:"メディアセンター", x:38.4, y:65 },
-    { name:"管理・教育棟", x:75, y:67.5 },
+    { name:"管理・教育棟", x:75, y:65 },
     { name:"専攻科・教育棟", x:82, y:83.5 },
   ],
   statics:[
     { id: "受付", x:30, y:92, color:"green" },
     { id: "受付", x:30, y:26, color:"green" },
     { id: "休憩所", x:58.5, y:89, color:"green" },
+    { id: "ごみ箱", x:49, y:78.2, color:"green" },
+    { id: "ごみ箱", x:77, y:78.5, color:"green" },
+    { id: "ごみ箱", x:54, y:65, color:"green" },
+    { id: "ごみ箱", x:72, y:70, color:"green" },
+    { id: "ごみ箱", x:47, y:28, color:"green" },
+    { id: "ごみ箱", x:18, y:31.5, color:"green" },
     { id: "バス", x:65, y:92, color:"green" },
     { id: "企業", x:48, y:70, color:"blue" },
     { id: "企業", x:48, y:50, color:"blue" },
@@ -67,6 +75,7 @@ export const map1:Data = {
 
 
 export const map2:Data = {
+  id:"map2",
   image:image2,
   shops:[
     { idx:23, x:46.8, y:53 },
@@ -83,6 +92,7 @@ export const map2:Data = {
 }
 
 export const map3:Data = {
+  id:"map3",
   image:image3,
   shops:[
     { idx:25, x:83.5, y:54 },
@@ -99,6 +109,7 @@ export const map3:Data = {
 }
 
 export const map4:Data = {
+  id:"map4",
   image:image4,
   shops:[
     { idx:30, x:31, y:55 },
@@ -114,10 +125,12 @@ export const map4:Data = {
 }
 
 export const map5:Data = {
+  id:"map5",
   image:image5,
   shops:[
-    { idx:38, x:13.1, y:37 },
-    { idx:39, x:38.8, y:37 },
+    { idx:38, x:11, y:37 },
+    { idx:39, x:14.5, y:37 },
+    { idx:40, x:38.8, y:37 },
 
     { idx:41, x:61, y:37 },
     { idx:41, x:61, y:17 },

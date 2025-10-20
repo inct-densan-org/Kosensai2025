@@ -15,6 +15,8 @@ import { ShopCard } from "../Shop";
 import Image, { StaticImageData } from "next/image"
 import { Modal } from "../Modal";
 import { postersData } from "@/posters.data";
+import { useSearchParams } from "next/navigation";
+import "./style.css"
 
 export function Pin({data,id}:{data:ShopData,id:string|number}){
   return (
@@ -22,7 +24,7 @@ export function Pin({data,id}:{data:ShopData,id:string|number}){
       <form>
         <DialogTrigger asChild className="m-6">
           {/* <button className="hover:bg-gray-100 rounded-md">{icon?<Image src={icon} alt="shop image" width={size} height={size}/>:<MapPin size={40}/>}</button> */}
-          <button className=""><NumberedPin number={id}/></button>
+          <button className=""><NumberedPin number={id} size={800}/></button>
         </DialogTrigger>
         <DialogContent className="sm:max-w-[425px]" showCloseButton={false}>
           <DialogHeader>
@@ -40,30 +42,33 @@ export function Pin({data,id}:{data:ShopData,id:string|number}){
 type NumberedPinProps = {
   number?: number|string
   color?: "red"|"blue"|"green"
-  className?: string
-  ariaLabel?: string
+  force?:boolean
+  size:number
 }
 
 export const NumberedPin: React.FC<NumberedPinProps> = ({
   number = 1,
   color = "red",
-  className = '',
-  ariaLabel,
+  force = false,
+  size
 }) => {
 
-  const colorCode = color==="blue"?"#4C4CD9":color==="green"?"#4CD94C":'#D94C4C'
+  const colorCode = force?
+    "#df8500"
+  :
+    color==="blue"?"#4C4CD9":color==="green"?"#4CD94C":'#D94C4C'
 
   return (
-<svg 
-      width={30}
-      height={36}
-      viewBox="0 0 60 72" 
+    <svg 
+      width={force?size/20:size/26.67}
+      height={force?size/16.67:size/22.22}
+      viewBox="0 0 60 72"
       fill="none" 
       xmlns="http://www.w3.org/2000/svg"
-      className="block"
+      className={`block ${force ? "bounce" : ""}`}
     >
       {/* ピンの影 */}
-      <ellipse cx="30" cy="68" rx="8" ry="3" fill="#00000020"/>
+      {/* <ellipse cx="30" cy="68" rx="8" ry="3" fill="#00000020"/> */}
       
       {/* ピン本体 */}
       <path 
@@ -84,7 +89,7 @@ export const NumberedPin: React.FC<NumberedPinProps> = ({
         textAnchor="middle"
         dominantBaseline="central"
         fill={colorCode}
-        fontSize={typeof number == "number"?"18": number.length==2?"11":"8"}
+        fontSize={typeof number == "number"?"110%": number.length==2?"80%":"50%"}
         fontWeight="bold"
         fontFamily="Arial, sans-serif"
       >
@@ -96,45 +101,52 @@ export const NumberedPin: React.FC<NumberedPinProps> = ({
 
 export function MapPage({
   base,
-  shops=null,
-  labels=null,
-  statics=null
-}:{
-  base:StaticImageData,
-  shops?:Shop[]|null
-  labels?:Label[]|null
-  statics?:Static[]|null
+  shops = null,
+  labels = null,
+  statics = null
+}: {
+  base: StaticImageData,
+  shops?: Shop[] | null,
+  labels?: Label[] | null,
+  statics?: Static[] | null
 }) {
   const [initialScale, setInitialScale] = useState(-1)
+  const [size, setSize] = useState(0)
+  const mapID = Number(useSearchParams().get("index") ?? -1)
 
-  useEffect(()=>{
-    const width = window.innerWidth;
-    if (width < 768) setInitialScale(0.5);   // スマホ
-    else if (width < 1200) setInitialScale(0.8); // タブレット
-    else setInitialScale(1);        
-  })
-  if(initialScale==-1) return
+  // 初期スケールと currentShop を一度だけ設定
+  useEffect(() => {
+    const w = window.innerWidth
+    if (w < 500) setInitialScale(0.35)
+    else if (w < 680) setInitialScale(0.5)
+    else if (w < 850) setInitialScale(0.7)
+    else setInitialScale(0.85)
+
+    setSize(w>=800?700:w-100)
+  }, [])
+
+  if (initialScale === -1) return null
+
   return (
-    <div className="bg-gray-100 overflow-hidden flex items-center justify-center mx-auto p-6">
+    <div className="bg-gray-100 overflow-hidden flex items-center justify-center mx-auto p-0 w-full aspect-square max-w-[700px] my-2 rounded border border-gray-700 origin-center">
       <TransformWrapper
-        initialScale={initialScale}
-        minScale={0.3}
+        initialScale={1}
+        minScale={0.1}
         maxScale={4}
         wheel={{ step: 0.2 }}
         pinch={{ step: 0.2 }}
       >
         <TransformComponent>
           {/* ベース */}
-          <div className="relative" style={{ width:800, height:800}}>
+          <div className="relative" style={{ width:size, height:size }}>
             <Image
               src={base}
               alt="構内図"
               fill
               className="object-contain"
             />
-
             {/* 企画（要改修） */}
-            {shops && shops.map((e,index) => (
+            {shops && shops.map((e, index) => (
               <div
                 key={index}
                 className="absolute"
@@ -146,41 +158,23 @@ export function MapPage({
               >
                 <Modal
                   button={
-                    <NumberedPin number={postersData[e.idx].mapId}/>
+                    <NumberedPin number={postersData[e.idx].mapId} force={e.idx === mapID} size={size}/>
                   }
                   title={postersData[e.idx].title}
                 >
                   <p className="whitespace-pre-wrap">{postersData[e.idx].desc}</p>
-                  {
-                    <div className="flex mt-4 space-x-2 overflow-x-auto mx-auto justify-center">
-                      {postersData[e.idx].images.map((img, index) => (
-                        <div className="relative w-2/5 aspect-[0.707]" key={index}>
-                          <Image src={img} alt={`${postersData[e.idx].title} - image ${index + 1}`} fill className="object-cover rounded" />
-                        </div>
-                      ))}
-                    </div>
-                  }       
+                  <div className={`inline-flex mt-4 space-x-2 overflow-x-auto mx-auto ${postersData[e.idx].images.length === 1 ? "justify-center " : ""}w-full`}>
+                    {postersData[e.idx].images.map((img, idx) => (
+                      <div className="relative flex-shrink-0 w-[70%] sm:w-[40%] aspect-[0.707]" key={idx}>
+                        <Image src={img} alt={`${postersData[e.idx].title} - image ${idx + 1}`} fill className="object-contain rounded" />
+                      </div>
+                    ))}
+                  </div>
                 </Modal>
-                </div>
-            ))}
-
-            {/* 静的ピン */}
-            {statics && statics.map((e,idx)=>(
-              <div
-                key={idx}
-                className="absolute"
-                style={{
-                  top: `${e.y}%`,
-                  left: `${e.x}%`,
-                  transform: "translate(-50%, -50%)"
-                }}
-              >
-                <NumberedPin color={e.color} number={e.id}/>
               </div>
             ))}
-
-            {/* ラベル */}
-            {labels && labels.map((e,idx)=>(
+            {/* 静的ピン */}
+            {statics && statics.map((e, idx) => (
               <div
                 key={idx}
                 className="absolute"
@@ -190,19 +184,35 @@ export function MapPage({
                   transform: "translate(-50%, -50%)"
                 }}
               >
-                <TEXT text={e.name}/>
+                <NumberedPin color={e.color} number={e.id} size={size}/>
+              </div>
+            ))}
+            {/* ラベル */}
+            {labels && labels.map((e, idx) => (
+              <div
+                key={idx}
+                className="absolute"
+                style={{
+                  top: `${e.y}%`,
+                  left: `${e.x}%`,
+                  transform: "translate(-50%, -50%)"
+                }}
+              >
+                <TEXT text={e.name} size={size}/>
               </div>
             ))}
           </div>
         </TransformComponent>
       </TransformWrapper>
     </div>
-  );
+  )
 }
 
-function TEXT({text}:{text:string}){
+
+
+function TEXT({text,size}:{text:string,size:number}){
   return (
-    <div className="text-black font-bold bg-gray-300 p-1 rounded border-black">
+    <div className="text-black font-bold bg-gray-300 border-black" style={{ fontSize: `${size /45}px` ,padding: `${size/120}px`, borderRadius: `${size/200}px`}}>
       {text}
     </div>
   )
