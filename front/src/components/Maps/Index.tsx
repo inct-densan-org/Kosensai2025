@@ -1,56 +1,24 @@
 "use client"
 import { Shop, Label, Static } from "@/types/type";
-import {
-  Dialog,
-  DialogTrigger,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-} from "../ui/empty-dialog";
 import { useEffect, useState } from "react";
-import { ShopData } from "@/types/type";
-import { VisuallyHidden } from "@radix-ui/react-visually-hidden"
 import { TransformWrapper, TransformComponent } from "react-zoom-pan-pinch"
-import { ShopCard } from "../Shop";
 import Image, { StaticImageData } from "next/image"
 import { Modal } from "../Modal";
 import { postersData } from "@/posters.data";
-import { useSearchParams } from "next/navigation";
 import "./style.css"
-
-export function Pin({data,id}:{data:ShopData,id:string|number}){
-  return (
-    <Dialog>
-      <form>
-        <DialogTrigger asChild className="m-6">
-          {/* <button className="hover:bg-gray-100 rounded-md">{icon?<Image src={icon} alt="shop image" width={size} height={size}/>:<MapPin size={40}/>}</button> */}
-          <button className=""><NumberedPin number={id} size={800}/></button>
-        </DialogTrigger>
-        <DialogContent className="sm:max-w-[425px]" showCloseButton={false}>
-          <DialogHeader>
-            <VisuallyHidden>
-              <DialogTitle>a</DialogTitle>
-            </VisuallyHidden>
-          </DialogHeader>
-          <ShopCard data={data}/>
-        </DialogContent>
-      </form>
-    </Dialog>
-  )
-}
 
 type NumberedPinProps = {
   number?: number|string
   color?: "red"|"blue"|"green"
   force?:boolean
-  size:number
+  size:number,
 }
 
 export const NumberedPin: React.FC<NumberedPinProps> = ({
   number = 1,
   color = "red",
   force = false,
-  size
+  size,
 }) => {
 
   const colorCode = force?
@@ -103,36 +71,33 @@ export function MapPage({
   base,
   shops = null,
   labels = null,
-  statics = null
+  statics = null,
+  currentId = null,
+  w
 }: {
   base: StaticImageData,
   shops?: Shop[] | null,
   labels?: Label[] | null,
   statics?: Static[] | null
+  currentId?: number | null
+  w:number
 }) {
-  const [initialScale, setInitialScale] = useState(-1)
   const [size, setSize] = useState(0)
-  const mapID = Number(useSearchParams().get("index") ?? -1)
+  const isCurrentMap = shops?.some(shop => shop.idx === currentId) ?? false;
 
   // 初期スケールと currentShop を一度だけ設定
   useEffect(() => {
     const w = window.innerWidth
-    if (w < 500) setInitialScale(0.35)
-    else if (w < 680) setInitialScale(0.5)
-    else if (w < 850) setInitialScale(0.7)
-    else setInitialScale(0.85)
-
     setSize(w>=800?700:w-100)
   }, [])
 
-  if (initialScale === -1) return null
 
   return (
-    <div className="bg-gray-100 overflow-hidden flex items-center justify-center mx-auto p-0 w-full aspect-square max-w-[700px] my-2 rounded border border-gray-700 origin-center">
+    <div className={`bg-gray-100 overflow-hidden flex items-center justify-center mx-auto p-0 w-full aspect-square max-w-[700px] my-2 rounded-2xl ${isCurrentMap?"border-yellow-200 border-8":"border-gray-700 border"} origin-center`}>
       <TransformWrapper
         initialScale={1}
         minScale={0.1}
-        maxScale={4}
+        maxScale={10}
         wheel={{ step: 0.2 }}
         pinch={{ step: 0.2 }}
       >
@@ -143,7 +108,7 @@ export function MapPage({
               src={base}
               alt="構内図"
               fill
-              className="object-contain"
+              className={`object-contain`}
             />
             {/* 企画（要改修） */}
             {shops && shops.map((e, index) => (
@@ -158,7 +123,7 @@ export function MapPage({
               >
                 <Modal
                   button={
-                    <NumberedPin number={postersData[e.idx].mapId} force={e.idx === mapID} size={size}/>
+                    <NumberedPin number={postersData[e.idx].mapId} force={e.idx === currentId} size={size}/>
                   }
                   title={postersData[e.idx].title}
                 >
@@ -184,7 +149,12 @@ export function MapPage({
                   transform: "translate(-50%, -50%)"
                 }}
               >
-                <NumberedPin color={e.color} number={e.id} size={size}/>
+                {e.timeTable?
+                  <Modal button={<NumberedPin color={e.color} number={e.id} size={size}/>} title="バス時刻表">
+                    <div>ここに時刻表OR時刻表へ飛ばすボタンを配置</div>
+                  </Modal>:
+                  <NumberedPin color={e.color} number={e.id} size={size}/>
+                }
               </div>
             ))}
             {/* ラベル */}
