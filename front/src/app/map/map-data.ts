@@ -64,7 +64,7 @@ export const map1:Data = {
     { id: "ごみ箱", x:72, y:70, color:"green" },
     { id: "ごみ箱", x:47, y:28, color:"green" },
     { id: "ごみ箱", x:18, y:31.5, color:"green" },
-    { id: "バス", x:65, y:92, color:"green" },
+    { id: "バス", x:65, y:92, color:"green", timeTable:true },
     { id: "企業", x:48, y:70, color:"blue" },
     { id: "企業", x:48, y:50, color:"blue" },
     { id: "企業", x:48, y:45, color:"blue" },

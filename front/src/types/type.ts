@@ -1,4 +1,5 @@
 import { StaticImageData } from "next/image"
+import { LucideIcon } from "lucide-react"
 
 export type ShopData = {
   mapId:number
@@ -23,4 +24,5 @@ export type Static = {
   x:number,
   y:number,
   color?:"red"|"blue"|"green"
+  timeTable?:boolean
 }
