@@ -15,7 +15,7 @@ const DOMPurify = createDOMPurify(window as any);
 
 const app = new Hono()
   .use(cors({
-    origin: ["http://localhost:3555"]
+    origin: [process.env.FRONTEND_URL || "http://localhost:3555"]
   }))
   .get('/', (c) => {
     return c.json({ message: "hono API is running"})
