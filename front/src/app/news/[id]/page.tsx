@@ -3,6 +3,7 @@ import {NewsData} from "@api/schema";
 import Link from "next/link";
 import Navigation from "@/components/top/Navigation";
 
+export const revalidate = 0;
 
 export default async function HtmlDisplayPage({params}: { params: Promise<{ id: string }> }) {
     const {id} = await params;
@@ -24,6 +25,7 @@ export default async function HtmlDisplayPage({params}: { params: Promise<{ id: 
         news = data;
 
     } catch (e: any) {
+        console.error("Error fetching news detail:", e);
         error = e.message || "記事の取得中にエラーが発生しました。";
     }
 
@@ -54,12 +56,13 @@ export default async function HtmlDisplayPage({params}: { params: Promise<{ id: 
             )
         }
 
+        // @ts-ignore
         return (
             <div className="max-w-4xl mx-auto bg-black/20 p-8 rounded-lg">
                 <h1 className="text-3xl font-bold mb-2">{news.title}</h1>
                 <div className="flex items-center gap-4 mb-4">
                     <p className="text-gray-300">
-                        {new Date(news.publishedAt).toLocaleDateString("ja-JP")}
+                        {news.publishedAt ? new Intl.DateTimeFormat('ja-JP').format(new Date(news.publishedAt)) : '日付不明'}
                     </p>
                     {news.tag && (
                         <span className="px-2 py-0.5 text-xs rounded-full bg-blue-500 text-white">{news.tag}</span>

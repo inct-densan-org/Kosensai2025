@@ -4,6 +4,8 @@ import { client } from "@/utils/api-client";
 import { NewsList } from "@api/schema";
 import Link from "next/link";
 
+export const revalidate = 0;
+
 export async function News() {
     let data: NewsList[] | null = null;
     let error: Error | null = null; // エラーを保持する変数を追加
@@ -15,7 +17,7 @@ export async function News() {
         }
         data = (await res.json()).data;
     } catch (e) {
-        console.error(e);
+        console.error("Error fetching top news:", e);
         if (e instanceof Error) {
             error = e; // エラーオブジェクトを保持
         }
@@ -56,7 +58,7 @@ export async function News() {
                     {data.map((news) => (
                         <Link href={`/news/${news.id}`} key={news.id}>
                             <NewsCard
-                                day={new Date(news.publishedAt).toLocaleDateString('ja-JP')}
+                                day={news.publishedAt ? new Intl.DateTimeFormat('ja-JP').format(new Date(news.publishedAt)) : '日付不明'}
                                 title={news.title}
                                 tag={news.tag}
                             />

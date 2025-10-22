@@ -3,6 +3,8 @@ import { NewsList } from "@api/schema";
 import Link from "next/link";
 import Navigation from "@/components/top/Navigation";
 
+export const revalidate = 0;
+
 // NewsCard component (copied from front/src/components/top/News.tsx for self-containment, or could be imported)
 function NewsCard({day, title, tag}: { day: string, title: string, tag: string | null }) {
     return (
@@ -32,7 +34,7 @@ export default async function Page() {
   try {
     data = (await (await client.news.$get()).json()).data;
   } catch (e: any) {
-    console.error(e);
+    console.error("Error fetching news list:", e);
     error = e.message || "ニュースの取得中にエラーが発生しました。";
   }
 
@@ -66,7 +68,11 @@ export default async function Page() {
               <div className="">
                   {data.map((news) => (
                       <Link href={`/news/${news.id}`} key={news.id}>
-                          <NewsCard day={new Date(news.publishedAt).toLocaleDateString('ja-JP')} title={news.title} tag={news.tag} />
+                          <NewsCard
+                              day={news.publishedAt ? new Intl.DateTimeFormat('ja-JP').format(new Date(news.publishedAt)) : '日付不明'}
+                              title={news.title}
+                              tag={news.tag}
+                          />
                       </Link>
                   ))}
               </div>
