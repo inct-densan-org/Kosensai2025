@@ -127,6 +127,7 @@ export function MapPage({
                     <NumberedPin number={postersData[e.idx].mapId} force={e.idx === currentId} size={size}/>
                   }
                   title={postersData[e.idx].title}
+                  className={"translate-x-[-100px]"}
                 >
                   <p className="whitespace-pre-wrap">{postersData[e.idx].desc}</p>
                   <div className={`inline-flex mt-4 space-x-2 overflow-x-auto mx-auto ${postersData[e.idx].images.length === 1 ? "justify-center " : ""}w-full`}>
@@ -151,7 +152,7 @@ export function MapPage({
                 }}
               >
                 {e.timeTable?
-                  <Modal button={<NumberedPin color={e.color} number={e.id} size={size}/>} title="バス時刻表">
+                  <Modal button={<NumberedPin color={e.color} number={e.id} size={size}/>} title="バス時刻表" className={"translate-x-[-100px]"}>
                     <div>
                       <BusTimetable/>
                     </div>

@@ -35,11 +35,11 @@ export default function Page(){
   
   if(!width || !height) return 
   return (
-    <div className={`px-12 py-0 ${width>height? "justify-center": ""}`}>
-      {!open && <div className="w-full fixed z-50 bg-white top-0 left-0"><Button onClick={()=>onOpenChange(!open)} className="ml-12 mt-6 mb-3"><Search/>ポスター画像から企画を探す</Button></div>}
+    <div className={`px-[48px] py-0 ${width>height? "justify-center": ""}`}>
+      {!open && <div className="w-full fixed z-50 bg-white top-0 left-0"><Button onClick={()=>onOpenChange(!open)} className="ml-[48px] mt-6 mb-3"><Search/>ポスター画像から企画を探す</Button></div>}
       <SlideMenu open={open} onOpenChange={onOpenChange} mode={width>height?"left":"top"} onChangeIndex={setIndex} index={index}/>
       
-      <div style={open? width>height?{ paddingLeft:320 }:{ paddingTop:500 } : { paddingTop:100 }} >
+      <div style={open? width>height?{ paddingLeft:300 }:{ paddingTop:500 } : { paddingTop:100 }} >
         <span className={`${width<height?"scroll-offset":""}`} id="map1"></span>
         <MapPage base={map1.image} shops={map1.shops} labels={map1.labels} statics={map1.statics} currentId={index} w={width-(width>height?320:0)}/>
         <span className={`${width<height?"scroll-offset":""}`} id="map2"></span>
