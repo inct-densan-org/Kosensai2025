@@ -6,6 +6,7 @@ import Image, { StaticImageData } from "next/image"
 import { Modal } from "../Modal";
 import { postersData } from "@/posters.data";
 import "./style.css"
+import { BusTimetable } from "./BusTable";
 
 type NumberedPinProps = {
   number?: number|string
@@ -151,7 +152,9 @@ export function MapPage({
               >
                 {e.timeTable?
                   <Modal button={<NumberedPin color={e.color} number={e.id} size={size}/>} title="バス時刻表">
-                    <div>一ノ関駅行きシャトルバスはこちらから</div>
+                    <div>
+                      <BusTimetable/>
+                    </div>
                   </Modal>:
                   <NumberedPin color={e.color} number={e.id} size={size}/>
                 }
