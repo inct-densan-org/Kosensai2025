@@ -4,7 +4,7 @@ import Link from "next/link";
 import Navigation from "@/components/top/Navigation";
 
 // NewsCard component (copied from front/src/components/top/News.tsx for self-containment, or could be imported)
-function NewsCard({day, title}: { day: string, title: string }) {
+function NewsCard({day, title, tag}: { day: string, title: string, tag: string | null }) {
     return (
         <div className={"flex flex-col justify-start items-start  border-t-[1px] border-white first:border-none py-2 cursor-pointer hover:bg-white/10"}>
             <div className={"flex justify-start items-center w-full gap-2"}>
@@ -14,6 +14,9 @@ function NewsCard({day, title}: { day: string, title: string }) {
                         fill="white"/>
                 </svg>
                 <p>{day}</p>
+                {tag && (
+                    <span className="ml-2 px-2 py-0.5 text-xs rounded-full bg-blue-500 text-white">{tag}</span>
+                )}
             </div>
             <p className={"w-full text-[1em] leading-[1.3em] mt-1 ml-[1em]"}
                dangerouslySetInnerHTML={{ __html: title }}
@@ -53,7 +56,7 @@ export default async function Page() {
               id: "1",
               publishedAt: new Date("2025/10/20").toISOString(),
               title: "2025年度版の公式サイトを公開しました！<br/>徐々に情報が追加されていきますのでお見逃しなく！",
-              tag: "",
+              tag: "お知らせ",
           }];
       }
 
@@ -63,7 +66,7 @@ export default async function Page() {
               <div className="">
                   {data.map((news) => (
                       <Link href={`/news/${news.id}`} key={news.id}>
-                          <NewsCard day={new Date(news.publishedAt).toLocaleDateString('ja-JP')} title={news.title} />
+                          <NewsCard day={new Date(news.publishedAt).toLocaleDateString('ja-JP')} title={news.title} tag={news.tag} />
                       </Link>
                   ))}
               </div>

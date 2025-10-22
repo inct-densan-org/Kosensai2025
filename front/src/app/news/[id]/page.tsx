@@ -57,9 +57,14 @@ export default async function HtmlDisplayPage({params}: { params: Promise<{ id: 
         return (
             <div className="max-w-4xl mx-auto bg-black/20 p-8 rounded-lg">
                 <h1 className="text-3xl font-bold mb-2">{news.title}</h1>
-                <p className="text-gray-300 mb-4">
-                    {new Date(news.publishedAt).toLocaleDateString("ja-JP")}
-                </p>
+                <div className="flex items-center gap-4 mb-4">
+                    <p className="text-gray-300">
+                        {new Date(news.publishedAt).toLocaleDateString("ja-JP")}
+                    </p>
+                    {news.tag && (
+                        <span className="px-2 py-0.5 text-xs rounded-full bg-blue-500 text-white">{news.tag}</span>
+                    )}
+                </div>
                 <article
                     className="prose prose-invert max-w-none mt-4"
                     dangerouslySetInnerHTML={{__html: news.body || ""}}
