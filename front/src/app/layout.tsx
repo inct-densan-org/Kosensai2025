@@ -3,6 +3,7 @@ import {DotGothic16} from "next/font/google";
 import {ReactNode, Suspense} from "react";
 import Loading from "@/components/Loading";
 import {Metadata} from "next";
+import {LandingLoadAnimation} from "@/components/top/LandingLoadAnimation";
 
 
 const dotGothic16Font = DotGothic16({
@@ -47,6 +48,7 @@ export default function RootLayout({
         <html lang="ja" className={"overflow-x-hidden hidden-scrollbar"}>
         <body className={dotGothic16Font.className}>
         <Suspense fallback={<Loading/>}>
+            <LandingLoadAnimation/>
             {children}
         </Suspense>
         </body>

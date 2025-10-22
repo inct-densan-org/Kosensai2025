@@ -1,11 +1,9 @@
-import {LandingLoadAnimation} from "@/components/top/LandingLoadAnimation";
 import {ChairmanMessage, PrincipalMessage} from "@/components/top/Messages";
 import {News} from "@/components/top/News";
 import Navigation from "@/components/top/Navigation";
 import {MessagesWrapper} from "@/components/top/MessageWrapper";
 import {Hero} from "@/components/top/Hero";
 import {PostersSection} from "@/components/top/PostersSection";
-import {Suspense} from "react";
 import {AnimatedContentSection} from "@/components/top/AnimatedContentSection";
 import Scroller from "@/components/top/Scroller";
 import ScrollContextProvider from "@/components/top/ScrollContextProvider";
@@ -18,9 +16,7 @@ export default function Home() {
 
 
     return (
-        <Suspense fallback={<div className={"bg-dark-background inset-0 h-screen w-screen"}/>}>
-            {/*<>*/}
-            <LandingLoadAnimation/>
+        <>
 
             {/*ヒーローセクション*/}
             <section className={"scroll-section relative w-full min-h-screen overflow-hidden z-[300] "}>
@@ -218,7 +214,7 @@ export default function Home() {
             </ScrollContextProvider>
             <Scroller/>
             {/*</>*/}
-        </Suspense>
+        </>
     );
 
     // モーダル使用例
