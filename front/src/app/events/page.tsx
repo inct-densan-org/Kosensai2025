@@ -62,6 +62,24 @@ export default function EventsPage() {
                 </div>
 
                 {/* 第二体育館 */}
+                <div className="bg-white/10 rounded-2xl p-6 shadow-lg">
+                    <h3 className="text-3xl font-bold mb-6 text-center">第二体育館</h3>
+                    <div className="grid md:grid-cols-2 gap-8">
+                        <div>
+                            <h4 className="text-xl font-semibold mb-4 text-center border-b border-white/30 pb-2">10月25日 (土)</h4>
+                            <div className="flex flex-col">
+                                {secondGymSchedule.day1.map((item, index) => <ScheduleRow key={index} {...item} />)}
+                            </div>
+                        </div>
+                        <div>
+                            <h4 className="text-xl font-semibold mb-4 text-center border-b border-white/30 pb-2">10月26日 (日)</h4>
+                            <div className="flex flex-col">
+                                {secondGymSchedule.day2.map((item, index) => <ScheduleRow key={index} {...item} />)}
+                            </div>
+                        </div>
+                    </div>
+                    <p className="text-xs text-center mt-4 text-white/70">※雨天時はスケジュールが変更になる可能性があります。</p>
+                </div>
             </div>
         </AnimatedContentSection>
     );
