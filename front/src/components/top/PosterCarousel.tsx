@@ -15,6 +15,7 @@ type PosterData = {
 interface PosterCarouselProps {
     posters: PosterData[];
     onSelectedIndexChange?: (index: number) => void;
+    initialIndex?:number
 }
 
 const POSTER_HEIGHT = 566; // Adjusted to match PosterCard's large height
@@ -77,7 +78,7 @@ function BillboardPoster(
     );
 }
 
-export function PosterCarousel({posters, onSelectedIndexChange}: PosterCarouselProps) {
+export function PosterCarousel({posters, onSelectedIndexChange, initialIndex=0}: PosterCarouselProps) {
     const yRotation = useMotionValue(0);
 
     const carouselRef = useRef<HTMLDivElement>(null);
@@ -116,6 +117,16 @@ export function PosterCarousel({posters, onSelectedIndexChange}: PosterCarouselP
         // This component is only for PC, so we always attach the wheel event.
         if (carouselElement) {
             carouselElement.addEventListener("wheel", onWheelScroll, {passive: false});
+        }
+
+        if (posters.length > 0) {
+            const anglePerPoster = 360 / posters.length;
+            animate(yRotation, -initialIndex * anglePerPoster, {
+                type: "spring",
+                stiffness: 300,
+                damping: 30,
+                delay: 1.5, // 軽い遅延で自然に
+            });
         }
 
         return () => {

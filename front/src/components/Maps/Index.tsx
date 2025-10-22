@@ -151,7 +151,7 @@ export function MapPage({
               >
                 {e.timeTable?
                   <Modal button={<NumberedPin color={e.color} number={e.id} size={size}/>} title="バス時刻表">
-                    <div>ここに時刻表OR時刻表へ飛ばすボタンを配置</div>
+                    <div>一ノ関駅行きシャトルバスはこちらから</div>
                   </Modal>:
                   <NumberedPin color={e.color} number={e.id} size={size}/>
                 }

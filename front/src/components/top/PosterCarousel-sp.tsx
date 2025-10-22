@@ -17,6 +17,7 @@ interface PosterCarouselProps {
     posters: Poster[];
     onDraggingChange?: (isDragging: boolean) => void;
     onChangeIndex?:(value:number)=>void
+    initialIndex?:number
 }
 
 
@@ -94,7 +95,7 @@ BillboardPoster.displayName = 'BillboardPoster';
 
 
 // --- Main Carousel Component ---
-export function PosterCarouselSP({posters, onDraggingChange, onChangeIndex}: PosterCarouselProps) {
+export function PosterCarouselSP({posters, onDraggingChange, onChangeIndex,initialIndex=0}: PosterCarouselProps) {
     const yRotation = useMotionValue(0);
     const [screenSize, setScreenSize] = useState({width: 0, height: 0});
 
@@ -105,7 +106,16 @@ export function PosterCarouselSP({posters, onDraggingChange, onChangeIndex}: Pos
 
         handleResize();
         window.addEventListener("resize", handleResize);
-
+        if (posters.length > 0) {
+            const anglePerPoster = 360 / posters.length;
+            const targetRotation = -initialIndex * anglePerPoster;
+            animate(yRotation, targetRotation, {
+                type: "spring",
+                stiffness: 300,
+                damping: 30,
+                delay: 2.5, // 軽い遅延で自然に
+            });
+        }
         return () => window.removeEventListener("resize", handleResize);
     }, []);
 

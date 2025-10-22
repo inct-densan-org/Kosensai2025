@@ -10,28 +10,34 @@ import { Button } from "@/components/ui/button";
 import "./style.css"
 
 export default function Page(){
-  const [index, setIndex] = useState(Number(useSearchParams().get("index") ?? -1));
+  const cache = Number(useSearchParams().get("index") ?? -1)
+  const [index, setIndex] = useState(cache);
   const [width, setWidth] = useState(0)
   const [height, setHeight] = useState(0)
   const [open, onOpenChange] = useState(false)
   useEffect(()=>{
-    setTimeout(() => {
-      setWidth(window.innerWidth)
-      setHeight(window.innerHeight)
-      onOpenChange(index!=-1)
-      const matched = Object.values(maps).find((d) =>
-        d.shops.some((shop) => shop.idx === index)
-      );
-      const id = matched?.id;
-      const el = document.getElementById(id ?? "map1");
-      el?.scrollIntoView({ behavior: 'smooth' });     
-    }, 50);
+    const update = () => {
+      setWidth(window.innerWidth);
+      setHeight(window.innerHeight);
+      onOpenChange(index != -1);
+
+      setTimeout(() => {
+        const matched = Object.values(maps).find((d) =>
+          d.shops.some((shop) => shop.idx === index)
+        );
+        const id = matched?.id;
+        const el = document.getElementById(id ?? "map1");
+        el?.scrollIntoView({ behavior: "smooth" });
+      }, 200);
+    };
+    update();
   },[index])
+  
   if(!width || !height) return 
   return (
     <div className={`px-12 py-0 ${width>height? "justify-center": ""}`}>
       {!open && <div className="w-full fixed z-50 bg-white top-0 left-0"><Button onClick={()=>onOpenChange(!open)} className="ml-12 mt-6 mb-3"><Search/>ポスター画像から企画を探す</Button></div>}
-      <SlideMenu open={open} onOpenChange={onOpenChange} mode={width>height?"left":"top"} onChangeIndex={setIndex}/>
+      <SlideMenu open={open} onOpenChange={onOpenChange} mode={width>height?"left":"top"} onChangeIndex={setIndex} index={index}/>
       
       <div style={open? width>height?{ paddingLeft:450 }:{ paddingTop:500 } : { paddingTop:100 }} >
         <span className={`${width<height?"scroll-offset":""}`} id="map1"></span>

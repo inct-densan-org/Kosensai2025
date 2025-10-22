@@ -13,6 +13,7 @@ type SlideMenuProps = {
   onOpenChange: (value: boolean) => void
   onChangeIndex: (value: number) => void
   children?: React.ReactNode
+  index?:number
 }
 
 export default function SlideMenu({
@@ -20,7 +21,8 @@ export default function SlideMenu({
   open,
   onOpenChange,
   children,
-  onChangeIndex
+  onChangeIndex,
+  index = 0
 }: SlideMenuProps) {
   const isTop = mode === "top"
       const posters = useMemo(() => postersData.map((e, index) => ({
@@ -49,8 +51,8 @@ export default function SlideMenu({
       {open&&<div style={isTop ?{ height:450 ,marginTop: -150 }:{ width: 400 }}>
         {
           isTop
-          ? <PosterCarouselSP posters={posters} onChangeIndex={onChangeIndex}/>
-          : <PosterCarousel posters={posters} onSelectedIndexChange={onChangeIndex}/>
+          ? <PosterCarouselSP posters={posters} onChangeIndex={onChangeIndex} initialIndex={index}/>
+          : <PosterCarousel posters={posters} onSelectedIndexChange={onChangeIndex} initialIndex={index}/>
         }
       </div>}
       <div>
