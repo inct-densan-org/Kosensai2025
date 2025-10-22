@@ -10,8 +10,6 @@ export type NewsData = {
   title:string
   tag:string|null
   body:string
-  createdAt:string
-  updatedAt:string
   publishedAt:string
 }
 
