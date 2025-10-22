@@ -16,6 +16,7 @@ interface PosterCarouselProps {
     posters: PosterData[];
     onSelectedIndexChange?: (index: number) => void;
     initialIndex?:number
+    size?:number|null
 }
 
 const POSTER_HEIGHT = 566; // Adjusted to match PosterCard's large height
@@ -30,12 +31,14 @@ function BillboardPoster(
         offset,
         angle,
         yRotation,
+        size = null
     }: {
         poster: PosterData;
         radius: number;
         offset: number;
         angle: number;
         yRotation: MotionValue<number>;
+        size?:number|null
     }) {
     const currentAngle = useTransform(yRotation, (y) => y + angle);
 
@@ -73,12 +76,12 @@ function BillboardPoster(
             }}
         >
             {/* Disable modal on PC layout */}
-            <PosterCard poster={poster} modalDisabled={true}/>
+            <PosterCard poster={poster} modalDisabled={true} size={size}/>
         </motion.div>
     );
 }
 
-export function PosterCarousel({posters, onSelectedIndexChange, initialIndex=0}: PosterCarouselProps) {
+export function PosterCarousel({posters, onSelectedIndexChange, initialIndex=0, size=null }: PosterCarouselProps) {
     const yRotation = useMotionValue(0);
 
     const carouselRef = useRef<HTMLDivElement>(null);
@@ -139,7 +142,7 @@ export function PosterCarousel({posters, onSelectedIndexChange, initialIndex=0}:
     const onPan = undefined;
     const onPanEnd = undefined;
 
-    const radius = POSTER_HEIGHT * 8.5; // Increased multiplier to spread out posters
+    const radius = (size?(size*392/277):POSTER_HEIGHT) * 8.5; // Increased multiplier to spread out posters
     const offset = -radius;
 
     return (
@@ -167,6 +170,7 @@ export function PosterCarousel({posters, onSelectedIndexChange, initialIndex=0}:
                         radius={radius}
                         angle={(360 / posters.length) * index}
                         yRotation={yRotation}
+                        size={size}
                     />
                 ))}
             </motion.div>

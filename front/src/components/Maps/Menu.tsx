@@ -4,7 +4,7 @@ import { PosterCarouselSP } from "../top/PosterCarousel-sp"
 import { PosterCarousel } from "../top/PosterCarousel"
 import { postersData } from "@/posters.data"
 import { useMemo } from "react"
-import { ChevronLeft } from "lucide-react"
+import { ChevronLeft, XIcon } from "lucide-react"
 import { Button } from "../ui/button"
 
 type SlideMenuProps = {
@@ -41,26 +41,27 @@ export default function SlideMenu({
           : { x: open ? 0 : "-100%" }   // 左から開閉
       }
       transition={{ type: "tween", duration: 0.3 }}
-      className={`fixed bg-white/90 backdrop-blur-md shadow-2xl z-40 p-4 flex flex-col pointer-events-auto top-0 left-0 ${isTop? "w-full text-center" : "flex flex-row justify-end items-center"}`}
+      className={`fixed bg-white/90 backdrop-blur-md shadow-2xl z-40 p-4 flex flex-col pointer-events-auto top-0 left-0 ${isTop? "w-full text-center" : "flex flex-row justify-end"}`}
       style={
         isTop
           ?{ height:450 }
-          :{ width: 500 }
+          :{ width: 300 }
         }
     >
-      {open&&<div style={isTop ?{ height:450 ,marginTop: -150 }:{ width: 400 }}>
+      {open&&<div style={isTop ?{ height:450 ,marginTop: -150 }:{ width: 300 }}>
         {
           isTop
           ? <PosterCarouselSP posters={posters} onChangeIndex={onChangeIndex} initialIndex={index}/>
-          : <PosterCarousel posters={posters} onSelectedIndexChange={onChangeIndex} initialIndex={index}/>
+          : <PosterCarousel posters={posters} onSelectedIndexChange={onChangeIndex} initialIndex={index} size={200}/>
         }
       </div>}
       <div>
         <Button
           onClick={() => onOpenChange(false)}
-          className={`px-3 py-2 rounded ml-2 ${isTop?"mt-[60px]":"aspect-square"}`}
+          className={`px-3 py-2 rounded ml-2 ${isTop?"mt-[60px]":"aspect-square mt-3"}`}
+          variant="outline"
           >
-          {isTop?"閉じる":<ChevronLeft/>}
+          {isTop?"閉じる":<XIcon/>}
         </Button>
       </div>
     </motion.div>
