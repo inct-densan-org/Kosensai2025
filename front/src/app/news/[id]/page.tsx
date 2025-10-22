@@ -1,67 +1,85 @@
-"use client"
-import React, { useEffect, useState } from "react";
-import DOMPurify from "dompurify";
-import { client } from "@/utils/api-client";
+import {client} from "@/utils/api-client";
+import {NewsData} from "@api/schema";
+import Link from "next/link";
+import Navigation from "@/components/top/Navigation";
 
-export default function HtmlDisplayPage({ params }: { params: Promise<{ id: string }> }) {
-  const { id } = React.use(params)
 
-  const [rawHtml, setRawHtml] = useState("");
-  const [safeHtml, setSafeHtml] = useState("");
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+export default async function HtmlDisplayPage({params}: { params: Promise<{ id: string }> }) {
+    const {id} = await params;
+    let news: NewsData | null = null;
+    let error: string | null = null;
 
-  useEffect(() => {
-    console.log(id)
-    if (!id) return; // idが無ければ何もしない
-
-    let mounted = true;
-    const fetchHtml = async () => {
-      setLoading(true);
-      setError(null);
-      try {
-        console.log("call request")
+    try {
         const res = await client.news[":id"].$get({
-          param:{
-            id
-          }
-        })
-        console.log("req fin")
-        if (!res.ok) throw new Error(`HTTP ${res.status}`);
-        const { data } = await res.json();
-        const html = data.body
-        if (!mounted) return;
-        setRawHtml(html);
+            param: {
+                id
+            }
+        });
 
-        const cleaned = DOMPurify.sanitize(html, { ADD_ATTR: ["target"] });
-        setSafeHtml(cleaned);
-      } catch (e:any) {
-        if (!mounted) return
-        setError(e.message||"Error")
-        setRawHtml("");
-        setSafeHtml("");
-      } finally {
-        if (mounted) setLoading(false);
-      }
-    };
+        if (!res.ok) {
+            throw new Error(`HTTP ${res.status}`);
+        }
 
-    fetchHtml();
-    return () => {
-      mounted = false;
-    };
-  }, [id]);
+        const {data} = await res.json();
+        news = data;
 
-  return (
-    <main className="p-4 max-w-4xl mx-auto">
+    } catch (e: any) {
+        error = e.message || "記事の取得中にエラーが発生しました。";
+    }
 
-      {loading && <p>読み込み中…</p>}
-      {error && <div className="p-3 bg-red-50 text-red-700 rounded">エラー: {error}</div>}
+    const content = () => {
+        if (error) {
+            return (
+                <div className="max-w-4xl mx-auto">
+                    <div className="p-3 bg-red-50 text-red-700 rounded">エラー: {error}</div>
+                    <div className="text-center mt-8">
+                        <Link href="/news" className="text-white hover:underline">
+                            お知らせ一覧に戻る
+                        </Link>
+                    </div>
+                </div>
+            )
+        }
 
-      <article
-        className="prose max-w-none mt-4"
-        dangerouslySetInnerHTML={{ __html: safeHtml }}
-        aria-live="polite"
-      />
-    </main>
-  );
+        if (!news) {
+            return (
+                <div className="max-w-4xl mx-auto">
+                    <p>記事が見つかりませんでした。</p>
+                    <div className="text-center mt-8">
+                        <Link href="/news" className="text-white hover:underline">
+                            お知らせ一覧に戻る
+                        </Link>
+                    </div>
+                </div>
+            )
+        }
+
+        return (
+            <div className="max-w-4xl mx-auto bg-black/20 p-8 rounded-lg">
+                <h1 className="text-3xl font-bold mb-2">{news.title}</h1>
+                <p className="text-gray-300 mb-4">
+                    {new Date(news.publishedAt).toLocaleDateString("ja-JP")}
+                </p>
+                <article
+                    className="prose prose-invert max-w-none mt-4"
+                    dangerouslySetInnerHTML={{__html: news.body || ""}}
+                />
+                <div className="text-center mt-8">
+                    <Link href="/news" className="text-white hover:underline">
+                        お知らせ一覧に戻る
+                    </Link>
+                </div>
+            </div>
+        )
+    }
+
+    return (
+        <>
+            <Navigation/>
+            <main className="text-white p-4 min-h-dvh pt-32 relative w-screen h-auto flex-col overflow-x-hidden overflow-y-auto  items-center justify-between  bg-[#0072C3] bg-no-repeat  bg-(image:--mesh-gradient) blur-in-3xl hidden-scrollbar">
+                {content()}
+            </main>
+        </>
+
+    );
 }

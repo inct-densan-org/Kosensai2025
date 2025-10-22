@@ -1,39 +1,69 @@
-"use client"
 import {Window} from "@/components/ui/window";
 import {FadeInWhenVisible} from "@/components/top/FadeInWhenVisible";
-import {useEffect, useState} from "react";
+import { client } from "@/utils/api-client";
+import { NewsList } from "@api/schema";
+import Link from "next/link";
 
-// Mock data with the required fields
-const mockNewsData = [
-    {
-        id: "1",
-        createdAt: new Date("2025/10/20").toISOString(),
-        title: "2025年度版の公式サイトを公開しました！<br/>徐々に情報が追加されていきますのでお見逃しなく！",
-    },
+export async function News() {
+    let data: NewsList[] | null = null;
+    let error: Error | null = null; // エラーを保持する変数を追加
 
-];
+    try {
+        const res = await client.news.$get();
+        if (!res.ok) {
+            throw new Error(`Failed to fetch: ${res.status} ${res.statusText}`);
+        }
+        data = (await res.json()).data;
+    } catch (e) {
+        console.error(e);
+        if (e instanceof Error) {
+            error = e; // エラーオブジェクトを保持
+        }
+    }
 
-type NewsData = {
-    id: string;
-    createdAt: string;
-    title: string;
-}
+    // エラーが発生した場合の表示
+    if (error) {
+        return (
+            <FadeInWhenVisible className={""}>
+                <Window title={"News"} color={"white"}
+                        className={"overflow-y-scroll hidden-scrollbar h-full md:h-[calc(100dvh_-_128px)] md:w-full m-4 mt-8 flex flex-col"}>
+                    <div className="p-4 text-red-400">
+                        <p className="font-bold">ニュースの読み込みに失敗しました。</p>
+                        <p className="mt-2 text-sm text-white/80">エラー: {error.message}</p>
+                        <p className="mt-4 text-xs text-white/60">
+                            ヒント: プロダクションビルド(`npm run start`)でこのエラーが発生する場合、Next.jsサーバーがAPIサーバー(`http://localhost:8000`)に接続できていない可能性があります。APIサーバーが起動しているか、またネットワーク接続に問題がないか確認してください。
+                        </p>
+                    </div>
+                </Window>
+            </FadeInWhenVisible>
+        )
+    }
 
-export function News() {
-    const [data, setData] = useState<NewsData[] | null>(null)
-    useEffect(() => {
-        setData(mockNewsData);
-    }, [])
+    if (!data || data.length === 0) {
+        data = [{
+            id: "1",
+            publishedAt: new Date("2025/10/20").toISOString(),
+            title: "2025年度版の公式サイトを公開しました！<br/>徐々に情報が追加されていきますのでお見逃しなく！",
+            tag: "",
+        }];
+    }
 
     return (
         <FadeInWhenVisible className={""}>
             <Window title={"News"} color={"white"}
-                    className={"overflow-y-scroll hidden-scrollbar h-full md:h-[calc(100dvh_-_128px)] md:w-full m-4 mt-8"}>
-                {data ? data.map((news) => (
-                    <NewsCard key={news.id} day={new Date(news.createdAt).toLocaleDateString('ja-JP')} title={news.title} />
-                )) : (
-                    <p className={"text-white"}>Loading...</p>
-                )}
+                    className={"overflow-y-scroll hidden-scrollbar h-full md:h-[calc(100dvh_-_128px)] md:w-full m-4 mt-8 flex flex-col"}>
+                <div className="flex-grow">
+                    {data.map((news) => (
+                        <Link href={`/news/${news.id}`} key={news.id}>
+                            <NewsCard day={new Date(news.publishedAt).toLocaleDateString('ja-JP')} title={news.title} />
+                        </Link>
+                    ))}
+                </div>
+                <div className="text-center mt-4">
+                    <Link href="/news" className="text-white hover:underline">
+                        NEWS一覧へ
+                    </Link>
+                </div>
             </Window>
         </FadeInWhenVisible>
     )
@@ -41,7 +71,7 @@ export function News() {
 
 function NewsCard({day, title}: { day: string, title: string }) {
     return (
-        <div className={"flex flex-col justify-start items-start  border-t-[1px] border-white first:border-none py-2"}>
+        <div className={"z-[100] flex flex-col justify-start items-start  border-t-[1px] border-white first:border-none py-2 cursor-pointer hover:bg-white/10"}>
             <div className={"flex justify-start items-center w-full gap-2"}>
                 <svg width="11" height="11" viewBox="0 0 11 11" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path
