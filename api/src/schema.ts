@@ -12,11 +12,12 @@ export type NewsData = {
   body:string
   createdAt:string
   updatedAt:string
+  publishedAt:string
 }
 
 export type NewsList = {
   id:string
   title:string
   tag:string|null
-  createdAt:string
+  publishedAt:string
 }
