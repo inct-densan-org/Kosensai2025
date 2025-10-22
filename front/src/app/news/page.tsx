@@ -44,6 +44,9 @@ export default async function Page() {
               <div className="max-w-4xl mx-auto bg-black/20 p-8 rounded-lg">
                   <h1 className="text-4xl font-bold mb-8">NEWS</h1>
                   <div className="p-3 bg-red-50 text-red-700 rounded">エラー: {error}</div>
+                  <p className="mt-4 text-xs text-white/60">
+                      少し時間を置いてから再度お試し下さい。解決しない場合はTeamsでf22092までお知らせ下さい。
+                  </p>
                   <div className="text-center mt-8">
                       <Link href="/" className="text-white hover:underline">
                           トップページに戻る

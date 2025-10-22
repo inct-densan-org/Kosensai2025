@@ -34,6 +34,9 @@ export default async function HtmlDisplayPage({params}: { params: Promise<{ id: 
             return (
                 <div className="max-w-4xl mx-auto">
                     <div className="p-3 bg-red-50 text-red-700 rounded">エラー: {error}</div>
+                    <p className="mt-4 text-xs text-white/60">
+                        少し時間を置いてから再度お試し下さい。解決しない場合はTeamsでf22092までお知らせ下さい。
+                    </p>
                     <div className="text-center mt-8">
                         <Link href="/news" className="text-white hover:underline">
                             お知らせ一覧に戻る

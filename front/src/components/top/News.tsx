@@ -33,7 +33,7 @@ export async function News() {
                         <p className="font-bold">ニュースの読み込みに失敗しました。</p>
                         <p className="mt-2 text-sm text-white/80">エラー: {error.message}</p>
                         <p className="mt-4 text-xs text-white/60">
-                            ヒント: プロダクションビルド(`npm run start`)でこのエラーが発生する場合、Next.jsサーバーがAPIサーバー(`http://localhost:8000`)に接続できていない可能性があります。APIサーバーが起動しているか、またネットワーク接続に問題がないか確認してください。
+                            少し時間を置いてから再度お試し下さい。解決しない場合はTeamsでf22092までお知らせ下さい。
                         </p>
                     </div>
                 </Window>
