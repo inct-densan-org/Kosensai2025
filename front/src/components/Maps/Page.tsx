@@ -77,9 +77,9 @@ export function MapPageClient({sameOrigin}:{sameOrigin:boolean}) {
             <div style={open ? (width > height ? { paddingLeft: 300 } : { paddingTop: 450 }) : { paddingTop: '100px' }}>
                 <AnimatedContentSection title="校内マップ" sensibility={.2} className={"text-white pb-32"}>
                     <div
-                        className={`px-4 md:px-12 py-0 flex flex-col items-center gap-16 ${width > height ? "justify-center" : ""}`}>
-                        <div className="bg-white/10 rounded-2xl p-6 shadow-lg text-white mb-12 w-full max-w-[700px]">
-                            <h3 className="text-2xl font-bold mb-4 text-center">※ゴミの分別にご協力ください</h3>
+                        className={`px-4 md:px-12 py-0 flex flex-col items-center gap-12 ${width > height ? "justify-center" : ""}`}>
+                        <div className="bg-white/10 rounded-2xl p-6 shadow-lg text-white w-full max-w-[700px]">
+                            <h3 className="text-2xl font-bold mb-4 text-center">ごみの分別にご協力ください</h3>
                             <ul className="list-disc list-inside space-y-2 mb-4 text-left">
                                 <li>ゴミ箱は、屋外マップに表示されている指定の場所に設置されています。</li>
                                 <li>ペットボトルは、ラベルとキャップを外し、それぞれ「燃えるごみ」として捨ててください。</li>
@@ -105,21 +105,42 @@ export function MapPageClient({sameOrigin}:{sameOrigin:boolean}) {
                             >
                                 分別方法の詳細はこちら (PDF)
                             </a>
-                        </div>                        <span className={`${width < height ? "scroll-offset" : ""}`} id="map1"></span>
-                        <MapPage base={map1.image} shops={map1.shops} labels={map1.labels} statics={map1.statics}
-                            currentId={index} w={width - (width > height ? 320 : 0)} long={!isSameOrigin} />
-                        <span className={`${width < height ? "scroll-offset" : ""}`} id="map2"></span>
-                        <MapPage base={map2.image} shops={map2.shops} labels={map2.labels} statics={map2.statics}
-                            currentId={index} w={width - (width > height ? 320 : 0)} long={!isSameOrigin} />
-                        <span className={`${width < height ? "scroll-offset" : ""}`} id="map3"></span>
-                        <MapPage base={map3.image} shops={map3.shops} labels={map3.labels} statics={map3.statics}
-                            currentId={index} w={width - (width > height ? 320 : 0)} long={!isSameOrigin} />
-                        <span className={`${width < height ? "scroll-offset" : ""}`} id="map4"></span>
-                        <MapPage base={map4.image} shops={map4.shops} labels={map4.labels} statics={map4.statics}
-                            currentId={index} w={width - (width > height ? 320 : 0)} long={!isSameOrigin} />
-                        <span className={`${width < height ? "scroll-offset" : ""}`} id="map5"></span>
-                        <MapPage base={map5.image} shops={map5.shops} labels={map5.labels} statics={map5.statics}
-                            currentId={index} w={width - (width > height ? 320 : 0)} long={!isSameOrigin} />
+                        </div>
+
+                        <div className="w-full max-w-[700px]">
+                            <h3 className="text-2xl font-bold text-center mb-4">屋外</h3>
+                            <span className={`${width < height ? "scroll-offset" : ""}`} id="map1"></span>
+                            <MapPage base={map1.image} shops={map1.shops} labels={map1.labels} statics={map1.statics}
+                                currentId={index} w={width - (width > height ? 320 : 0)} long={!isSameOrigin} />
+                        </div>
+
+                        <div className="w-full max-w-[700px]">
+                            <h3 className="text-2xl font-bold text-center mb-4">管理・教育棟 1F</h3>
+                            <span className={`${width < height ? "scroll-offset" : ""}`} id="map2"></span>
+                            <MapPage base={map2.image} shops={map2.shops} labels={map2.labels} statics={map2.statics}
+                                currentId={index} w={width - (width > height ? 320 : 0)} long={!isSameOrigin} />
+                        </div>
+
+                        <div className="w-full max-w-[700px]">
+                            <h3 className="text-2xl font-bold text-center mb-4">管理・教育棟 2F</h3>
+                            <span className={`${width < height ? "scroll-offset" : ""}`} id="map3"></span>
+                            <MapPage base={map3.image} shops={map3.shops} labels={map3.labels} statics={map3.statics}
+                                currentId={index} w={width - (width > height ? 320 : 0)} long={!isSameOrigin} />
+                        </div>
+
+                        <div className="w-full max-w-[700px]">
+                            <h3 className="text-2xl font-bold text-center mb-4">管理・教育棟 3F</h3>
+                            <span className={`${width < height ? "scroll-offset" : ""}`} id="map4"></span>
+                            <MapPage base={map4.image} shops={map4.shops} labels={map4.labels} statics={map4.statics}
+                                currentId={index} w={width - (width > height ? 320 : 0)} long={!isSameOrigin} />
+                        </div>
+
+                        <div className="w-full max_w-[700px]">
+                            <h3 className="text-2xl font-bold text-center mb-4">専攻科・教育棟</h3>
+                            <span className={`${width < height ? "scroll-offset" : ""}`} id="map5"></span>
+                            <MapPage base={map5.image} shops={map5.shops} labels={map5.labels} statics={map5.statics}
+                                currentId={index} w={width - (width > height ? 320 : 0)} long={!isSameOrigin} />
+                        </div>
                     </div>
                 </AnimatedContentSection>
             </div>
