@@ -55,7 +55,7 @@ export function PosterCard({ poster, modalDisabled = false, size = null }: Poste
                         </p>
 
                         {poster.images.length === 1 ? (
-                            <div className="relative mb-4 h-auto w-auto aspect-[277/392] mx-auto grow">
+                            <div className="relative mb-4 h-auto w-auto aspect-[277/392] mx-auto grow max-w-full flex-shrink-0">
                                 <Image
                                     src={poster.images[0]}
                                     alt={poster.title}
