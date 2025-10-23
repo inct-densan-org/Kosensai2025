@@ -373,7 +373,9 @@ export const postersData = [
         "mapId": 48,
         "title": "ダンス部公演",
         "desc": "",
-        "images": []
+        "images": [
+            "/shops/posters/48.webp"
+        ]
     },    
     {
         mapId: 49,
