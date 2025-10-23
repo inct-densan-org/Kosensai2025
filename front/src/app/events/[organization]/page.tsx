@@ -3,8 +3,8 @@ import { organizationDetails } from "@/organizations.data";
 import Link from "next/link";
 import { Metadata } from "next";
 
-export async function generateMetadata({ params }: { params: { organization: string } }): Promise<Metadata> {
-    const details = organizationDetails[params.organization];
+export async function generateMetadata({ params }: { params: Promise<{ organization: string }> }): Promise<Metadata> {
+    const details = organizationDetails[(await params).organization];
 
     if (!details) {
         return {

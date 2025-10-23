@@ -14,10 +14,10 @@ const createDescription = (html: string) => {
     return text.substring(0, 120) + "...";
 };
 
-export async function generateMetadata({ params }: { params: { id: string } }): Promise<Metadata> {
-    const { id } = params;
+export async function generateMetadata({ params }: { params: Promise<{ id: string }> }): Promise<Metadata> {
+    const { id } = await params;
     try {
-        const res = await client.news[id].$get();
+        const res = await (client.news as any)[id].$get();
         if (!res.ok) {
             return { title: "記事が見つかりません | 高専祭2025" };
         }
