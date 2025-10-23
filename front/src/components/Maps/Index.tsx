@@ -103,7 +103,7 @@ export function MapPage({
     const currentShop = shops.find(shop => shop.idx === currentId);
     if (!currentShop) return;
 
-    const ZOOM_SCALE = 3.2;
+    const ZOOM_SCALE = 2.8;
     const targetX = (currentShop.x / 100) * size;
     const targetY = (currentShop.y / 100) * size;
     const offsetX = size / 2 - targetX * ZOOM_SCALE;
