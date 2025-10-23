@@ -20,7 +20,7 @@ export function Window({title, children, color, subtitle, className}: {
 
             {/* Title Bar (fixed height) */}
             <div
-                className={"px-3 w-full h-7 rounded-t-sm border-b-white border-[1px] font-bold flex flex-row items-end gap-2 flex-shrink-0"}>
+                className={"px-3 w-full h-fit rounded-t-sm border-b-white border-[1px] font-bold flex flex-row items-end gap-2 flex-shrink-0"}>
                 <h3 className={"md:text-[1.2rem]"}>{title}</h3>
                 {subtitle && <p className={"pb-[.2em] pl-[2%] text-[.6em] md:text-[.9rem] md:pb-0 font-normal"}>{subtitle}</p>}
             </div>

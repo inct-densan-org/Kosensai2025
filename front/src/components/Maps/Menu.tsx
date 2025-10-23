@@ -40,24 +40,27 @@ export default function SlideMenu({
           : { x: open ? 0 : "-100%" }   // 左から開閉
       }
       transition={{ type: "tween", duration: 0.3 }}
-      className={`fixed bg-white/90 backdrop-blur-md shadow-2xl z-40 p-4 flex flex-col pointer-events-auto top-0 left-0 ${isTop? "w-full text-center" : "flex flex-row justify-end"}`}
+      className={`fixed bg-white/90 backdrop-blur-md shadow-2xl z-40 p-4 flex flex-col pointer-events-auto top-0 left-0 ${isTop? "w-full text-center" : "flex !flex-row justify-end"}`}
       style={
         isTop
-          ?{ height:450 }
+          ?{ height:380 }
           :{ width: 300 }
         }
     >
-      {open&&<div style={isTop ?{ height:450 ,marginTop: -150 }:{ width: 300 }}>
+      {open&&<div style={isTop ?{ height:380 ,marginTop: -180 }:{ width: 300 }} className="px-5">
         {
           isTop
           ? <PosterCarouselSP posters={posters} onChangeIndex={onChangeIndex} initialIndex={index} disable/>
-          : <PosterCarousel posters={posters} onSelectedIndexChange={onChangeIndex} initialIndex={index} size={200}/>
+          : 
+          <div className="translate-x-[25%]">
+            <PosterCarousel posters={posters} onSelectedIndexChange={onChangeIndex} initialIndex={index} size={200}/>
+          </div>
         }
       </div>}
-      <div>
+      <div className="flex items-end w-full h-full justify-center">
         <Button
           onClick={() => onOpenChange(false)}
-          className={`px-3 py-2 rounded ml-2 ${isTop?"mt-[60px]":"aspect-square mt-3"}`}
+          className={`px-3 py-2 rounded ml-2 ${isTop?"":"aspect-square mt-3 ml-18"}`}
           variant="outline"
           >
           {isTop?"閉じる":<XIcon/>}

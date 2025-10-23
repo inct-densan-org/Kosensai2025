@@ -150,7 +150,7 @@ export function PosterCarousel({posters, onSelectedIndexChange, initialIndex=0, 
             ref={carouselRef}
             onPan={onPan}
             onPanEnd={onPanEnd}
-            className="w-full h-dvh flex items-center justify-center cursor-grab active:cursor-grabbing pt-0 touch-none overflow-hidden z-100 overscroll-none"
+            className="w-full h-dvh flex items-center justify-center cursor-grab active:cursor-grabbing pt-0 touch-none overflow-visible z-100 overscroll-none"
             style={{perspective: `${2000}px`}} // Increased perspective for larger items
         >
             <motion.div
