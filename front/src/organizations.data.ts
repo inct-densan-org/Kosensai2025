@@ -182,13 +182,14 @@ export const organizationDetails: { [key: string]: OrganizationDetail } = {
     },
     "dance": {
         name: "ダンス部",
-        description: "第一体育館のステージでパワフルなダンスを披露します。",
+        description: "パワフルなダンスを披露します。",
         schedule: [
             { time: "10月25日(土) 15:30~17:00", location: "第一体育館" },
+            { time: "10月26日(日) 13:00~14:30", location: "専攻科棟前 (雨天時: 第二体育館)" },
         ],
     },
     "yosakoi": {
-        name: "よさこい",
+        name: "よさこい部",
         description: "専攻科棟前で迫力のある演舞を披露します。雨天時は第二体育館で行います。",
         schedule: [
             { time: "10月25日(土) 12:00~12:30", location: "専攻科棟前" },

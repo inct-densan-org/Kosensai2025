@@ -36,5 +36,6 @@ export const advancedCourseBuildingSchedule: { day1: ScheduleEvent[]; day2: Sche
     ],
     day2: [
         { time: "12:00~12:30", event: "よさこい部", organizationPath: "yosakoi" },
+        { time: "13:00~14:30", event: "ダンス部", organizationPath: "dance" },
     ],
 };
