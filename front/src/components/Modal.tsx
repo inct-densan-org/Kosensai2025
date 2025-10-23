@@ -26,8 +26,8 @@ export function Modal({
           {button}
         </button>
       </DialogTrigger>
-      <DialogTitle >{title}</DialogTitle>
       <DialogContent className="bg-transparent border-none shadow-none p-0 w-auto max-w-none">
+      <DialogTitle ></DialogTitle>
         <Window title={title} subtitle={subtitle} className={cn("max-h-[80vh] w-[90vw] md:w-[60vw]", className)}>
           {children}
         </Window>
