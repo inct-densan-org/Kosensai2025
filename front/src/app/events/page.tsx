@@ -17,7 +17,7 @@ export default function EventsPage() {
         ],
         day2: [
             { time: "9:00~15:30", event: "軽音楽部", organizationPath: "bands" },
-            { time: "15:30~16:30", event: "電子計算機部 DJ", organizationPath: "computer-club-dj" },
+            { time: "15:30~16:30", event: "電子計算機部 DJ", organizationPath: "densan-dj" },
             { time: "16:30~18:00", event: "有志発表", organizationPath: "volunteer-stage" },
             { time: "18:00~19:00", event: "花火 (後夜祭)" },
         ],
@@ -37,9 +37,8 @@ export default function EventsPage() {
     };
 
     return (
-        <AnimatedContentSection title="イベントスケジュール" sensibility={.2} className={"text-white"}>
+        <AnimatedContentSection title="イベントスケジュール" sensibility={.2} className={"text-white mt-4"}>
             <div className="flex flex-col gap-8 text-left max-w-4xl px-4 mx-auto">
-                <h2 className="text-4xl font-bold mb-8 text-center">高専祭 イベントスケジュール</h2>
 
                 {/* 第一体育館 */}
                 <div className="bg-white/10 rounded-2xl p-6 shadow-lg">
@@ -62,7 +61,7 @@ export default function EventsPage() {
                 </div>
 
                 {/* 第二体育館 */}
-                <div className="bg-white/10 rounded-2xl p-6 shadow-lg">
+                <div className="bg-white/10 rounded-2xl p-6 shadow-lg mb-36">
                     <h3 className="text-3xl font-bold mb-6 text-center">第二体育館</h3>
                     <div className="grid md:grid-cols-2 gap-8">
                         <div>

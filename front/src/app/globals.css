@@ -147,7 +147,7 @@
     /*    !* 左中央の水色 (サイズ・位置調整) *! radial-gradient(ellipse 20vmax 30vmax at 70% 65%, rgba(32, 225, 174, 0.3), transparent 75%),*/
     /*    !* 左下の青 *! radial-gradient(ellipse 40vmax 30vmax at 85% 85%, rgba(180, 210, 255, 0.6), transparent 70%);*/
     
-    --mesh-gradient: linear-gradient(180deg, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0), rgba(255, 255, 255, 1)),
+    --mesh-gradient: linear-gradient(180deg, rgba(0, 0, 0, 0), 90%,  rgba(255, 255, 255, 1)),
         /* 右上のオレンジ */ radial-gradient(ellipse 50vmax 30vmax at 15% 10%, rgba(243, 162, 228, 0.5), transparent 70%),
         /* 中央のピンク */ radial-gradient(ellipse 35vmax 45vmax at 45% 30%, rgba(255, 200, 150, 0.6), transparent 70%),
         /* 左中央の水色 */ radial-gradient(ellipse 20vmax 30vmax at 70% 65%, rgba(32, 225, 174, 0.3), transparent 75%),

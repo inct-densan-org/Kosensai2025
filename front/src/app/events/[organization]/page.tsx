@@ -33,7 +33,7 @@ const organizationDetails: { [key: string]: { name: string; description: string;
             { time: "10月26日(日) 12:00~12:30", location: "専攻科棟前 (雨天時: 第二体育館)" },
         ],
     },
-    "computer-club-dj": {
+    "densan-dj": {
         name: "電子計算機部 DJ",
         description: "第一体育館がクラブハウスに！DJパフォーマンスをお楽しみください。",
         schedule: [
@@ -82,7 +82,6 @@ export default async function OrganizationPage({ params }: { params: Promise<{ o
         <AnimatedContentSection title={details.name} sensibility={.2} className={"text-white"}>
             <div className="flex flex-col gap-8 text-left max-w-4xl px-4 mx-auto">
                 <div className="bg-white/10 rounded-2xl p-8 shadow-lg">
-                    <h3 className="text-4xl font-bold mb-4 text-center text-light-gold">{details.name}</h3>
                     <p className="text-center text-white/80 mb-8">{details.description}</p>
                     <div className="space-y-4">
                         {details.schedule.map((item, index) => (
