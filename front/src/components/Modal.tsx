@@ -10,7 +10,8 @@ export function Modal({
   title,
   subtitle,
   defaultOpen = false,
-  className = ""
+  className = "",
+  ModalClass = ""
 }: {
   children: React.ReactNode;
   button: React.ReactNode;
@@ -18,6 +19,7 @@ export function Modal({
   subtitle?: string;
   defaultOpen?: boolean;
   className?: string;
+  ModalClass?:string
 }) {
   return (
     <Dialog defaultOpen={defaultOpen}>
@@ -26,7 +28,7 @@ export function Modal({
           {button}
         </button>
       </DialogTrigger>
-      <DialogContent className="bg-transparent border-none shadow-none p-0 w-auto max-w-none">
+      <DialogContent className={cn("bg-transparent border-none shadow-none p-0 w-auto max-w-none",ModalClass)}>
       <DialogTitle ></DialogTitle>
         <Window title={title} subtitle={subtitle} className={cn("max-h-[80vh] w-[90vw] md:w-[60vw]", className)}>
           {children}

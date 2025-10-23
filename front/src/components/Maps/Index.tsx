@@ -127,16 +127,24 @@ export function MapPage({
                     <NumberedPin number={postersData[e.idx].mapId} force={e.idx === currentId} size={size}/>
                   }
                   title={postersData[e.idx].title}
-                  className={"translate-x-[-100px]"}
+                  ModalClass="fixed inset-0 z-[1000] top-1/2 left-1/2 translate-x-[-45vw] -translate-y-1/2 w-[90vw] md:w-[60vw] md:translate-x-[-30vw] "
                 >
-                  <p className="whitespace-pre-wrap">{postersData[e.idx].desc}</p>
-                  <div className={`inline-flex mt-4 space-x-2 overflow-x-auto mx-auto ${postersData[e.idx].images.length === 1 ? "justify-center " : ""}w-full`}>
-                    {postersData[e.idx].images.map((img, idx) => (
-                      <div className="relative flex-shrink-0 w-[70%] sm:w-[40%] aspect-[0.707]" key={idx}>
-                        <Image src={img} alt={`${postersData[e.idx].title} - image ${idx + 1}`} fill className="object-contain rounded" />
-                      </div>
-                    ))}
-                  </div>
+                                      <div className="relative w-full aspect-[277/392] mb-4">
+                                          <Image
+                                              src={postersData[e.idx].images[0]}
+                                              alt={postersData[e.idx].title}
+                                              fill={true}
+                                              className="object-contain"
+                                          />
+                                      </div>
+                                      <p className="whitespace-pre-wrap">{postersData[e.idx].desc}</p>
+                                      {postersData[e.idx].images.length > 0 && (
+                                          <div className="flex mt-4 space-x-2 overflow-x-auto">
+                                              {postersData[e.idx].images.slice(1).map((img, index) => (
+                                                  <Image key={index} src={img} alt={`${postersData[e.idx].title} - image ${index + 2}`} width={100} height={100} className="object-cover rounded" />
+                                              ))}
+                                          </div>
+                                      )}
                 </Modal>
               </div>
             ))}
@@ -152,7 +160,7 @@ export function MapPage({
                 }}
               >
                 {e.timeTable?
-                  <Modal button={<NumberedPin color={e.color} number={e.id} size={size}/>} title="バス時刻表" className={"translate-x-[-100px]"}>
+                  <Modal button={<NumberedPin color={e.color} number={e.id} size={size}/>} title="バス時刻表" ModalClass="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
                     <div>
                       <BusTimetable/>
                     </div>
