@@ -3,6 +3,7 @@
 import Image from "next/image";
 import { Modal } from "@/components/Modal";
 import { useRouter } from "next/navigation";
+import { DialogClose } from "../ui/dialog";
 
 // The data structure for a poster
 type Poster = {
@@ -16,7 +17,7 @@ interface PosterCardProps {
     poster: Poster;
     modalDisabled?: boolean;
     size?: number | null
-    index?:number|null
+    index?: number | null
 }
 
 // Define PosterImage outside of PosterCard to prevent it from being re-created on every render.
@@ -32,7 +33,7 @@ const PosterImage = ({ poster, size = null }: { poster: Poster, size?: number | 
     />
 );
 
-export function PosterCard({ poster, modalDisabled = false, size = null, index=null }: PosterCardProps) {
+export function PosterCard({ poster, modalDisabled = false, size = null, index = null }: PosterCardProps) {
     // Do not render if there are no images
     if (!poster.images || poster.images.length === 0) {
         return null;
@@ -80,9 +81,14 @@ export function PosterCard({ poster, modalDisabled = false, size = null, index=n
                                 ))}
                             </div>
                         )}
-                        <button className={" block ml-auto mt-auto mb-4 text-right text-[2vh] text-gray-500"} 
-                        onClick={()=>router.push(`/map${index!=null?`?index=${index}`:""}`)}
-                    >マップで見る &gt; </button>
+                        <DialogClose asChild>
+                            <button className={" block ml-auto mt-auto mb-4 text-right text-[2vh] text-gray-500"}
+                                onClick={() => {
+                                    router.push(`/map${index != null ? `?index=${index}` : ""}`)
+
+                                }}
+                            >マップで見る &gt; </button>
+                        </DialogClose>
                     </div>
                 </Modal>
             )}

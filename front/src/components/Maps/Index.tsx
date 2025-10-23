@@ -83,7 +83,7 @@ export function MapPage({
   statics?: Static[] | null,
   currentId?: number | null,
   w: number
-  long?:boolean
+  long?: boolean
 }) {
   const [size, setSize] = useState(0);
   const transformRef = useRef<any>(null);
@@ -97,28 +97,28 @@ export function MapPage({
   }, []);
 
   // currentId のピンにズームしてフォーカス
-useEffect(() => {
-  if (!shops || currentId === null || !transformRef.current || !size) return;
+  useEffect(() => {
+    if (!shops || currentId === null || !transformRef.current || !size) return;
 
-  const currentShop = shops.find(shop => shop.idx === currentId);
-  if (!currentShop) return;
+    const currentShop = shops.find(shop => shop.idx === currentId);
+    if (!currentShop) return;
 
-  const ZOOM_SCALE = 2;
-  const targetX = (currentShop.x / 100) * size;
-  const targetY = (currentShop.y / 100) * size;
-  const offsetX = size / 2 - targetX * ZOOM_SCALE;
-  const offsetY = size / 2 - targetY * ZOOM_SCALE;
+    const ZOOM_SCALE = 2;
+    const targetX = (currentShop.x / 100) * size;
+    const targetY = (currentShop.y / 100) * size;
+    const offsetX = size / 2 - targetX * ZOOM_SCALE;
+    const offsetY = size / 2 - targetY * ZOOM_SCALE;
 
-  // 少し待ってからズーム（例: 1秒）
-  const timer = setTimeout(() => {
-    transformRef.current.setTransform(offsetX, offsetY, ZOOM_SCALE);
-  }, long?4000:1000); // 1000ms後に実行
+    // 少し待ってからズーム（例: 1秒）
+    const timer = setTimeout(() => {
+      transformRef.current.setTransform(offsetX, offsetY, ZOOM_SCALE);
+    }, long ? 4000 : 1000); // 1000ms後に実行
 
-  return () => clearTimeout(timer); // クリーンアップ
-}, [currentId, shops, size]);
+    return () => clearTimeout(timer); // クリーンアップ
+  }, [currentId, shops, size]);
 
   return (
-    <div className={`bg-white/5 backdrop-blur-md overflow-hidden flex items-center justify-center mx-auto p-0 w-full aspect-square max-w-[700px] rounded-2xl shadow-lg ${isCurrentMap?"border-yellow-300 border-4":"border-transparent border-4"} origin-center`}>
+    <div className={`bg-white/5 backdrop-blur-md overflow-hidden flex items-center justify-center mx-auto p-0 w-full aspect-square max-w-[700px] rounded-2xl shadow-lg ${isCurrentMap ? "border-yellow-300 border-4" : "border-transparent border-4"} origin-center`}>
       <TransformWrapper
         initialScale={1}
         minScale={0.1}
@@ -226,7 +226,7 @@ useEffect(() => {
 
 function TEXT({ text, size }: { text: string, size: number }) {
   return (
-    <div className="text-white font-bold bg-black/20 border-white/30 border" style={{ fontSize: `${size /45 - (text.length>=8?3:0)}px` ,padding: `${size/120}px`, borderRadius: `${size/200}px`}}>
+    <div className="text-white font-bold bg-black/20 border-white/30 border" style={{ fontSize: `${size / 45 - (text.length >= 8 ? 3 : 0)}px`, padding: `${size / 120}px`, borderRadius: `${size / 200}px` }}>
       {text}
     </div>
   )
