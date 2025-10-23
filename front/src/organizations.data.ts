@@ -168,7 +168,7 @@ export const organizationDetails: { [key: string]: OrganizationDetail } = {
                     "bandName": "NEO OK ROCK",
                     "startAt ": "14:35",
                     "endAt": "15:10",
-                    "songs": ["SECRET"]
+                    "songs": ["$SECRET"]
                 }
             ]
         ]

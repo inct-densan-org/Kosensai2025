@@ -33,7 +33,13 @@ export default async function OrganizationPage({ params }: { params: Promise<{ o
                                                 <p className="font-bold text-xl mt-1">{band.bandName}</p>
                                                 <ul className="list-disc list-inside text-white/80 mt-2 pl-2">
                                                     {band.songs.map((song, songIndex) => (
-                                                        <li key={songIndex}>{song}</li>
+                                                        <li key={songIndex}>
+                                                            {song === '$SECRET' ? (
+                                                                <span className="bg-black text-red-400 px-2 py-1 rounded-sm select-none tracking-widest">SECRET. </span>
+                                                            ) : (
+                                                                song
+                                                            )}
+                                                        </li>
                                                     ))}
                                                 </ul>
                                             </div>
@@ -49,7 +55,13 @@ export default async function OrganizationPage({ params }: { params: Promise<{ o
                                                 <p className="font-bold text-xl mt-1">{band.bandName}</p>
                                                 <ul className="list-disc list-inside text-white/80 mt-2 pl-2">
                                                     {band.songs.map((song, songIndex) => (
-                                                        <li key={songIndex}>{song}</li>
+                                                        <li key={songIndex}>
+                                                            {song === '$SECRET' ? (
+                                                                <span className="bg-black text-red-400 px-2 py-1 rounded-sm select-none tracking-widest">SECRET. </span>
+                                                            ) : (
+                                                                song
+                                                            )}
+                                                        </li>
                                                     ))}
                                                 </ul>
                                             </div>
