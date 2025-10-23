@@ -98,18 +98,20 @@ export function MapPage({
 
   // currentId のピンにズームしてフォーカス
 useEffect(() => {
-  if (!shops || currentId === null || !transformRef.current) return;
+  if (!shops || currentId === null || !transformRef.current || !size) return;
 
   const currentShop = shops.find(shop => shop.idx === currentId);
   if (!currentShop) return;
 
   const ZOOM_SCALE = 2;
-  const x = (currentShop.x / 100) * size;
-  const y = (currentShop.y / 100) * size;
+  const targetX = (currentShop.x / 100) * size;
+  const targetY = (currentShop.y / 100) * size;
+  const offsetX = size / 2 - targetX * ZOOM_SCALE;
+  const offsetY = size / 2 - targetY * ZOOM_SCALE;
 
   // 少し待ってからズーム（例: 1秒）
   const timer = setTimeout(() => {
-    transformRef.current.setTransform(-x * (ZOOM_SCALE - 1), -y * (ZOOM_SCALE - 1), ZOOM_SCALE);
+    transformRef.current.setTransform(offsetX, offsetY, ZOOM_SCALE);
   }, long?4000:1000); // 1000ms後に実行
 
   return () => clearTimeout(timer); // クリーンアップ
