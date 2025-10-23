@@ -389,7 +389,9 @@ export const postersData = [
         "mapId": 50,
         "title": "ロボコン",
         "desc": "",
-        "images": []
+        "images": [
+            "/shops/posters/50.webp"
+        ]
     },    
     {
         mapId: 51,
@@ -427,12 +429,16 @@ export const postersData = [
         "mapId": 25,
         "title": "学生会企画/地産地消講談師 地伏亭金目 字幕付き公演",
         "desc": "",
-        "images": []
+        "images": [
+            "/shops/posters/25.webp"
+        ]
     },
     {
         "mapId": 42,
         "title": "入試関係相談コーナー",
         "desc": "",
-        "images": []
+        "images": [
+            "/shops/posters/42.webp"
+        ]
     },          
 ]
