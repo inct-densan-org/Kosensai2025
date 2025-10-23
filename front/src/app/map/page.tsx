@@ -17,6 +17,16 @@ export default function Page() {
     const [width, setWidth] = useState(0)
     const [height, setHeight] = useState(0)
     const [open, onOpenChange] = useState(false)
+    const [isSameOrigin, setIsSameOrigin] = useState(false);
+
+    useEffect(() => {
+      // 現在のページのオリジンとリファラーを比較
+      const referrer = document.referrer;
+  if (referrer && referrer.startsWith(window.location.origin)) {
+    setIsSameOrigin(true);
+  }
+      console.log(isSameOrigin)
+    }, []);
     useEffect(() => {
         const update = () => {
             setWidth(window.innerWidth);
@@ -30,12 +40,12 @@ export default function Page() {
                 const id = matched?.id;
                 const el = document.getElementById(id ?? "map1");
                 el?.scrollIntoView({behavior: "smooth"});
-            }, 2000);
+            }, isSameOrigin?50:2000);
         };
         update();
         window.addEventListener('resize', update)
         return () => window.removeEventListener('resize', update)
-    }, [index])
+    }, [index,isSameOrigin])
 
     if (!width || !height) return null;
 
