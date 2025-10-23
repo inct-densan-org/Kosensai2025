@@ -25,7 +25,7 @@ const PosterImage = ({ poster, size = null }: { poster: Poster, size?: number | 
         alt={poster.title}
         fill={true}
         sizes={`(max-width: 768px) ${size ? `${size}, ${size * 400 / 277}` : "277px, 400px"}`}
-        className="absolute! object-fill! w-full! h-full!"
+        className="!absolute !object-contain !w-full !h-full !inset-0"
         draggable={false}
     />
 );

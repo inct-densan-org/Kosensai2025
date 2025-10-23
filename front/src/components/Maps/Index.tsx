@@ -1,6 +1,6 @@
 "use client"
 import { Shop, Label, Static } from "@/types/type";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { TransformWrapper, TransformComponent } from "react-zoom-pan-pinch"
 import Image, { StaticImageData } from "next/image"
 import { Modal } from "../Modal";
@@ -79,19 +79,39 @@ export function MapPage({
   base: StaticImageData,
   shops?: Shop[] | null,
   labels?: Label[] | null,
-  statics?: Static[] | null
-  currentId?: number | null
+  statics?: Static[] | null,
+  currentId?: number | null,
   w: number
 }) {
-  const [size, setSize] = useState(0)
+  const [size, setSize] = useState(0);
+  const transformRef = useRef<any>(null);
+
   const isCurrentMap = shops?.some(shop => shop.idx === currentId) ?? false;
 
-  // 初期スケールと currentShop を一度だけ設定
+  // 初期サイズ設定
   useEffect(() => {
-    const w = window.innerWidth
-    setSize(w >= 800 ? 700 : w - 100)
-  }, [])
+    const width = window.innerWidth;
+    setSize(width >= 800 ? 700 : width - 100);
+  }, []);
 
+  // currentId のピンにズームしてフォーカス
+useEffect(() => {
+  if (!shops || currentId === null || !transformRef.current) return;
+
+  const currentShop = shops.find(shop => shop.idx === currentId);
+  if (!currentShop) return;
+
+  const ZOOM_SCALE = 2;
+  const x = (currentShop.x / 100) * size;
+  const y = (currentShop.y / 100) * size;
+
+  // 少し待ってからズーム（例: 1秒）
+  const timer = setTimeout(() => {
+    transformRef.current.setTransform(-x * (ZOOM_SCALE - 1), -y * (ZOOM_SCALE - 1), ZOOM_SCALE);
+  }, 3000); // 1000ms後に実行
+
+  return () => clearTimeout(timer); // クリーンアップ
+}, [currentId, shops, size]);
 
   return (
     <div className={`bg-white/5 backdrop-blur-md overflow-hidden flex items-center justify-center mx-auto p-0 w-full aspect-square max-w-[700px] rounded-2xl shadow-lg ${isCurrentMap?"border-yellow-300 border-4":"border-transparent border-4"} origin-center`}>
@@ -101,17 +121,17 @@ export function MapPage({
         maxScale={10}
         wheel={{ step: 0.2 }}
         pinch={{ step: 0.2 }}
+        ref={transformRef}
       >
         <TransformComponent>
-          {/* ベース */}
           <div className="relative" style={{ width: size, height: size }}>
             <Image
               src={base}
               alt="構内図"
               fill
-              className={`object-contain`}
+              className="object-contain"
             />
-            {/* 企画（要改修） */}
+            {/* 企画ピン */}
             {shops && shops.map((e, index) => (
               <div
                 key={index}
@@ -131,29 +151,16 @@ export function MapPage({
                   className="object-contain"
                 >
                   <div className="h-[70dvh] flex flex-col">
-                    <p className="whitespace-pre-wrap grow-0">
-                      {postersData[e.idx].desc}
-                    </p>
-
+                    <p className="whitespace-pre-wrap grow-0">{postersData[e.idx].desc}</p>
                     {postersData[e.idx].images.length === 1 ? (
                       <div className="relative mb-4 h-auto w-auto aspect-[277/392] mx-auto grow">
-                        <Image
-                          src={postersData[e.idx].images[0]}
-                          alt={postersData[e.idx].title}
-                          fill={true}
-                          className="object-contain"
-                        />
+                        <Image src={postersData[e.idx].images[0]} alt={postersData[e.idx].title} fill className="object-contain" />
                       </div>
                     ) : (
                       <div className="flex mt-4 space-x-2 items-center w-full h-full">
                         {postersData[e.idx].images.slice(0, 2).map((img, index) => (
                           <div key={index} className="relative w-1/2 aspect-[277/392]">
-                            <Image
-                              src={img}
-                              alt={`${postersData[e.idx].title} - image ${index + 1}`}
-                              fill
-                              className="object-contain rounded"
-                            />
+                            <Image src={img} alt={`${postersData[e.idx].title} - image ${index + 1}`} fill className="object-contain rounded" />
                           </div>
                         ))}
                       </div>
@@ -173,17 +180,20 @@ export function MapPage({
                   transform: "translate(-50%, -50%)"
                 }}
               >
-                {e.timeTable ?
-                  <Modal button={<NumberedPin color={e.color} number={e.id} size={size} />} title="バス時刻表"
+                {e.timeTable ? (
+                  <Modal
+                    button={<NumberedPin color={e.color} number={e.id} size={size} />}
+                    title="バス時刻表"
                     ModalClass="fixed inset-0 z-[1000] top-12 left-1/2 translate-x-[-45vw] translate-y-0! w-[90vw] md:w-[60vw] md:translate-x-[-30vw] h-[400px]!  "
                     className="object-contain"
                   >
                     <div className="flex items-center">
                       <BusTimetable />
                     </div>
-                  </Modal> :
+                  </Modal>
+                ) : (
                   <NumberedPin color={e.color} number={e.id} size={size} />
-                }
+                )}
               </div>
             ))}
             {/* ラベル */}
@@ -204,8 +214,9 @@ export function MapPage({
         </TransformComponent>
       </TransformWrapper>
     </div>
-  )
+  );
 }
+
 
 
 
