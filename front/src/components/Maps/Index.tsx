@@ -9,10 +9,10 @@ import "./style.css"
 import { BusTimetable } from "./BusTable";
 
 type NumberedPinProps = {
-  number?: number|string
-  color?: "red"|"blue"|"green"
-  force?:boolean
-  size:number,
+  number?: number | string
+  color?: "red" | "blue" | "green"
+  force?: boolean
+  size: number,
 }
 
 export const NumberedPin: React.FC<NumberedPinProps> = ({
@@ -22,35 +22,35 @@ export const NumberedPin: React.FC<NumberedPinProps> = ({
   size,
 }) => {
 
-  const colorCode = force?
+  const colorCode = force ?
     "#df8500"
-  :
-    color==="blue"?"#4C4CD9":color==="green"?"#4CD94C":'#D94C4C'
+    :
+    color === "blue" ? "#4C4CD9" : color === "green" ? "#4CD94C" : '#D94C4C'
 
   return (
-    <svg 
-      width={force?size/20:size/26.67}
-      height={force?size/16.67:size/22.22}
+    <svg
+      width={force ? size / 20 : size / 26.67}
+      height={force ? size / 16.67 : size / 22.22}
       viewBox="0 0 60 72"
-      fill="none" 
+      fill="none"
       xmlns="http://www.w3.org/2000/svg"
       className={`block ${force ? "bounce" : ""}`}
     >
       {/* ピンの影 */}
       {/* <ellipse cx="30" cy="68" rx="8" ry="3" fill="#00000020"/> */}
-      
+
       {/* ピン本体 */}
-      <path 
-        d="M30 2C17.3 2 7 12.3 7 25C7 32 10 38 15 45C20 52 25 58 30 68C35 58 40 52 45 45C50 38 53 32 53 25C53 12.3 42.7 2 30 2Z" 
+      <path
+        d="M30 2C17.3 2 7 12.3 7 25C7 32 10 38 15 45C20 52 25 58 30 68C35 58 40 52 45 45C50 38 53 32 53 25C53 12.3 42.7 2 30 2Z"
         fill={colorCode}
         stroke="#FFFFFF"
         strokeWidth="2"
         strokeLinejoin="round"
       />
-      
+
       {/* 内側の円 */}
-      <circle cx="30" cy="25" r="15" fill="#FFFFFF" opacity="0.95"/>
-      
+      <circle cx="30" cy="25" r="15" fill="#FFFFFF" opacity="0.95" />
+
       {/* テキスト */}
       <text
         x="30"
@@ -58,7 +58,7 @@ export const NumberedPin: React.FC<NumberedPinProps> = ({
         textAnchor="middle"
         dominantBaseline="central"
         fill={colorCode}
-        fontSize={typeof number == "number"?"110%": number.length==2?"80%":"50%"}
+        fontSize={typeof number == "number" ? "110%" : number.length == 2 ? "80%" : "50%"}
         fontWeight="bold"
         fontFamily="Arial, sans-serif"
       >
@@ -81,7 +81,7 @@ export function MapPage({
   labels?: Label[] | null,
   statics?: Static[] | null
   currentId?: number | null
-  w:number
+  w: number
 }) {
   const [size, setSize] = useState(0)
   const isCurrentMap = shops?.some(shop => shop.idx === currentId) ?? false;
@@ -89,12 +89,12 @@ export function MapPage({
   // 初期スケールと currentShop を一度だけ設定
   useEffect(() => {
     const w = window.innerWidth
-    setSize(w>=800?700:w-100)
+    setSize(w >= 800 ? 700 : w - 100)
   }, [])
 
 
   return (
-    <div className={`bg-gray-100 overflow-hidden flex items-center justify-center mx-auto p-0 w-full aspect-square max-w-[700px] my-2 rounded-2xl ${isCurrentMap?"border-yellow-200 border-8":"border-gray-700 border"} origin-center`}>
+    <div className={`bg-gray-100 overflow-hidden flex items-center justify-center mx-auto p-0 w-full aspect-square max-w-[700px] my-2 rounded-2xl ${isCurrentMap ? "border-yellow-200 border-8" : "border-gray-700 border"} origin-center`}>
       <TransformWrapper
         initialScale={1}
         minScale={0.1}
@@ -104,7 +104,7 @@ export function MapPage({
       >
         <TransformComponent>
           {/* ベース */}
-          <div className="relative" style={{ width:size, height:size }}>
+          <div className="relative" style={{ width: size, height: size }}>
             <Image
               src={base}
               alt="構内図"
@@ -124,32 +124,41 @@ export function MapPage({
               >
                 <Modal
                   button={
-                    <NumberedPin number={postersData[e.idx].mapId} force={e.idx === currentId} size={size}/>
+                    <NumberedPin number={postersData[e.idx].mapId} force={e.idx === currentId} size={size} />
                   }
                   title={postersData[e.idx].title}
                   ModalClass="fixed inset-0 z-[1000] top-12 left-1/2 translate-x-[-45vw] translate-y-0! w-[90vw] md:w-[60vw] md:translate-x-[-30vw] h-[400px]!  "
                   className="object-contain"
                 >
-                  <div
-                  className="h-[70dvh]! flex flex-col "
-                  >
-                    <p className="whitespace-pre-wrap grow-0">{postersData[e.idx].desc}</p>
-                    <div className="relative  mb-4 h-auto w-auto aspect-[277/392] mx-auto grow">
-                      <Image
+                  <div className="h-[70dvh] flex flex-col">
+                    <p className="whitespace-pre-wrap grow-0">
+                      {postersData[e.idx].desc}
+                    </p>
+
+                    {postersData[e.idx].images.length === 1 ? (
+                      <div className="relative mb-4 h-auto w-auto aspect-[277/392] mx-auto grow">
+                        <Image
                           src={postersData[e.idx].images[0]}
                           alt={postersData[e.idx].title}
                           fill={true}
-                          className="object-contain "
-                      />
-                    </div>
-                    {postersData[e.idx].images.length > 0 && (
-                        <div className="flex mt-4 space-x-2 overflow-x-auto">
-                            {postersData[e.idx].images.slice(1).map((img, index) => (
-                              <Image key={index} src={img} alt={`${postersData[e.idx].title} - image ${index + 2}`} width={100} height={100} className="object-cover rounded" />
-                            ))}
-                        </div>
+                          className="object-contain"
+                        />
+                      </div>
+                    ) : (
+                      <div className="flex mt-4 space-x-2 items-center w-full h-full">
+                        {postersData[e.idx].images.slice(0, 2).map((img, index) => (
+                          <div key={index} className="relative w-1/2 aspect-[277/392]">
+                            <Image
+                              src={img}
+                              alt={`${postersData[e.idx].title} - image ${index + 1}`}
+                              fill
+                              className="object-contain rounded"
+                            />
+                          </div>
+                        ))}
+                      </div>
                     )}
-                    </div>
+                  </div>
                 </Modal>
               </div>
             ))}
@@ -164,16 +173,16 @@ export function MapPage({
                   transform: "translate(-50%, -50%)"
                 }}
               >
-                {e.timeTable?
-                  <Modal button={<NumberedPin color={e.color} number={e.id} size={size}/>} title="バス時刻表"
+                {e.timeTable ?
+                  <Modal button={<NumberedPin color={e.color} number={e.id} size={size} />} title="バス時刻表"
                     ModalClass="fixed inset-0 z-[1000] top-12 left-1/2 translate-x-[-45vw] translate-y-0! w-[90vw] md:w-[60vw] md:translate-x-[-30vw] h-[400px]!  "
                     className="object-contain"
                   >
                     <div className="flex items-center">
-                      <BusTimetable/>
+                      <BusTimetable />
                     </div>
-                  </Modal>:
-                  <NumberedPin color={e.color} number={e.id} size={size}/>
+                  </Modal> :
+                  <NumberedPin color={e.color} number={e.id} size={size} />
                 }
               </div>
             ))}
@@ -188,7 +197,7 @@ export function MapPage({
                   transform: "translate(-50%, -50%)"
                 }}
               >
-                <TEXT text={e.name} size={size}/>
+                <TEXT text={e.name} size={size} />
               </div>
             ))}
           </div>
@@ -200,9 +209,9 @@ export function MapPage({
 
 
 
-function TEXT({text,size}:{text:string,size:number}){
+function TEXT({ text, size }: { text: string, size: number }) {
   return (
-    <div className="text-black font-bold bg-gray-300 border-black" style={{ fontSize: `${size /45 - (text.length>=8?3:0)}px` ,padding: `${size/120}px`, borderRadius: `${size/200}px`}}>
+    <div className="text-black font-bold bg-gray-300 border-black" style={{ fontSize: `${size / 45 - (text.length >= 8 ? 3 : 0)}px`, padding: `${size / 120}px`, borderRadius: `${size / 200}px` }}>
       {text}
     </div>
   )

@@ -4,7 +4,7 @@ import { PosterCarouselSP } from "../top/PosterCarousel-sp"
 import { PosterCarousel } from "../top/PosterCarousel"
 import { postersData } from "@/posters.data"
 import { useMemo } from "react"
-import { ChevronLeft, XIcon } from "lucide-react"
+import { XIcon } from "lucide-react"
 import { Button } from "../ui/button"
 
 type SlideMenuProps = {
@@ -20,7 +20,6 @@ export default function SlideMenu({
   mode,
   open,
   onOpenChange,
-  children,
   onChangeIndex,
   index = 0
 }: SlideMenuProps) {
