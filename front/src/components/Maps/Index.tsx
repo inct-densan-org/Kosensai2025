@@ -153,7 +153,7 @@ useEffect(() => {
                   <div className="h-[70dvh] flex flex-col">
                     <p className="whitespace-pre-wrap grow-0">{postersData[e.idx].desc}</p>
                     {postersData[e.idx].images.length === 1 ? (
-                      <div className="relative mb-4 h-auto w-auto aspect-[277/392] mx-auto grow">
+                      <div className="relative mb-4 h-auto aspect-[277/392] mx-auto w-auto max-w-full flex-shrink-0 grow">
                         <Image src={postersData[e.idx].images[0]} alt={postersData[e.idx].title} fill className="object-contain" />
                       </div>
                     ) : (
