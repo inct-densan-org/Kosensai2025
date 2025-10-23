@@ -40,7 +40,7 @@ export default function SlideMenu({
           : { x: open ? 0 : "-100%" }   // 左から開閉
       }
       transition={{ type: "tween", duration: 0.3 }}
-      className={`fixed bg-white/90 backdrop-blur-md shadow-2xl z-40 p-4 flex flex-col pointer-events-auto top-0 left-0 ${isTop? "w-full text-center" : "flex !flex-row justify-end"}`}
+      className={`fixed bg-white/90 backdrop-blur-md shadow-2xl z-[300] p-4 flex flex-col pointer-events-auto top-0 left-0 ${isTop? "w-full text-center" : "flex flex-row justify-end"}`}
       style={
         isTop
           ?{ height:380 }

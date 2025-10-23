@@ -114,7 +114,7 @@ useEffect(() => {
 }, [currentId, shops, size]);
 
   return (
-    <div className={`bg-gray-100 overflow-hidden flex items-center justify-center mx-auto p-0 w-full aspect-square max-w-[700px] my-2 rounded-2xl ${isCurrentMap ? "border-yellow-200 border-8" : "border-gray-700 border"} origin-center`}>
+    <div className={`bg-white/5 backdrop-blur-md overflow-hidden flex items-center justify-center mx-auto p-0 w-full aspect-square max-w-[700px] rounded-2xl shadow-lg ${isCurrentMap?"border-yellow-300 border-4":"border-transparent border-4"} origin-center`}>
       <TransformWrapper
         initialScale={1}
         minScale={0.1}
@@ -222,7 +222,7 @@ useEffect(() => {
 
 function TEXT({ text, size }: { text: string, size: number }) {
   return (
-    <div className="text-black font-bold bg-gray-300 border-black" style={{ fontSize: `${size / 45 - (text.length >= 8 ? 3 : 0)}px`, padding: `${size / 120}px`, borderRadius: `${size / 200}px` }}>
+    <div className="text-white font-bold bg-black/20 border-white/30 border" style={{ fontSize: `${size /45 - (text.length>=8?3:0)}px` ,padding: `${size/120}px`, borderRadius: `${size/200}px`}}>
       {text}
     </div>
   )

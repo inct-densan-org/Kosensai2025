@@ -1,0 +1,49 @@
+[1mdiff --git a/front/src/app/events/layout.tsx b/front/src/app/events/layout.tsx[m
+[1mindex e4488b3..1912a59 100644[m
+[1m--- a/front/src/app/events/layout.tsx[m
+[1m+++ b/front/src/app/events/layout.tsx[m
+[36m@@ -5,14 +5,12 @@[m [mimport Scroller from "@/components/top/Scroller";[m
+ [m
+ export default function EventsLayout({ children }: { children: React.ReactNode }) {[m
+     return ([m
+[31m-        <Suspense fallback={<div className={"bg-dark-background inset-0 h-screen w-screen"}/>}>[m
+[31m-            <ScrollContextProvider[m
+[31m-                className={"scroll-section relative w-screen h-auto flex-col pt-16 overflow-x-hidden overflow-y-auto items-center justify-between bg-[#0072C3] bg-no-repeat bg-(image:--mesh-gradient) blur-in-3xl hidden-scrollbar"}[m
+[31m-            >[m
+[31m-                <Navigation/>[m
+[32m+[m[32m        // <main fallback={<div className={"bg-dark-background inset-0 h-screen w-screen"}/>}>[m
+[32m+[m[32m        //         <Navigation/>[m
+[32m+[m[32m        <main className={"scroll-section relative w-screen min-h-dvh h-auto flex-col pt-16 overflow-x-hidden overflow-y-auto items-center justify-between bg-[#0072C3] bg-no-repeat bg-(image:--mesh-gradient) blur-in-3xl hidden-scrollbar"}>[m
+                 {children}[m
+[31m-                <Scroller/>[m
+[31m-            </ScrollContextProvider>[m
+[31m-        </Suspense>[m
+[32m+[m[32m        </main>[m
+[32m+[m[41m                [m
+[32m+[m[32m        // </main>[m
+     );[m
+ }[m
+[1mdiff --git a/front/src/app/events/page.tsx b/front/src/app/events/page.tsx[m
+[1mindex 1d0c74c..7934efd 100644[m
+[1m--- a/front/src/app/events/page.tsx[m
+[1m+++ b/front/src/app/events/page.tsx[m
+[36m@@ -37,9 +37,8 @@[m [mexport default function EventsPage() {[m
+     };[m
+ [m
+     return ([m
+[31m-        <AnimatedContentSection title="イベントスケジュール" sensibility={.2} className={"text-white"}>[m
+[32m+[m[32m        <AnimatedContentSection title="イベントスケジュール" sensibility={.2} className={"text-white mt-4"}>[m
+             <div className="flex flex-col gap-8 text-left max-w-4xl px-4 mx-auto">[m
+[31m-                <h2 className="text-4xl font-bold mb-8 text-center">高専祭 イベントスケジュール</h2>[m
+ [m
+                 {/* 第一体育館 */}[m
+                 <div className="bg-white/10 rounded-2xl p-6 shadow-lg">[m
+[36m@@ -62,7 +61,7 @@[m [mexport default function EventsPage() {[m
+                 </div>[m
+ [m
+                 {/* 第二体育館 */}[m
+[31m-                <div className="bg-white/10 rounded-2xl p-6 shadow-lg">[m
+[32m+[m[32m                <div className="bg-white/10 rounded-2xl p-6 shadow-lg mb-36">[m
+                     <h3 className="text-3xl font-bold mb-6 text-center">第二体育館</h3>[m
+                     <div className="grid md:grid-cols-2 gap-8">[m
+                         <div>[m

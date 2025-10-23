@@ -42,14 +42,15 @@ export default function Home() {
 
                 {/*<AnimatedContentSection title="PV" colorReverseAnim={"tb"} className={"h-dvh"}>*/}
                 {/*    <h2 className="text-4xl font-bold">PV</h2>*/}
-                
+
                 {/*</AnimatedContentSection>*/}
 
                 <section
                     className={"w-full overflow-x-hidden h-dvh "}>
                     <PostersSection/>
                 </section>
-                <AnimatedContentSection title="注意事項 / フリーWi-Fiの提供について" sensibility={.2} className={"text-white"}>
+                <AnimatedContentSection title="注意事項 / フリーWi-Fiの提供について" sensibility={.2}
+                                        className={"text-white"}>
                     <div className="flex flex-col md:flex-row gap-8 md:gap-16 text-left max-w-4xl px-4 mx-auto">
                         <div>
                             <h3 className="text-2xl font-bold mb-4">注意事項について</h3>
@@ -77,15 +78,15 @@ export default function Home() {
                                 <li>本ネットワークの利用により発生した損失・損害等につきましては、一切の責任を負いかねます。</li>
                             </ul>
                             <div className={"relative w-full h-auto aspect-square rounded-lg"}>
-                                
-                            <Image
-                                src={"/top/NOCIchinoseki.webp"}
-                                alt={"NOCIchinoseki"}
-                                fill
-                                className="rounded-lg p-4 object-contain"
-                            />
+
+                                <Image
+                                    src={"/top/NOCIchinoseki.webp"}
+                                    alt={"NOCIchinoseki"}
+                                    fill
+                                    className="rounded-lg p-4 object-contain"
+                                />
                             </div>
-                            
+
                         </div>
 
                     </div>
@@ -109,7 +110,8 @@ export default function Home() {
                         </div>
                         <div className="mb-12">
                             <h3 className="text-3xl font-bold mb-4 text-center">無料送迎バス</h3>
-                            <p className="mb-4 text-center">一関駅 = 一関高専間での無料シャトルバスの運行がございます。ぜひご利用ください。(料金無料)</p>
+                            <p className="mb-4 text-center">一関駅 =
+                                一関高専間での無料シャトルバスの運行がございます。ぜひご利用ください。(料金無料)</p>
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                                 <div className="bg-white/10 rounded-lg p-4">
                                     <h4 className="text-xl font-bold mb-2 text-center">一ノ関駅西口 発</h4>
@@ -164,20 +166,24 @@ export default function Home() {
                 </AnimatedContentSection>
                 <section
                     className={"w-full overflow-x-hidden min-h-dvh py-12 flex items-center justify-center text-white"}>
-                    <SponsorsSection />
+                    <SponsorsSection/>
                 </section>
-                <section className="w-full overflow-x-hidden min-h-dvh py-12 flex flex-col items-center justify-center text-[#666666]">
+                <section
+                    className="w-full overflow-x-hidden min-h-dvh py-12 flex flex-col items-center justify-center text-[#666666]">
                     <h2 className="text-4xl font-bold mb-8 md:hidden">パンフレット</h2>
                     <div className="container mx-auto px-4">
                         <div className="flex flex-col md:flex-row gap-8 md:gap-16 items-center justify-center">
                             {/* Left Column (Desktop) */}
-                            <div className="hidden md:flex flex-col items-center justify-center text-center md:text-left">
+                            <div
+                                className="hidden md:flex flex-col items-center justify-center text-center md:text-left">
                                 <h2 className="text-4xl font-bold mb-4">パンフレット</h2>
-                                <p  className="text-xl ">制作: 高専祭実行委員会 広報係</p>
-                                <p  className="text-xl mb-4">絵: <span className={"text-sm"}>3年化学･バイオ系</span> 狩原ほなみ<span className={"text-sm"}>さん</span></p>
+                                <p className="text-xl ">制作: 高専祭実行委員会 広報係</p>
+                                <p className="text-xl mb-4">絵: <span
+                                    className={"text-sm"}>3年化学･バイオ系</span> 狩原ほなみ<span
+                                    className={"text-sm"}>さん</span></p>
                                 <Link
                                     href="/top/R7IchinosekiKosensaiPanf.pdf"
-                                    locale={false}
+                                    locale={"false"}
                                     className="bg-[#3D81DB] text-white rounded-full py-3 px-12 text-lg hover:opacity-75 cursor-pointer"
                                 >
                                     ダウンロード
@@ -196,12 +202,14 @@ export default function Home() {
                                         className="rounded-lg object-contain"
                                     />
                                 </div>
-                                <p  className="md:hidden text-xl mt-2">制作: 高専祭実行委員会広報係</p>
-                                <p  className="md:hidden text-xl mb-2">絵: <span className={"text-sm"}>3年化学･バイオ系</span> 狩原ほなみ<span className={"text-sm"}>さん</span></p>
+                                <p className="md:hidden text-xl mt-2">制作: 高専祭実行委員会広報係</p>
+                                <p className="md:hidden text-xl mb-2">絵: <span
+                                    className={"text-sm"}>3年化学･バイオ系</span> 狩原ほなみ<span
+                                    className={"text-sm"}>さん</span></p>
                                 {/* Download Button (Mobile only) */}
                                 <Link
                                     href="/top/R7IchinosekiKosensaiPanf.pdf"
-                                    locale={false}
+                                    locale={"false"}
                                     className="md:hidden w-full bg-[#3D81DB] text-white rounded-full py-3 mt-4 text-lg hover:opacity-75 cursor-pointer text-center"
                                 >
                                     ダウンロード
@@ -210,7 +218,7 @@ export default function Home() {
                         </div>
                     </div>
                 </section>
-                
+
 
             </ScrollContextProvider>
             <Scroller/>
