@@ -18,6 +18,7 @@ interface PosterCarouselProps {
     onDraggingChange?: (isDragging: boolean) => void;
     onChangeIndex?:(value:number)=>void
     initialIndex?:number
+    disable?:boolean
 }
 
 
@@ -40,12 +41,14 @@ const BillboardPoster = memo(function BillboardPoster({
     yRotation,
     onPosterClick,
     index,
+    disable = false
 }: {
     poster: Poster;
     angle: number;
     yRotation: MotionValue<number>;
     onPosterClick: (event: MouseEvent | TouchEvent | PointerEvent, index: number) => boolean | void;
     index: number;
+    disable?:boolean
 }) {
     const currentAngle = useTransform(yRotation, (y) => y + angle);
     const z = useTransform(currentAngle, (a) => Math.cos(a * (Math.PI / 180)));
@@ -86,7 +89,7 @@ const BillboardPoster = memo(function BillboardPoster({
                 willChange: 'transform, opacity, z-index, visibility',
             }}
         >
-            <PosterCard poster={poster}/>
+            <PosterCard poster={poster} modalDisabled={disable}/>
         </motion.div>
     );
 });
@@ -95,7 +98,7 @@ BillboardPoster.displayName = 'BillboardPoster';
 
 
 // --- Main Carousel Component ---
-export function PosterCarouselSP({posters, onDraggingChange, onChangeIndex,initialIndex=0}: PosterCarouselProps) {
+export function PosterCarouselSP({posters, onDraggingChange, onChangeIndex,initialIndex=0,disable = false}: PosterCarouselProps) {
     const yRotation = useMotionValue(0);
     const [screenSize, setScreenSize] = useState({width: 0, height: 0});
 
@@ -191,7 +194,7 @@ export function PosterCarouselSP({posters, onDraggingChange, onChangeIndex,initi
             onPanStart={onPanStart}
             onPan={onPan}
             onPanEnd={onPanEnd}
-            className="w-full  flex items-center  justify-center  cursor-grab active:cursor-grabbing pt-0 touch-pan-y"
+            className="w-full flex items-center  justify-center  cursor-grab active:cursor-grabbing pt-0 touch-pan-y"
             style={{
                 perspective: `${1000}px`,
                 height: `${CONTAINER_HEIGHT}px`,
@@ -214,6 +217,7 @@ export function PosterCarouselSP({posters, onDraggingChange, onChangeIndex,initi
                         onPosterClick={handlePosterClick}
                         index={index}
                         yRotation={yRotation}
+                        disable={disable}
                     />
                 ))}
             </motion.div>
