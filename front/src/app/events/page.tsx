@@ -6,7 +6,7 @@ const ScheduleRow = ({ time, event, organizationPath }: { time: string; event: s
     const content = (
         <>
             <div className="w-1/3 text-light-gold">{time}</div>
-            <div className="w-2/3 flex justify-between items-center">
+            <div className="w-2/3 flex justify-between items-center pl-2">
                 <span>{event}</span>
                 {organizationPath && <span className="text-white/50">&gt;</span>}
             </div>
@@ -15,7 +15,7 @@ const ScheduleRow = ({ time, event, organizationPath }: { time: string; event: s
 
     if (organizationPath) {
         return (
-            <Link href={`/events/${organizationPath}`} className="flex border-t border-white/20 py-3 hover:bg-white/10 cursor-pointer">
+            <Link href={`/events/${organizationPath}`} className="flex first:border-none border-t border-white/20 py-3 hover:bg-white/10 cursor-pointer">
                 {content}
             </Link>
         );
@@ -31,7 +31,7 @@ const ScheduleRow = ({ time, event, organizationPath }: { time: string; event: s
 export default function EventsPage() {
     return (
         <AnimatedContentSection title="イベントスケジュール" sensibility={.2} className={"text-white mt-4 pb-32"}>
-            <div className="flex flex-col gap-8 text-left max-w-4xl px-4 mx-auto">
+            <div className="flex flex-col gap-8 text-left max-w-4xl px-1 mx-auto">
 
                 {/* 第一体育館 */}
                 <div className="bg-white/10 rounded-2xl p-6 shadow-lg">

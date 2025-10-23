@@ -3,7 +3,7 @@ import Image from "next/image";
 import {checkIsFromSameOrigin} from "@/utils/checkIsFromSameOrigin";
 import {headers} from "next/headers";
 
-const LOAD_ANIMATION_TIME = 3.1 // 秒
+const LOAD_ANIMATION_TIME = 2.5 // 秒
 export async function Hero() {
     const animationDelay = checkIsFromSameOrigin(await headers()) ? 0 : LOAD_ANIMATION_TIME; // 同じサイト内から遷移してきたならすぐアニメーション
     return (

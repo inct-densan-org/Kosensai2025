@@ -18,15 +18,15 @@ export default async function OrganizationPage({ params }: { params: Promise<{ o
 
     return (
         <AnimatedContentSection title={details.name} sensibility={.2} className={"text-white"}>
-            <div className="flex flex-col gap-8 text-left max-w-4xl px-4 mx-auto">
-                <div className="bg-white/10 rounded-2xl p-8 shadow-lg">
+            <div className="flex flex-col gap-8 text-left max-w-4xl px-2 mx-auto">
+                <div className="bg-white/10 rounded-2xl p-4 shadow-lg">
                     <div className="mb-6">
                         <Link href="/events" className="text-white/80 hover:text-white transition-colors inline-block">
                             &lt; イベント一覧に戻る
                         </Link>
                     </div>
                     <p className="text-center text-white/80 mb-8">{details.description}</p>
-                    <div className="space-y-4">
+                    <div className="space-y-16">
                         {details.bandSchedule ? (
                             <div className="grid md:grid-cols-2 gap-8">
                                 <div>
@@ -36,11 +36,11 @@ export default async function OrganizationPage({ params }: { params: Promise<{ o
                                             <div key={index} className="bg-white/10 p-4 rounded-lg">
                                                 <p className="font-semibold text-lg text-light-gold">{band["startAt "].trim()}-{band.endAt.trim()}</p>
                                                 <p className="font-bold text-xl mt-1">{band.bandName}</p>
-                                                <ul className="list-disc list-inside text-white/80 mt-2 pl-2">
+                                                <ul className="list-disc list-inside text-white/80 mt-2">
                                                     {band.songs.map((song, songIndex) => (
-                                                        <li key={songIndex}>
+                                                        <li key={songIndex} className={"indent-[-1.5em] pl-[1.5em]"}>
                                                             {song === '$SECRET' ? (
-                                                                <span className="bg-black text-red-400 px-2 py-1 rounded-sm select-none tracking-widest">SECRET. </span>
+                                                                <span className="bg-black text-red-400 px-2 py-1 select-none tracking-widest">SECRET. </span>
                                                             ) : (
                                                                 song
                                                             )}
@@ -62,7 +62,7 @@ export default async function OrganizationPage({ params }: { params: Promise<{ o
                                                     {band.songs.map((song, songIndex) => (
                                                         <li key={songIndex}>
                                                             {song === '$SECRET' ? (
-                                                                <span className="bg-black text-red-400 px-2 py-1 rounded-sm select-none tracking-widest">SECRET. </span>
+                                                                <span className="bg-black text-red-400 px-2 py-1 select-none tracking-widest">SECRET</span>
                                                             ) : (
                                                                 song
                                                             )}

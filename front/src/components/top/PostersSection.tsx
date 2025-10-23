@@ -18,7 +18,7 @@ export function PostersSection() {
 
             {/* スマホ用テキスト */}
             <div
-                className="lg:hidden absolute h-full w-full top-0 left-1/2 translate-x-[-50%] flex flex-col  justify-start items-center text-center text-white">
+                className="lg:hidden absolute h-full w-full top-0  left-1/2 pt-16 translate-x-[-50%] flex flex-col justify-start items-center text-center text-white">
                 <FadeInWhenVisible>
                     <h2 className={" block mt-auto text-[5vh]"}>屋台・自主企画</h2>
                 </FadeInWhenVisible>
