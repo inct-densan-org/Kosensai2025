@@ -186,7 +186,7 @@ export function MapPage({
 
 function TEXT({text,size}:{text:string,size:number}){
   return (
-    <div className="text-black font-bold bg-gray-300 border-black" style={{ fontSize: `${size /45}px` ,padding: `${size/120}px`, borderRadius: `${size/200}px`}}>
+    <div className="text-black font-bold bg-gray-300 border-black" style={{ fontSize: `${size /45 - (text.length>=8?3:0)}px` ,padding: `${size/120}px`, borderRadius: `${size/200}px`}}>
       {text}
     </div>
   )
