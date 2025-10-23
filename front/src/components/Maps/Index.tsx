@@ -127,24 +127,29 @@ export function MapPage({
                     <NumberedPin number={postersData[e.idx].mapId} force={e.idx === currentId} size={size}/>
                   }
                   title={postersData[e.idx].title}
-                  ModalClass="fixed inset-0 z-[1000] top-1/2 left-1/2 translate-x-[-45vw] -translate-y-1/2 w-[90vw] md:w-[60vw] md:translate-x-[-30vw] "
-                >
-                                      <div className="relative w-full aspect-[277/392] mb-4">
-                                          <Image
-                                              src={postersData[e.idx].images[0]}
-                                              alt={postersData[e.idx].title}
-                                              fill={true}
-                                              className="object-contain"
-                                          />
-                                      </div>
-                                      <p className="whitespace-pre-wrap">{postersData[e.idx].desc}</p>
-                                      {postersData[e.idx].images.length > 0 && (
-                                          <div className="flex mt-4 space-x-2 overflow-x-auto">
-                                              {postersData[e.idx].images.slice(1).map((img, index) => (
-                                                  <Image key={index} src={img} alt={`${postersData[e.idx].title} - image ${index + 2}`} width={100} height={100} className="object-cover rounded" />
-                                              ))}
-                                          </div>
-                                      )}
+                  ModalClass="fixed inset-0 z-[1000] top-12 left-1/2 translate-x-[-45vw] translate-y-0! w-[90vw] md:w-[60vw] md:translate-x-[-30vw] h-[400px]!  "
+                  className="object-contain"
+                  >
+                  <div
+                  className="h-[70dvh]! flex flex-col "
+                  >
+                    <p className="whitespace-pre-wrap grow-0">{postersData[e.idx].desc}</p>
+                    <div className="relative  mb-4 h-auto w-auto aspect-[277/392] mx-auto grow">
+                      <Image
+                          src={postersData[e.idx].images[0]}
+                          alt={postersData[e.idx].title}
+                          fill={true}
+                          className="object-contain "
+                      />
+                    </div>
+                    {postersData[e.idx].images.length > 0 && (
+                        <div className="flex mt-4 space-x-2 overflow-x-auto">
+                            {postersData[e.idx].images.slice(1).map((img, index) => (
+                              <Image key={index} src={img} alt={`${postersData[e.idx].title} - image ${index + 2}`} width={100} height={100} className="object-cover rounded" />
+                            ))}
+                        </div>
+                    )}
+                    </div>
                 </Modal>
               </div>
             ))}

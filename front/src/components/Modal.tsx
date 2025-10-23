@@ -1,4 +1,4 @@
-
+import { VisuallyHidden } from "@radix-ui/react-visually-hidden"
 import React from "react";
 import {Dialog, DialogContent, DialogTitle, DialogTrigger} from "./ui/dialog";
 import { cn } from "@/lib/utils";
@@ -29,7 +29,9 @@ export function Modal({
         </button>
       </DialogTrigger>
       <DialogContent className={cn("bg-transparent border-none shadow-none p-0 w-auto max-w-none",ModalClass)}>
-      <DialogTitle ></DialogTitle>
+      
+      <DialogTitle className="w-0! h-0! hidden">
+      </DialogTitle>
         <Window title={title} subtitle={subtitle} className={cn("max-h-[80vh] w-[90vw] md:w-[60vw]", className)}>
           {children}
         </Window>
