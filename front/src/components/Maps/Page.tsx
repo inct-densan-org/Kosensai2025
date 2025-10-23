@@ -75,10 +75,37 @@ export function MapPageClient({sameOrigin}:{sameOrigin:boolean}) {
             <SlideMenu open={open} onOpenChange={onOpenChange} mode={width > height ? "left" : "top"}
                 onChangeIndex={setIndex} index={index} />
             <div style={open ? (width > height ? { paddingLeft: 300 } : { paddingTop: 450 }) : { paddingTop: '100px' }}>
-                <AnimatedContentSection title="マップ" sensibility={.2} className={"text-white pb-32"}>
+                <AnimatedContentSection title="校内マップ" sensibility={.2} className={"text-white pb-32"}>
                     <div
                         className={`px-4 md:px-12 py-0 flex flex-col items-center gap-16 ${width > height ? "justify-center" : ""}`}>
-                        <span className={`${width < height ? "scroll-offset" : ""}`} id="map1"></span>
+                        <div className="bg-white/10 rounded-2xl p-6 shadow-lg text-white mb-12 w-full max-w-[700px]">
+                            <h3 className="text-2xl font-bold mb-4 text-center">※ゴミの分別にご協力ください</h3>
+                            <ul className="list-disc list-inside space-y-2 mb-4 text-left">
+                                <li>ゴミ箱は、屋外マップに表示されている指定の場所に設置されています。</li>
+                                <li>ペットボトルは、ラベルとキャップを外し、それぞれ「燃えるごみ」として捨ててください。</li>
+                                <li>ビン・カン類も同様に、分別にご協力ください。</li>
+                                <li>その他のごみについても、ゴミ箱の表示に従って正しい分別をお願いいたします。</li>
+                            </ul>
+                            <p className="text-sm text-left">
+                                詳細な分別方法については、一関市のガイドラインをご参照ください。
+                            </p>
+                            <a 
+                                href="https://www.city.ichinoseki.iwate.jp/~kouiki-gyousei/garbage/21/335/" 
+                                target="_blank" 
+                                rel="noopener noreferrer"
+                                className="text-blue-300 hover:underline mt-2 inline-block"
+                            >
+                                一関市ホームページ：ごみの分け方・出し方
+                            </a>
+                            <a 
+                                href="/一関市ゴミ分別表.pdf" 
+                                target="_blank" 
+                                rel="noopener noreferrer"
+                                className="text-blue-300 hover:underline mt-2 ml-4 inline-block"
+                            >
+                                分別方法の詳細はこちら (PDF)
+                            </a>
+                        </div>                        <span className={`${width < height ? "scroll-offset" : ""}`} id="map1"></span>
                         <MapPage base={map1.image} shops={map1.shops} labels={map1.labels} statics={map1.statics}
                             currentId={index} w={width - (width > height ? 320 : 0)} long={!isSameOrigin} />
                         <span className={`${width < height ? "scroll-offset" : ""}`} id="map2"></span>
