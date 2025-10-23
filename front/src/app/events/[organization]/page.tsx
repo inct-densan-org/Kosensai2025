@@ -1,68 +1,6 @@
 import { AnimatedContentSection } from "@/components/top/AnimatedContentSection";
+import { organizationDetails } from "@/organizations.data";
 import Link from "next/link";
-
-// データ構造
-const organizationDetails: { [key: string]: { name: string; description: string; schedule: { time: string; location: string; }[] } } = {
-    "bands": {
-        name: "軽音楽部",
-        description: "両日ともに第一体育館で演奏します。熱いライブをぜひご覧ください！",
-        schedule: [
-            { time: "10月25日(土) 9:00~15:30", location: "第一体育館" },
-            { time: "10月26日(日) 9:00~15:30", location: "第一体育館" },
-        ],
-    },
-    "brass-band": {
-        name: "吹奏楽部",
-        description: "第二体育館で演奏会を行います。美しい音色をお楽しみください。",
-        schedule: [
-            { time: "10月25日(土) 10:30~11:30", location: "第二体育館" },
-        ],
-    },
-    "dance": {
-        name: "ダンス部",
-        description: "第一体育館のステージでパワフルなダンスを披露します。",
-        schedule: [
-            { time: "10月25日(土) 15:30~17:00", location: "第一体育館" },
-        ],
-    },
-    "yosakoi": {
-        name: "よさこい",
-        description: "専攻科棟前で迫力のある演舞を披露します。雨天時は第二体育館で行います。",
-        schedule: [
-            { time: "10月25日(土) 12:00~12:30", location: "専攻科棟前" },
-            { time: "10月26日(日) 12:00~12:30", location: "専攻科棟前 (雨天時: 第二体育館)" },
-        ],
-    },
-    "densan-dj": {
-        name: "電子計算機部 DJ",
-        description: "第一体育館がクラブハウスに！DJパフォーマンスをお楽しみください。",
-        schedule: [
-            { time: "10月26日(日) 15:30~16:30", location: "第一体育館" },
-        ],
-    },
-    "volunteer-stage": {
-        name: "有志発表",
-        description: "学生有志による様々なパフォーマンスが繰り広げられます。",
-        schedule: [
-            { time: "10月26日(日) 16:30~18:00", location: "第一体育館" },
-        ],
-    },
-    "mechanical-tech": {
-        name: "機械技術部",
-        description: "第二体育館で活動内容の展示やデモンストレーションを行います。",
-        schedule: [
-            { time: "10月25日(土) 13:00~17:00", location: "第二体育館" },
-            { time: "10月26日(日) 9:00~11:00", location: "第二体育館" },
-        ],
-    },
-    "i-scream": {
-        name: "I scream!",
-        description: "専攻科棟前で叫びフェスを開催！豪華景品も用意しています。",
-        schedule: [
-            { time: "10月26日(日) 11:00~12:00", location: "専攻科棟前" },
-        ],
-    },
-};
 
 export default async function OrganizationPage({ params }: { params: Promise<{ organization: string }> }) {
     const details = organizationDetails[(await params).organization];
@@ -84,18 +22,55 @@ export default async function OrganizationPage({ params }: { params: Promise<{ o
                 <div className="bg-white/10 rounded-2xl p-8 shadow-lg">
                     <p className="text-center text-white/80 mb-8">{details.description}</p>
                     <div className="space-y-4">
-                        {details.schedule.map((item, index) => (
-                            <div key={index} className="bg-white/10 p-4 rounded-lg flex items-center gap-4">
-                                <div className="w-1/2">
-                                    <p className="font-semibold">日時</p>
-                                    <p className="text-lg">{item.time}</p>
+                        {details.bandSchedule ? (
+                            <div className="grid md:grid-cols-2 gap-8">
+                                <div>
+                                    <h4 className="text-xl font-semibold mb-4 text-center border-b border-white/30 pb-2">10月25日 (土)</h4>
+                                    <div className="flex flex-col gap-4">
+                                        {details.bandSchedule[0].map((band, index) => (
+                                            <div key={index} className="bg-white/10 p-4 rounded-lg">
+                                                <p className="font-semibold text-lg text-light-gold">{band["startAt "].trim()}-{band.endAt.trim()}</p>
+                                                <p className="font-bold text-xl mt-1">{band.bandName}</p>
+                                                <ul className="list-disc list-inside text-white/80 mt-2 pl-2">
+                                                    {band.songs.map((song, songIndex) => (
+                                                        <li key={songIndex}>{song}</li>
+                                                    ))}
+                                                </ul>
+                                            </div>
+                                        ))}
+                                    </div>
                                 </div>
-                                <div className="w-1/2">
-                                    <p className="font-semibold">場所</p>
-                                    <p className="text-lg">{item.location}</p>
+                                <div>
+                                    <h4 className="text-xl font-semibold mb-4 text-center border-b border-white/30 pb-2">10月26日 (日)</h4>
+                                    <div className="flex flex-col gap-4">
+                                        {details.bandSchedule[1].map((band, index) => (
+                                            <div key={index} className="bg-white/10 p-4 rounded-lg">
+                                                <p className="font-semibold text-lg text-light-gold">{band["startAt "].trim()}-{band.endAt.trim()}</p>
+                                                <p className="font-bold text-xl mt-1">{band.bandName}</p>
+                                                <ul className="list-disc list-inside text-white/80 mt-2 pl-2">
+                                                    {band.songs.map((song, songIndex) => (
+                                                        <li key={songIndex}>{song}</li>
+                                                    ))}
+                                                </ul>
+                                            </div>
+                                        ))}
+                                    </div>
                                 </div>
                             </div>
-                        ))}
+                        ) : (
+                            details.schedule?.map((item, index) => (
+                                <div key={index} className="bg-white/10 p-4 rounded-lg flex items-center gap-4">
+                                    <div className="w-1/2">
+                                        <p className="font-semibold">日時</p>
+                                        <p className="text-lg">{item.time}</p>
+                                    </div>
+                                    <div className="w-1/2">
+                                        <p className="font-semibold">場所</p>
+                                        <p className="text-lg">{item.location}</p>
+                                    </div>
+                                </div>
+                            ))
+                        )}
                     </div>
                     <div className="text-center mt-10">
                         <Link href="/events" className="py-3 px-8 rounded-full bg-white/20 text-white hover:bg-white/30 transition-colors duration-300 transform hover:scale-105">
