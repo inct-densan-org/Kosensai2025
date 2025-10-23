@@ -20,6 +20,11 @@ export default async function OrganizationPage({ params }: { params: Promise<{ o
         <AnimatedContentSection title={details.name} sensibility={.2} className={"text-white"}>
             <div className="flex flex-col gap-8 text-left max-w-4xl px-4 mx-auto">
                 <div className="bg-white/10 rounded-2xl p-8 shadow-lg">
+                    <div className="mb-6">
+                        <Link href="/events" className="text-white/80 hover:text-white transition-colors inline-block">
+                            &lt; イベント一覧に戻る
+                        </Link>
+                    </div>
                     <p className="text-center text-white/80 mb-8">{details.description}</p>
                     <div className="space-y-4">
                         {details.bandSchedule ? (

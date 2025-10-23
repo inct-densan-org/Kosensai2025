@@ -21,12 +21,20 @@ export const firstGymSchedule: { day1: ScheduleEvent[]; day2: ScheduleEvent[] } 
 export const secondGymSchedule: { day1: ScheduleEvent[]; day2: ScheduleEvent[] } = {
     day1: [
         { time: "10:30~11:30", event: "吹奏楽部", organizationPath: "brass-band" },
-        { time: "12:00~12:30", event: "よさこい部", organizationPath: "yosakoi" },
         { time: "13:00~17:00", event: "機械技術部", organizationPath: "mechanical-tech" },
     ],
     day2: [
         { time: "9:00~11:00", event: "機械技術部", organizationPath: "mechanical-tech" },
-        { time: "12:00~12:30", event: "よさこい部", organizationPath: "yosakoi" },
+        { time: "12:00~14:00", event: "休憩所"},
         { time: "14:00~14:50", event: "○×ゲーム" },
+    ],
+};
+
+export const advancedCourseBuildingSchedule: { day1: ScheduleEvent[]; day2: ScheduleEvent[] } = {
+    day1: [
+        { time: "12:00~12:30", event: "よさこい部", organizationPath: "yosakoi" },
+    ],
+    day2: [
+        { time: "12:00~12:30", event: "よさこい部", organizationPath: "yosakoi" },
     ],
 };

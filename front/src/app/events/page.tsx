@@ -1,13 +1,32 @@
 import { AnimatedContentSection } from "@/components/top/AnimatedContentSection";
-import { firstGymSchedule, secondGymSchedule } from "@/events.data";
+import { firstGymSchedule, secondGymSchedule, advancedCourseBuildingSchedule } from "@/events.data";
 import Link from "next/link";
 
-const ScheduleRow = ({ time, event, organizationPath }: { time: string; event: string; organizationPath?: string }) => (
-    <Link href={organizationPath ? `/events/${organizationPath}` : "#"} className={`flex border-t border-white/20 py-3 ${organizationPath ? "hover:bg-white/10 cursor-pointer" : ""}`}>
-        <div className="w-1/3 text-light-gold">{time}</div>
-        <div className="w-2/3">{event}</div>
-    </Link>
-);
+const ScheduleRow = ({ time, event, organizationPath }: { time: string; event: string; organizationPath?: string }) => {
+    const content = (
+        <>
+            <div className="w-1/3 text-light-gold">{time}</div>
+            <div className="w-2/3 flex justify-between items-center">
+                <span>{event}</span>
+                {organizationPath && <span className="text-white/50">&gt;</span>}
+            </div>
+        </>
+    );
+
+    if (organizationPath) {
+        return (
+            <Link href={`/events/${organizationPath}`} className="flex border-t border-white/20 py-3 hover:bg-white/10 cursor-pointer">
+                {content}
+            </Link>
+        );
+    }
+
+    return (
+        <div className="flex border-t border-white/20 py-3 cursor-default">
+            {content}
+        </div>
+    );
+};
 
 export default function EventsPage() {
     return (
@@ -35,7 +54,7 @@ export default function EventsPage() {
                 </div>
 
                 {/* 第二体育館 */}
-                <div className="bg-white/10 rounded-2xl p-6 shadow-lg mb-36">
+                <div className="bg-white/10 rounded-2xl p-6 shadow-lg">
                     <h3 className="text-3xl font-bold mb-6 text-center">第二体育館</h3>
                     <div className="grid md:grid-cols-2 gap-8">
                         <div>
@@ -51,7 +70,26 @@ export default function EventsPage() {
                             </div>
                         </div>
                     </div>
-                    <p className="text-xs text-center mt-4 text-white/70">※雨天時はスケジュールが変更になる可能性があります。</p>
+                </div>
+
+                {/* 専攻科棟前 */}
+                <div className="bg-white/10 rounded-2xl p-6 shadow-lg mb-36">
+                    <h3 className="text-3xl font-bold mb-6 text-center">専攻科棟前</h3>
+                    <div className="grid md:grid-cols-2 gap-8">
+                        <div>
+                            <h4 className="text-xl font-semibold mb-4 text-center border-b border-white/30 pb-2">10月25日 (土)</h4>
+                            <div className="flex flex-col">
+                                {advancedCourseBuildingSchedule.day1.map((item, index) => <ScheduleRow key={index} {...item} />)}
+                            </div>
+                        </div>
+                        <div>
+                            <h4 className="text-xl font-semibold mb-4 text-center border-b border-white/30 pb-2">10月26日 (日)</h4>
+                            <div className="flex flex-col">
+                                {advancedCourseBuildingSchedule.day2.map((item, index) => <ScheduleRow key={index} {...item} />)}
+                            </div>
+                        </div>
+                    </div>
+                    <p className="text-xs text-center mt-4 text-white/70">※雨天時は第二体育館で実施します。</p>
                 </div>
             </div>
         </AnimatedContentSection>
