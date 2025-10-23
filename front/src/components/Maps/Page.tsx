@@ -54,7 +54,6 @@ export function MapPageClient({sameOrigin}:{sameOrigin:boolean}) {
             }, isSameOrigin ? 50 : 3000);
         };
         update();
-        console.log(index)
         window.addEventListener('resize', update)
         return () => window.removeEventListener('resize', update)
     }, [index])
