@@ -11,6 +11,7 @@ import "./style.css"
 import { AnimatedContentSection } from "@/components/top/AnimatedContentSection";
 import Navigation from "@/components/top/Navigation";
 
+const MAX_INDEX = 54
 export function MapPageClient({sameOrigin}:{sameOrigin:boolean}) {
     const cache = Number(useSearchParams().get("index") ?? -1)
     const [index, setIndex] = useState(cache);
@@ -21,11 +22,12 @@ export function MapPageClient({sameOrigin}:{sameOrigin:boolean}) {
 
     useEffect(() => {
         // 現在のページのオリジンとリファラーを比較
-        console.log(sameOrigin)
         setIndex(cache)
     }, []);
     useEffect(() => {
         const update = () => {
+            index>54 && setIndex(index-55)
+            index<0 && setIndex(index+55)
             const currentWidth = window.innerWidth;
             const currentHeight = window.innerHeight;
             setWidth(currentWidth);
@@ -52,6 +54,7 @@ export function MapPageClient({sameOrigin}:{sameOrigin:boolean}) {
             }, isSameOrigin ? 50 : 3000);
         };
         update();
+        console.log(index)
         window.addEventListener('resize', update)
         return () => window.removeEventListener('resize', update)
     }, [index])

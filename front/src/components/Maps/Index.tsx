@@ -103,7 +103,7 @@ export function MapPage({
     const currentShop = shops.find(shop => shop.idx === currentId);
     if (!currentShop) return;
 
-    const ZOOM_SCALE = 4;
+    const ZOOM_SCALE = 3.2;
     const targetX = (currentShop.x / 100) * size;
     const targetY = (currentShop.y / 100) * size;
     const offsetX = size / 2 - targetX * ZOOM_SCALE;
@@ -112,7 +112,7 @@ export function MapPage({
     // 少し待ってからズーム（例: 1秒）
     const timer = setTimeout(() => {
       transformRef.current.setTransform(offsetX, offsetY, ZOOM_SCALE);
-    }, long ? 4000 : 1000); // 1000ms後に実行
+    }, long ? 3500 : 600); // 1000ms後に実行
 
     return () => clearTimeout(timer); // クリーンアップ
   }, [currentId, shops, size]);
