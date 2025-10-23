@@ -47,8 +47,8 @@ export default function RootLayout({
     return (
         <html lang="ja" className={"overflow-x-hidden hidden-scrollbar"}>
         <body className={dotGothic16Font.className}>
-        <LandingLoadAnimation/>
         <Suspense fallback={<Loading/>}>
+            <LandingLoadAnimation/>
             {children}
         </Suspense>
         </body>
