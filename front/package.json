@@ -17,6 +17,7 @@
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "dompurify": "^3.3.0",
+    "framer-motion": "^12.23.24",
     "hono": "^4.9.8",
     "lucide-react": "^0.544.0",
     "motion": "^12.23.22",
@@ -25,6 +26,7 @@
     "react-dom": "19.1.0",
     "react-scroll": "^1.9.3",
     "swiper": "^12.0.2",
+    "react-zoom-pan-pinch": "^3.7.0",
     "tailwind-merge": "^3.3.1"
   },
   "devDependencies": {

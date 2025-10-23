@@ -14,22 +14,23 @@ type Poster = {
 interface PosterCardProps {
     poster: Poster;
     modalDisabled?: boolean;
+    size?:number|null
 }
 
 // Define PosterImage outside of PosterCard to prevent it from being re-created on every render.
 // This is crucial for performance and preventing re-mounts.
-const PosterImage = ({ poster }: { poster: Poster }) => (
+const PosterImage = ({ poster, size=null }: { poster: Poster, size?:number|null }) => (
     <Image
         src={poster.images[0]} // Use the first image as the trigger
         alt={poster.title}
         fill={true}
-        sizes="(max-width: 768px) 277px, 400px"
+        sizes={`(max-width: 768px) ${size?`${size}, ${size*400/277}`:"277px, 400px"}`}
         className="absolute! object-fill! w-full! h-full!"
         draggable={false}
     />
 );
 
-export function PosterCard({ poster, modalDisabled = false }: PosterCardProps) {
+export function PosterCard({ poster, modalDisabled = false, size=null }: PosterCardProps) {
     // Do not render if there are no images
     if (!poster.images || poster.images.length === 0) {
         return null;
@@ -37,11 +38,13 @@ export function PosterCard({ poster, modalDisabled = false }: PosterCardProps) {
 
     return (
         <div
-            className="relative w-[277px] h-[392px] md:w-[400px] md:h-[566px] bg-gray-200 rounded-lg overflow-hidden shadow-lg select-none drop-shadow-xl drop-shadow-gray-800">
+            className={`relative md:w-[400px] md:h-[566px] bg-gray-200 rounded-lg overflow-hidden shadow-lg select-none drop-shadow-xl drop-shadow-gray-800`}
+            style={{ width: size ?? 277, height: size?size*392/277:392 }}
+            >
             {modalDisabled ? (
-                <PosterImage poster={poster} />
+                <PosterImage poster={poster} size={size}/>
             ) : (
-                <Modal button={<PosterImage poster={poster} />} title={poster.title}>
+                <Modal button={<PosterImage poster={poster} size={size}/>} title={poster.title}>
                     <div className="relative w-full aspect-[277/392] mb-4">
                         <Image
                             src={poster.images[0]}
