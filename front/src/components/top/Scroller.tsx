@@ -10,7 +10,10 @@ const Scroller = () => {
 
         const allSections = document.querySelectorAll('.scroll-section');
         // display: noneがあたっているものはスクロール対象に含めないことに
-        const sections = Array.from(allSections).filter((section) => (section.computedStyleMap().get("display") as CSSKeywordValue).value !== "none");
+        const sections = Array.from(allSections).filter((section) => {
+            const style = window.getComputedStyle(section);
+            return style.display !== "none";
+        });
 
 
         const observer = new IntersectionObserver((entries) => {
