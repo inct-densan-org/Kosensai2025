@@ -9,11 +9,15 @@
   "dependencies": {
     "@hono/node-server": "^1.19.4",
     "@hono/zod-validator": "^0.7.3",
+    "dompurify": "^3.1.5",
     "hono": "^4.9.8",
+    "jsdom": "^24.1.0",
     "microcms-js-sdk": "^3.2.0",
     "zod": "^4.1.11"
   },
   "devDependencies": {
+    "@types/dompurify": "^3.0.5",
+    "@types/jsdom": "^21.1.7",
     "@types/node": "^20.11.17",
     "tsx": "^4.7.1",
     "typescript": "^5.8.3"

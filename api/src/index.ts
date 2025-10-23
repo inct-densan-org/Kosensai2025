@@ -3,14 +3,19 @@ import { Hono } from 'hono'
 import { cors } from 'hono/cors'
 import { zValidator } from '@hono/zod-validator'
 import { CMS_client as client } from './utils.js'
+import createDOMPurify from 'dompurify';
+import { JSDOM } from 'jsdom';
 //↑モジュールたち
 //↓型定義ファイル
 import { request, type NewsData, type NewsList } from './schema.js'
 import z from 'zod'
 
+const window = new JSDOM('').window;
+const DOMPurify = createDOMPurify(window as any);
+
 const app = new Hono()
   .use(cors({
-    origin: ["http://localhost:3000"]
+    origin: [process.env.FRONTEND_URL || "http://localhost:3555"]
   }))
   .get('/', (c) => {
     return c.json({ message: "hono API is running"})
@@ -21,17 +26,16 @@ const app = new Hono()
   })
 
   .get('/news',async (c)=>{
-      const data = (await client.get({
+      const contents = (await client.get({
         endpoint: "list"
-      }))["contents"] as NewsData[]
-      data.map(i=>({
-        id:i.id,
-        title:i.title,
-        description:i.description,
-        createdAt:i.createdAt
-      }))
-      data as NewsList[]
-      return c.json( {data}, 200 )
+      }))["contents"] as NewsData[];
+      const data: NewsList[] = contents.map(i => ({
+        id: i.id,
+        title: i.title,
+        tag: i.tag,
+        publishedAt: i.publishedAt
+      }));
+      return c.json( {data}, 200 );
   })
 
   .get("news/:id", zValidator( "param", z.object({id:z.string()}) ), async (c)=>{
@@ -40,10 +44,13 @@ const app = new Hono()
       endpoint: 'list',
       contentId: id,
     }) as NewsData
+    if (data.body) {
+        data.body = DOMPurify.sanitize(data.body, { ADD_ATTR: ["target"] });
+    }
     return c.json( {data}, 200)
   })
 
-export type AppType = typeof app  
+export type AppType = typeof app
 serve({
   fetch: app.fetch,
   port: 8000
