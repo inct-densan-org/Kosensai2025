@@ -129,7 +129,7 @@ export function MapPage({
                   title={postersData[e.idx].title}
                   ModalClass="fixed inset-0 z-[1000] top-12 left-1/2 translate-x-[-45vw] translate-y-0! w-[90vw] md:w-[60vw] md:translate-x-[-30vw] h-[400px]!  "
                   className="object-contain"
-                  >
+                >
                   <div
                   className="h-[70dvh]! flex flex-col "
                   >
@@ -165,8 +165,11 @@ export function MapPage({
                 }}
               >
                 {e.timeTable?
-                  <Modal button={<NumberedPin color={e.color} number={e.id} size={size}/>} title="バス時刻表" ModalClass="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
-                    <div>
+                  <Modal button={<NumberedPin color={e.color} number={e.id} size={size}/>} title="バス時刻表"
+                    ModalClass="fixed inset-0 z-[1000] top-12 left-1/2 translate-x-[-45vw] translate-y-0! w-[90vw] md:w-[60vw] md:translate-x-[-30vw] h-[400px]!  "
+                    className="object-contain"
+                  >
+                    <div className="flex items-center">
                       <BusTimetable/>
                     </div>
                   </Modal>:

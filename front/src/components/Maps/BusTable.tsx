@@ -24,7 +24,7 @@ export function BusTimetable() {
     nextBusTime ? Math.round((nextBusTime.getTime() - currentTime.getTime()) / 60000) : null;
 
   return (
-    <div className="p-0">
+    <div className="p-0 w-full h-full flex-col">
       <div className="mt-3 text-sm text-gray-300 text-right">
         現在時刻：{currentTime.toTimeString().slice(0, 5)}
       </div>      
@@ -38,7 +38,7 @@ export function BusTimetable() {
         <div className="my-3 text-left text-gray-100">本日の運行は終了しました</div>
       )}
 
-      <div className="space-y-1 flex items-end">
+      <div className="space-y-1 flex-wrap flex items-end">
         {times.map((time, idx) => {
           const busTime = toDate(time);
           const isPast = busTime < currentTime;
@@ -47,7 +47,7 @@ export function BusTimetable() {
           return (
             <div
               key={time}
-              className={`text-center transition-all rounded bg-white/80 p-2 m-1 flex items-center justify-center ${
+              className={`text-center transition-all rounded bg-white/80 p-2 m-1 flex items-center justify-center max-w-[60px] ${
                 isNext
                   ? "font-bold text-blue-500 text-xl !p-3"
                   : isPast
