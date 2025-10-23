@@ -1,6 +1,16 @@
 import { AnimatedContentSection } from "@/components/top/AnimatedContentSection";
 import { firstGymSchedule, secondGymSchedule, advancedCourseBuildingSchedule } from "@/events.data";
 import Link from "next/link";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+    title: "イベントスケジュール | 高専祭2025",
+    description: "高専祭で開催されるイベントのタイムスケジュール一覧です。各体育館や専攻科棟前での催し物の時間と場所を確認できます。",
+    openGraph: {
+        title: "イベントスケジュール | 高専祭2025",
+        description: "高専祭で開催されるイベントのタイムスケジュール一覧です。",
+    },
+};
 
 const ScheduleRow = ({ time, event, organizationPath }: { time: string; event: string; organizationPath?: string }) => {
     const content = (

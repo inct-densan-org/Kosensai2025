@@ -1,6 +1,29 @@
 import { AnimatedContentSection } from "@/components/top/AnimatedContentSection";
 import { organizationDetails } from "@/organizations.data";
 import Link from "next/link";
+import { Metadata } from "next";
+
+export async function generateMetadata({ params }: { params: { organization: string } }): Promise<Metadata> {
+    const details = organizationDetails[params.organization];
+
+    if (!details) {
+        return {
+            title: "団体が見つかりません | 高専祭2025",
+        };
+    }
+
+    const title = `${details.name} | 高専祭2025`;
+    const description = details.description;
+
+    return {
+        title,
+        description,
+        openGraph: {
+            title,
+            description,
+        },
+    };
+}
 
 export default async function OrganizationPage({ params }: { params: Promise<{ organization: string }> }) {
     const details = organizationDetails[(await params).organization];

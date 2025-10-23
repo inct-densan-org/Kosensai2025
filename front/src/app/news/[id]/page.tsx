@@ -2,6 +2,49 @@ import {client} from "@/utils/api-client";
 import {NewsData} from "@api/schema";
 import Link from "next/link";
 import Navigation from "@/components/top/Navigation";
+import { Metadata } from "next";
+
+// HTMLタグを除去し、テキストを要約するヘルパー
+const createDescription = (html: string) => {
+    if (!html) return "";
+    const text = html.replace(/<[^>]*>?/gm, '').replace(/&nbsp;/g, ' ');
+    if (text.length <= 120) {
+        return text;
+    }
+    return text.substring(0, 120) + "...";
+};
+
+export async function generateMetadata({ params }: { params: { id: string } }): Promise<Metadata> {
+    const { id } = params;
+    try {
+        const res = await client.news[id].$get();
+        if (!res.ok) {
+            return { title: "記事が見つかりません | 高専祭2025" };
+        }
+        const { data: news } = await res.json();
+
+        if (!news) {
+            return { title: "記事が見つかりません | 高専祭2025" };
+        }
+
+        const title = `${news.title.replace(/<[^>]*>?/gm, '')} | 高専祭2025`;
+        const description = createDescription(news.body || "");
+
+        return {
+            title,
+            description,
+            openGraph: {
+                title,
+                description,
+            },
+        };
+    } catch (e) {
+        return {
+            title: "エラー | 高専祭2025",
+            description: "記事の取得中にエラーが発生しました。",
+        };
+    }
+}
 
 export const revalidate = 0;
 

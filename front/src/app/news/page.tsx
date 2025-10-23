@@ -2,6 +2,16 @@ import { client } from "@/utils/api-client";
 import { NewsList } from "@api/schema";
 import Link from "next/link";
 import Navigation from "@/components/top/Navigation";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+    title: "お知らせ | 高専祭2025",
+    description: "高専祭に関する最新のお知らせ一覧です。",
+    openGraph: {
+        title: "お知らせ | 高専祭2025",
+        description: "高専祭に関する最新のお知らせ一覧です。",
+    },
+};
 
 export const revalidate = 0;
 
