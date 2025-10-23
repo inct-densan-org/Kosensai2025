@@ -85,6 +85,7 @@ export const map2:Data = {
     { idx:26, x:24.7, y:31 },
     { idx:34, x:40, y:57 },
     { idx:37, x:83.8, y:43 },
+    { idx:30, x:25, y:53 },
   ],
   labels:[
     { name:"管理・教育棟 1F", x:10, y:20 },
@@ -100,7 +101,7 @@ export const map3:Data = {
     { idx:27, x:37.6, y:54 },
     { idx:28, x:45, y:54 },
     { idx:29, x:53, y:54 },
-    { idx:31, x:60.9, y:78 },
+    { idx:52, x:60.9, y:78 },
     { idx:36, x:39.1, y:21 },
   ],
   labels:[
