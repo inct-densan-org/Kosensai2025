@@ -101,7 +101,7 @@ useEffect(() => {
   const currentShop = shops.find(shop => shop.idx === currentId);
   if (!currentShop) return;
 
-  const ZOOM_SCALE = 4;
+  const ZOOM_SCALE = 2;
   const x = (currentShop.x / 100) * size;
   const y = (currentShop.y / 100) * size;
 

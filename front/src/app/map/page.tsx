@@ -29,8 +29,10 @@ export default function Page() {
     }, []);
     useEffect(() => {
         const update = () => {
-            setWidth(window.innerWidth);
-            setHeight(window.innerHeight);
+            const currentWidth = window.innerWidth;
+            const currentHeight = window.innerHeight;
+            setWidth(currentWidth);
+            setHeight(currentHeight);
             onOpenChange(index != -1);
 
             setTimeout(() => {
@@ -39,13 +41,23 @@ export default function Page() {
                 );
                 const id = matched?.id;
                 const el = document.getElementById(id ?? "map1");
-                el?.scrollIntoView({behavior: "smooth"});
+                if (!el) return;
+                const isVertical = currentWidth < currentHeight;
+                if (isVertical) {
+                    const rect = el.getBoundingClientRect();
+                    const scrollPosition = (window.pageYOffset || document.documentElement.scrollTop || 0) + rect.top;
+                    const OFFSET = 340;
+                    window.scrollTo({top: Math.max(scrollPosition - OFFSET, 0), behavior: "smooth"});
+                } else {
+                    el.scrollIntoView({behavior: "smooth"});
+                }
+                setIsSameOrigin(true)
             }, isSameOrigin?50:2000);
         };
         update();
         window.addEventListener('resize', update)
         return () => window.removeEventListener('resize', update)
-    }, [index,isSameOrigin])
+    }, [index])
 
     if (!width || !height) return null;
 

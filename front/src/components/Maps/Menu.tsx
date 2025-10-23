@@ -52,7 +52,7 @@ export default function SlideMenu({
           isTop
           ? <PosterCarouselSP posters={posters} onChangeIndex={onChangeIndex} initialIndex={index} disable/>
           : 
-          <div className="translate-x-[25%]">
+          <div className="translate-x-[0%] w-[220px]">
             <PosterCarousel posters={posters} onSelectedIndexChange={onChangeIndex} initialIndex={index} size={200}/>
           </div>
         }
@@ -60,7 +60,7 @@ export default function SlideMenu({
       <div className="flex items-end w-full h-full justify-center">
         <Button
           onClick={() => onOpenChange(false)}
-          className={`px-3 py-2 rounded ml-2 ${isTop?"":"aspect-square mt-3 ml-18"}`}
+          className={`px-3 py-2 rounded ml-2 ${isTop?"":"aspect-square mt-3 ml-0"}`}
           variant="outline"
           >
           {isTop?"閉じる":<XIcon/>}
