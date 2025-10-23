@@ -387,7 +387,7 @@ export const postersData = [
     },
     {
         "mapId": 50,
-        "title": "ロボコン",
+        "title": "機械技術部",
         "desc": "",
         "images": [
             "/shops/posters/50.webp"
