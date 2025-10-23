@@ -24,10 +24,10 @@ export function BusTimetable() {
     nextBusTime ? Math.round((nextBusTime.getTime() - currentTime.getTime()) / 60000) : null;
 
   return (
-    <div className="p-0 w-full h-full flex-col">
-      <div className="mt-3 text-sm text-gray-300 text-right">
+    <div className="p-4 w-full h-full flex-col text-white">
+      <div className="mt-3 text-sm text-white/70 text-right">
         現在時刻：{currentTime.toTimeString().slice(0, 5)}
-      </div>      
+      </div>
       一ノ関駅行きシャトルバスはこちらから<br/>
       ※最新の運行情報を反映しているものではありませんのでご了承ください。
       {minutesUntilNext !== null ? (
@@ -35,7 +35,7 @@ export function BusTimetable() {
           次のバスまであと {minutesUntilNext} 分
         </div>
       ) : (
-        <div className="my-3 text-left text-gray-100">本日の運行は終了しました</div>
+        <div className="my-3 text-left text-white/80">本日の運行は終了しました</div>
       )}
 
       <div className="space-y-1 flex-wrap flex items-end">
@@ -47,12 +47,12 @@ export function BusTimetable() {
           return (
             <div
               key={time}
-              className={`text-center transition-all rounded bg-white/80 p-2 m-1 flex items-center justify-center max-w-[60px] ${
+              className={`text-center transition-all rounded bg-black/20 p-2 m-1 flex items-center justify-center max-w-[60px] ${
                 isNext
-                  ? "font-bold text-blue-500 text-xl !p-3"
+                  ? "font-bold text-yellow-300 text-xl !p-3"
                   : isPast
-                  ? "text-gray-400 opacity-60"
-                  : "text-gray-800 text-base"
+                  ? "text-white/50 opacity-60"
+                  : "text-white text-base"
               }`}
             >
               {time}
