@@ -46,7 +46,7 @@ export default function Home() {
                 {/*</AnimatedContentSection>*/}
 
                 <section
-                    className={"w-full overflow-x-hidden h-dvh "}>
+                    className={"w-full overflow-x-hidden h-dvh mb-8"}>
                     <PostersSection/>
                 </section>
                 <AnimatedContentSection title="注意事項 / フリーWi-Fiの提供について" sensibility={.2}
