@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import { Modal } from "@/components/Modal";
+import { useRouter } from "next/navigation";
 
 // The data structure for a poster
 type Poster = {
@@ -15,6 +16,7 @@ interface PosterCardProps {
     poster: Poster;
     modalDisabled?: boolean;
     size?: number | null
+    index?:number|null
 }
 
 // Define PosterImage outside of PosterCard to prevent it from being re-created on every render.
@@ -25,16 +27,17 @@ const PosterImage = ({ poster, size = null }: { poster: Poster, size?: number | 
         alt={poster.title}
         fill={true}
         sizes={`(max-width: 768px) ${size ? `${size}, ${size * 400 / 277}` : "277px, 400px"}`}
-        className="absolute! object-fill! w-full! h-full!"
+        className="!absolute !object-contain !w-full !h-full !inset-0"
         draggable={false}
     />
 );
 
-export function PosterCard({ poster, modalDisabled = false, size = null }: PosterCardProps) {
+export function PosterCard({ poster, modalDisabled = false, size = null, index=null }: PosterCardProps) {
     // Do not render if there are no images
     if (!poster.images || poster.images.length === 0) {
         return null;
     }
+    const router = useRouter()
 
     return (
         <div
@@ -77,6 +80,9 @@ export function PosterCard({ poster, modalDisabled = false, size = null }: Poste
                                 ))}
                             </div>
                         )}
+                        <button className={" block ml-auto mt-auto mb-4 text-right text-[2vh] text-gray-500"} 
+                        onClick={()=>router.push(`/map${index!=null?`?index=${index}`:""}`)}
+                    >マップで見る &gt; </button>
                     </div>
                 </Modal>
             )}

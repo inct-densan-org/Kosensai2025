@@ -89,7 +89,7 @@ const BillboardPoster = memo(function BillboardPoster({
                 willChange: 'transform, opacity, z-index, visibility',
             }}
         >
-            <PosterCard poster={poster} modalDisabled={disable}/>
+            <PosterCard poster={poster} modalDisabled={disable} index={index}/>
         </motion.div>
     );
 });

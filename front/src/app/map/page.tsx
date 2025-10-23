@@ -17,10 +17,22 @@ export default function Page() {
     const [width, setWidth] = useState(0)
     const [height, setHeight] = useState(0)
     const [open, onOpenChange] = useState(false)
+    const [isSameOrigin, setIsSameOrigin] = useState(false);
+
+    useEffect(() => {
+      // 現在のページのオリジンとリファラーを比較
+      const referrer = document.referrer;
+  if (referrer && referrer.startsWith(window.location.origin)) {
+    setIsSameOrigin(true);
+  }
+      console.log(isSameOrigin)
+    }, []);
     useEffect(() => {
         const update = () => {
-            setWidth(window.innerWidth);
-            setHeight(window.innerHeight);
+            const currentWidth = window.innerWidth;
+            const currentHeight = window.innerHeight;
+            setWidth(currentWidth);
+            setHeight(currentHeight);
             onOpenChange(index != -1);
 
             setTimeout(() => {
@@ -29,8 +41,18 @@ export default function Page() {
                 );
                 const id = matched?.id;
                 const el = document.getElementById(id ?? "map1");
-                el?.scrollIntoView({behavior: "smooth"});
-            }, 200);
+                if (!el) return;
+                const isVertical = currentWidth < currentHeight;
+                if (isVertical) {
+                    const rect = el.getBoundingClientRect();
+                    const scrollPosition = (window.pageYOffset || document.documentElement.scrollTop || 0) + rect.top;
+                    const OFFSET = 340;
+                    window.scrollTo({top: Math.max(scrollPosition - OFFSET, 0), behavior: "smooth"});
+                } else {
+                    el.scrollIntoView({behavior: "smooth"});
+                }
+                setIsSameOrigin(true)
+            }, isSameOrigin?50:2000);
         };
         update();
         window.addEventListener('resize', update)

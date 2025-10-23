@@ -5,8 +5,10 @@ import {Posters} from "@/components/top/Posters";
 import {FadeInWhenVisible} from "@/components/top/FadeInWhenVisible";
 import {postersData} from "@/posters.data";
 import {useIsMobile} from "@/utils/useIsMobile";
+import { useRouter } from "next/navigation";
 
 export function PostersSection() {
+    const router = useRouter()
     const [selectedIndex, setSelectedIndex] = useState(0);
     const isMobile = useIsMobile()
 
@@ -77,7 +79,9 @@ export function PostersSection() {
                             }
                         </FadeInWhenVisible>
                     )}
-                    <button className={" block ml-auto mt-auto mb-4 text-right text-[2vh] text-gray-500"}>マップで見る &gt; </button>
+                    <button className={" block ml-auto mt-auto mb-4 text-right text-[2vh] text-gray-500"} 
+                        onClick={()=>router.push(`/map?index=${selectedIndex}`)}
+                    >マップで見る &gt; </button>
                 </div>
             </div>
         </section>
