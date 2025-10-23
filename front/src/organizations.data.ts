@@ -115,7 +115,7 @@ export const organizationDetails: { [key: string]: OrganizationDetail } = {
                     "songs": ["努々", "Deeper Deeper"]
                 },
                 {
-                    "bandName": "low live",
+                    "bandName": "löwlive",
                     "startAt ": "09:50",
                     "endAt": "10:05",
                     "songs": ["どろん"]
