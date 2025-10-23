@@ -44,7 +44,9 @@ export function PosterCard({ poster, modalDisabled = false, size=null }: PosterC
             {modalDisabled ? (
                 <PosterImage poster={poster} size={size}/>
             ) : (
-                <Modal button={<PosterImage poster={poster} size={size}/>} title={poster.title}>
+                <Modal button={<PosterImage poster={poster} size={size}/>} title={poster.title}
+                    ModalClass="fixed inset-0 z-[1000] top-12 left-1/2 translate-x-[-45vw] w-[90vw] md:w-[60vw] md:translate-x-[-30vw] max-h-[80vh]"
+                >
                     <div className="relative w-full aspect-[277/392] mb-4">
                         <Image
                             src={poster.images[0]}

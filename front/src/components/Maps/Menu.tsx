@@ -51,7 +51,7 @@ export default function SlideMenu({
       {open&&<div style={isTop ?{ height:450 ,marginTop: -150 }:{ width: 300 }}>
         {
           isTop
-          ? <PosterCarouselSP posters={posters} onChangeIndex={onChangeIndex} initialIndex={index}/>
+          ? <PosterCarouselSP posters={posters} onChangeIndex={onChangeIndex} initialIndex={index} disable/>
           : <PosterCarousel posters={posters} onSelectedIndexChange={onChangeIndex} initialIndex={index} size={200}/>
         }
       </div>}
