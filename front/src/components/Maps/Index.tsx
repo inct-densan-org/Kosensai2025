@@ -74,7 +74,8 @@ export function MapPage({
   labels = null,
   statics = null,
   currentId = null,
-  w
+  w,
+  long = false
 }: {
   base: StaticImageData,
   shops?: Shop[] | null,
@@ -82,6 +83,7 @@ export function MapPage({
   statics?: Static[] | null,
   currentId?: number | null,
   w: number
+  long?:boolean
 }) {
   const [size, setSize] = useState(0);
   const transformRef = useRef<any>(null);
@@ -108,7 +110,7 @@ useEffect(() => {
   // 少し待ってからズーム（例: 1秒）
   const timer = setTimeout(() => {
     transformRef.current.setTransform(-x * (ZOOM_SCALE - 1), -y * (ZOOM_SCALE - 1), ZOOM_SCALE);
-  }, 3000); // 1000ms後に実行
+  }, long?4000:1000); // 1000ms後に実行
 
   return () => clearTimeout(timer); // クリーンアップ
 }, [currentId, shops, size]);
@@ -153,7 +155,7 @@ useEffect(() => {
                   <div className="h-[70dvh] flex flex-col">
                     <p className="whitespace-pre-wrap grow-0">{postersData[e.idx].desc}</p>
                     {postersData[e.idx].images.length === 1 ? (
-                      <div className="relative mb-4 h-auto w-auto aspect-[277/392] mx-auto grow">
+                      <div className="relative mb-4 h-auto aspect-[277/392] mx-auto w-auto max-w-full flex-shrink-0 grow">
                         <Image src={postersData[e.idx].images[0]} alt={postersData[e.idx].title} fill className="object-contain" />
                       </div>
                     ) : (

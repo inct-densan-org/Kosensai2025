@@ -52,7 +52,7 @@ export default function Page() {
                     el.scrollIntoView({behavior: "smooth"});
                 }
                 setIsSameOrigin(true)
-            }, isSameOrigin?50:2000);
+            }, isSameOrigin?50:3000);
         };
         update();
         window.addEventListener('resize', update)
@@ -80,19 +80,19 @@ export default function Page() {
                         className={`px-4 md:px-12 py-0 flex flex-col items-center gap-16 ${width > height ? "justify-center" : ""}`}>
                         <span className={`${width < height ? "scroll-offset" : ""}`} id="map1"></span>
                         <MapPage base={map1.image} shops={map1.shops} labels={map1.labels} statics={map1.statics}
-                                 currentId={index} w={width - (width > height ? 320 : 0)}/>
+                                 currentId={index} w={width - (width > height ? 320 : 0)} long={!isSameOrigin}/>
                         <span className={`${width < height ? "scroll-offset" : ""}`} id="map2"></span>
                         <MapPage base={map2.image} shops={map2.shops} labels={map2.labels} statics={map2.statics}
-                                 currentId={index} w={width - (width > height ? 320 : 0)}/>
+                                 currentId={index} w={width - (width > height ? 320 : 0)} long={!isSameOrigin}/>
                         <span className={`${width < height ? "scroll-offset" : ""}`} id="map3"></span>
                         <MapPage base={map3.image} shops={map3.shops} labels={map3.labels} statics={map3.statics}
-                                 currentId={index} w={width - (width > height ? 320 : 0)}/>
+                                 currentId={index} w={width - (width > height ? 320 : 0)} long={!isSameOrigin}/>
                         <span className={`${width < height ? "scroll-offset" : ""}`} id="map4"></span>
                         <MapPage base={map4.image} shops={map4.shops} labels={map4.labels} statics={map4.statics}
-                                 currentId={index} w={width - (width > height ? 320 : 0)}/>
+                                 currentId={index} w={width - (width > height ? 320 : 0)} long={!isSameOrigin}/>
                         <span className={`${width < height ? "scroll-offset" : ""}`} id="map5"></span>
                         <MapPage base={map5.image} shops={map5.shops} labels={map5.labels} statics={map5.statics}
-                                 currentId={index} w={width - (width > height ? 320 : 0)}/>
+                                 currentId={index} w={width - (width > height ? 320 : 0)} long={!isSameOrigin}/>
                     </div>
                 </AnimatedContentSection>
             </div>
