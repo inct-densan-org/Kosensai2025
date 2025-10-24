@@ -14,6 +14,7 @@ import Navigation from "@/components/top/Navigation";
 const MAX_INDEX = 54
 export function MapPageClient({sameOrigin}:{sameOrigin:boolean}) {
     const cache = useSearchParams().get("index") ?? undefined
+    const [fromCarousel, setFromCarousel] = useState<boolean>(useSearchParams().get("t") === "true");
     const [index, setIndex] = useState<number|undefined>(cache !== undefined?Number(cache):undefined);
     const [width, setWidth] = useState(0)
     const [height, setHeight] = useState(0)
@@ -64,7 +65,11 @@ export function MapPageClient({sameOrigin}:{sameOrigin:boolean}) {
             const scrollPosition = (window.pageYOffset || document.documentElement.scrollTop || 0) + rect.top;
             const OFFSET = isVertical ? (open ? 500 : 400) : 120;
             window.scrollTo({ top: Math.max(scrollPosition - OFFSET, 0), behavior: "smooth" });
+            if (!isSameOrigin || fromCarousel) { // Close if it's an initial load from a shared link OR from the carousel modal
+                onOpenChange(false);
+            }
             setIsSameOrigin(true);
+            setFromCarousel(false);
         }, isSameOrigin ? 50 : 3000);
 
         return () => clearTimeout(timer);

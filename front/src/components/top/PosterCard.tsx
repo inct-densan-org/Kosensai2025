@@ -85,8 +85,7 @@ export function PosterCard({ poster, modalDisabled = false, size = null, index =
                             <button className={" block ml-auto mt-auto mb-4 text-right text-[2vh] hover:cursor-pointer"}
                                 onClick={() => {
                                     setTimeout(()=>
-                                        router.push(`/map${index != null ? `?index=${index}` : ""}`)
-                                    ,50)
+                                                                                router.push(`/map${index != null ? `?index=${index}&t=true` : ""}`)                                    ,50)
                                 }}
                             >マップで見る &gt; </button>
                         </DialogClose>
