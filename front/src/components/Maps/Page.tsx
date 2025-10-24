@@ -13,8 +13,8 @@ import Navigation from "@/components/top/Navigation";
 
 const MAX_INDEX = 54
 export function MapPageClient({sameOrigin}:{sameOrigin:boolean}) {
-    const cache = Number(useSearchParams().get("index") ?? -1)
-    const [index, setIndex] = useState(cache);
+    const cache = useSearchParams().get("index") ?? undefined
+    const [index, setIndex] = useState<number|undefined>(cache !== undefined?Number(cache):undefined);
     const [width, setWidth] = useState(0)
     const [height, setHeight] = useState(0)
     const [open, onOpenChange] = useState(false)
@@ -22,17 +22,19 @@ export function MapPageClient({sameOrigin}:{sameOrigin:boolean}) {
 
     useEffect(() => {
         // 現在のページのオリジンとリファラーを比較
-        setIndex(cache)
+        setIndex(cache !== undefined?Number(cache):undefined)
     }, []);
     useEffect(() => {
         const update = () => {
-            index>54 && setIndex(index-55)
-            index<0 && setIndex(index+55)
+            if(index !== undefined){
+                index>54 && setIndex(index-55)
+                index<0 && setIndex(index+55)
+            }
             const currentWidth = window.innerWidth;
             const currentHeight = window.innerHeight;
             setWidth(currentWidth);
             setHeight(currentHeight);
-            onOpenChange(index != -1);
+            onOpenChange(index !== undefined);
 
             setTimeout(() => {
                 const matched = Object.values(maps).find((d) =>
@@ -42,14 +44,10 @@ export function MapPageClient({sameOrigin}:{sameOrigin:boolean}) {
                 const el = document.getElementById(id ?? "map1");
                 if (!el) return;
                 const isVertical = currentWidth < currentHeight;
-                if (isVertical) {
-                    const rect = el.getBoundingClientRect();
-                    const scrollPosition = (window.pageYOffset || document.documentElement.scrollTop || 0) + rect.top;
-                    const OFFSET = 340;
-                    window.scrollTo({ top: Math.max(scrollPosition - OFFSET, 0), behavior: "smooth" });
-                } else {
-                    el.scrollIntoView({ behavior: "smooth" });
-                }
+                const rect = el.getBoundingClientRect();
+                const scrollPosition = (window.pageYOffset || document.documentElement.scrollTop || 0) + rect.top;
+                const OFFSET = isVertical?400:120;
+                window.scrollTo({ top: Math.max(scrollPosition - OFFSET, 0), behavior: "smooth" });
                 setIsSameOrigin(true)
             }, isSameOrigin ? 50 : 3000);
         };
