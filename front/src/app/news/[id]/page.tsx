@@ -27,7 +27,8 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
             return { title: "記事が見つかりません | 高専祭2025" };
         }
 
-        const title = `${news.title.replace(/<[^>]*>?/gm, '')} | 高専祭2025`;
+        const pageTitle = news.title?.replace(/<[^>]*>?/gm, '') || "タイトルなし";
+        const title = `${pageTitle} | 高専祭2025`;
         const description = createDescription(news.body || "");
 
         return {
