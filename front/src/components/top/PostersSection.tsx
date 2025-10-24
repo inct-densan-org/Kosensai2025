@@ -79,7 +79,7 @@ export function PostersSection() {
                             }
                         </FadeInWhenVisible>
                     )}
-                    <button className={" block ml-auto mt-auto mb-4 text-right text-[2vh] text-gray-500"} 
+                    <button className={" block ml-auto mt-auto mb-4 text-right text-[2vh] text-white hover:cursor-pointer"} 
                         onClick={()=>router.push(`/map?index=${selectedIndex}`)}
                     >マップで見る &gt; </button>
                 </div>

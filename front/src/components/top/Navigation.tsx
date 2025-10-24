@@ -9,7 +9,7 @@ export default function Navigation({isTop = false}: {isTop?: boolean}) {
             <Link href={isTop ? "" : "/"} className={" text-md tracking-wider text-white"}
             >{isTop ? <ScrollToTop>HOME</ScrollToTop> : "HOME"}</Link>
             <Link href={"/news"} className={" text-sm tracking-widest text-white "}>NEWS</Link>
-            <Link href={"/map"} className={" text-sm tracking-widest text-gray-400"}>MAP</Link>
+            <Link href={"/map"} className={" text-sm tracking-widest text-white"}>MAP</Link>
             <Link href={"/events"} className={" text-sm tracking-wide text-white"}>EVENTS</Link>
         </nav>
     )

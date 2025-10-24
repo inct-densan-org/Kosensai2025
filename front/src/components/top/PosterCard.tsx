@@ -82,7 +82,7 @@ export function PosterCard({ poster, modalDisabled = false, size = null, index =
                             </div>
                         )}
                         <DialogClose asChild>
-                            <button className={" block ml-auto mt-auto mb-4 text-right text-[2vh] text-gray-500"}
+                            <button className={" block ml-auto mt-auto mb-4 text-right text-[2vh] hover:cursor-pointer"}
                                 onClick={() => {
                                     setTimeout(()=>
                                         router.push(`/map${index != null ? `?index=${index}` : ""}`)
