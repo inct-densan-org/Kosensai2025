@@ -174,7 +174,7 @@ export function MapPage({
                       <Paperclip size={16} />
                     </button>
                   }
-                  ModalClass="fixed inset-0 z-[1000] top-12 left-1/2 translate-x-[-45vw] translate-y-0! w-[90vw] md:w-[60vw] md:translate-x-[-30vw] h-[400px]!  "
+                  ModalClass="fixed inset-0 z-[1000] top-24 left-1/2 translate-x-[-45vw] translate-y-0! w-[90vw] md:w-[60vw] md:translate-x-[-30vw] h-[400px]!  "
                   className="object-contain"
                 >
                   <div className="h-[70dvh] flex flex-col">
