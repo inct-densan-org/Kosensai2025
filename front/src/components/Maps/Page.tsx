@@ -41,7 +41,6 @@ export function MapPageClient({sameOrigin}:{sameOrigin:boolean}) {
             onOpenChange(false);
             return;
         }
-        onOpenChange(true);
 
         if (index > MAX_INDEX) {
             setIndex(index - (MAX_INDEX + 1));
