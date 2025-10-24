@@ -19,42 +19,56 @@ export function MapPageClient({sameOrigin}:{sameOrigin:boolean}) {
     const [height, setHeight] = useState(0)
     const [open, onOpenChange] = useState(false)
     const [isSameOrigin, setIsSameOrigin] = useState(sameOrigin);
+    console.log(sameOrigin)
 
     useEffect(() => {
-        // 現在のページのオリジンとリファラーを比較
-        setIndex(cache !== undefined?Number(cache):undefined)
-    }, []);
-    useEffect(() => {
-        const update = () => {
-            if(index !== undefined){
-                index>54 && setIndex(index-55)
-                index<0 && setIndex(index+55)
-            }
-            const currentWidth = window.innerWidth;
-            const currentHeight = window.innerHeight;
-            setWidth(currentWidth);
-            setHeight(currentHeight);
-            onOpenChange(index !== undefined);
+        setIndex(cache !== undefined ? Number(cache) : undefined);
+    }, [cache]);
 
-            setTimeout(() => {
-                const matched = Object.values(maps).find((d) =>
-                    d.shops.some((shop) => shop.idx === index)
-                );
-                const id = matched?.id;
-                const el = document.getElementById(id ?? "map1");
-                if (!el) return;
-                const isVertical = currentWidth < currentHeight;
-                const rect = el.getBoundingClientRect();
-                const scrollPosition = (window.pageYOffset || document.documentElement.scrollTop || 0) + rect.top;
-                const OFFSET = isVertical?400:120;
-                window.scrollTo({ top: Math.max(scrollPosition - OFFSET, 0), behavior: "smooth" });
-                setIsSameOrigin(true)
-            }, isSameOrigin ? 50 : 3000);
+    useEffect(() => {
+        const updateDimensions = () => {
+            setWidth(window.innerWidth);
+            setHeight(window.innerHeight);
         };
-        update();
-        window.addEventListener('resize', update)
-        return () => window.removeEventListener('resize', update)
-    }, [index])
+        updateDimensions();
+        window.addEventListener('resize', updateDimensions);
+        return () => window.removeEventListener('resize', updateDimensions);
+    }, []);
+
+    useEffect(() => {
+        if (index === undefined) {
+            onOpenChange(false);
+            return;
+        }
+        onOpenChange(true);
+
+        if (index > MAX_INDEX) {
+            setIndex(index - (MAX_INDEX + 1));
+            return;
+        }
+        if (index < 0) {
+            setIndex(index + (MAX_INDEX + 1));
+            return;
+        }
+
+        const timer = setTimeout(() => {
+            const matched = Object.values(maps).find((d) =>
+                d.shops.some((shop) => shop.idx === index)
+            );
+            const id = matched?.id;
+            const el = document.getElementById(id ?? "map1");
+            if (!el) return;
+
+            const isVertical = window.innerWidth < window.innerHeight;
+            const rect = el.getBoundingClientRect();
+            const scrollPosition = (window.pageYOffset || document.documentElement.scrollTop || 0) + rect.top;
+            const OFFSET = isVertical ? (open ? 500 : 400) : 120;
+            window.scrollTo({ top: Math.max(scrollPosition - OFFSET, 0), behavior: "smooth" });
+            setIsSameOrigin(true);
+        }, isSameOrigin ? 50 : 3000);
+
+        return () => clearTimeout(timer);
+    }, [index, isSameOrigin]);
 
     if (!width || !height) return null;
 
@@ -106,35 +120,35 @@ export function MapPageClient({sameOrigin}:{sameOrigin:boolean}) {
 
                         <div className="w-full max-w-[700px]">
                             <h3 className="text-2xl font-bold text-center mb-4">屋外</h3>
-                            <span className={`${width < height ? "scroll-offset" : ""}`} id="map1"></span>
+                                                        <span id="map1"></span>
                             <MapPage base={map1.image} shops={map1.shops} labels={map1.labels} statics={map1.statics}
                                 currentId={index} w={width - (width > height ? 320 : 0)} long={!isSameOrigin} />
                         </div>
 
                         <div className="w-full max-w-[700px]">
                             <h3 className="text-2xl font-bold text-center mb-4">管理・教育棟 1F</h3>
-                            <span className={`${width < height ? "scroll-offset" : ""}`} id="map2"></span>
+                                                        <span id="map2"></span>
                             <MapPage base={map2.image} shops={map2.shops} labels={map2.labels} statics={map2.statics}
                                 currentId={index} w={width - (width > height ? 320 : 0)} long={!isSameOrigin} />
                         </div>
 
                         <div className="w-full max-w-[700px]">
                             <h3 className="text-2xl font-bold text-center mb-4">管理・教育棟 2F</h3>
-                            <span className={`${width < height ? "scroll-offset" : ""}`} id="map3"></span>
+                                                        <span id="map3"></span>
                             <MapPage base={map3.image} shops={map3.shops} labels={map3.labels} statics={map3.statics}
                                 currentId={index} w={width - (width > height ? 320 : 0)} long={!isSameOrigin} />
                         </div>
 
                         <div className="w-full max-w-[700px]">
                             <h3 className="text-2xl font-bold text-center mb-4">管理・教育棟 3F</h3>
-                            <span className={`${width < height ? "scroll-offset" : ""}`} id="map4"></span>
+                                                        <span id="map4"></span>
                             <MapPage base={map4.image} shops={map4.shops} labels={map4.labels} statics={map4.statics}
                                 currentId={index} w={width - (width > height ? 320 : 0)} long={!isSameOrigin} />
                         </div>
 
                         <div className="w-full max_w-[700px]">
                             <h3 className="text-2xl font-bold text-center mb-4">専攻科・教育棟</h3>
-                            <span className={`${width < height ? "scroll-offset" : ""}`} id="map5"></span>
+                                                        <span id="map5"></span>
                             <MapPage base={map5.image} shops={map5.shops} labels={map5.labels} statics={map5.statics}
                                 currentId={index} w={width - (width > height ? 320 : 0)} long={!isSameOrigin} />
                         </div>
