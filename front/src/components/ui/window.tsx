@@ -1,12 +1,13 @@
 import {CSSProperties, ReactNode} from "react";
 import {cn} from "@/lib/utils";
 
-export function Window({title, children, color, subtitle, className}: {
-    title: string,
+export function Window({title, children, color, subtitle, className, titleAction}: {
+    title: ReactNode,
     children: ReactNode,
     color?: CSSProperties["color"],
     subtitle?: string,
-    className?: string
+    className?: string,
+    titleAction?: ReactNode
 }) {
     return (
         <div className={cn(
@@ -22,6 +23,7 @@ export function Window({title, children, color, subtitle, className}: {
             <div
                 className={"px-3 w-full h-fit rounded-t-sm border-b-white border-[1px] font-bold flex flex-row items-end gap-2 flex-shrink-0"}>
                 <h3 className={"md:text-[1.2rem]"}>{title}</h3>
+                {titleAction}
                 {subtitle && <p className={"pb-[.2em] pl-[2%] text-[.6em] md:text-[.9rem] md:pb-0 font-normal"}>{subtitle}</p>}
             </div>
             

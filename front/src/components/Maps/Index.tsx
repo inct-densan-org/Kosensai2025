@@ -7,6 +7,7 @@ import { Modal } from "../Modal";
 import { postersData } from "@/posters.data";
 import "./style.css"
 import { BusTimetable } from "./BusTable";
+import { Paperclip } from "lucide-react";
 
 type NumberedPinProps = {
   number?: number | string
@@ -90,6 +91,16 @@ export function MapPage({
 
   const isCurrentMap = shops?.some(shop => shop.idx === currentId) ?? false;
 
+  const handleCopyClick = (idx: number, title: string) => {
+    const url = `${window.location.origin}/map?index=${idx}`;
+    navigator.clipboard.writeText(url).then(() => {
+        alert(`"${title}"のURLをクリップボードにコピーしました！`);
+    }).catch(err => {
+        console.error('Failed to copy: ', err);
+        alert('URLのコピーに失敗しました。');
+    });
+};
+
   // 初期サイズ設定
   useEffect(() => {
     const width = window.innerWidth;
@@ -151,6 +162,18 @@ export function MapPage({
                     <NumberedPin number={postersData[e.idx].mapId} force={e.idx === currentId} size={size} />
                   }
                   title={postersData[e.idx].title}
+                  titleAction={
+                    <button
+                      onClick={(event) => {
+                        event.stopPropagation(); // Prevent modal from closing if it does
+                        handleCopyClick(e.idx, postersData[e.idx].title);
+                      }}
+                      className="ml-2 p-1 rounded-full hover:bg-white/20 transition-colors duration-200"
+                      aria-label="URLをコピー"
+                    >
+                      <Paperclip size={16} />
+                    </button>
+                  }
                   ModalClass="fixed inset-0 z-[1000] top-12 left-1/2 translate-x-[-45vw] translate-y-0! w-[90vw] md:w-[60vw] md:translate-x-[-30vw] h-[400px]!  "
                   className="object-contain"
                 >
