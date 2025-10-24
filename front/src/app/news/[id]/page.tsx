@@ -46,6 +46,7 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
     }
 }
 
+export const revalidate = 0;
 
 export default async function HtmlDisplayPage({params}: { params: Promise<{ id: string }> }) {
     const {id} = await params;

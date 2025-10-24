@@ -5,7 +5,6 @@ const nextConfig: NextConfig = {
         workerThreads: false,
         cpus: 4,
     },
-    cacheComponents: true,
 };
 
 export default nextConfig;

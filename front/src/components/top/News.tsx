@@ -4,6 +4,7 @@ import { client } from "@/utils/api-client";
 import { NewsList } from "@api/schema";
 import Link from "next/link";
 
+export const revalidate = 0;
 
 export async function News() {
     let data: NewsList[] | null = null;

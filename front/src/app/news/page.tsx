@@ -13,6 +13,7 @@ export const metadata: Metadata = {
     },
 };
 
+export const revalidate = 0;
 
 // NewsCard component (copied from front/src/components/top/News.tsx for self-containment, or could be imported)
 function NewsCard({day, title, tag}: { day: string, title: string, tag: string | null }) {

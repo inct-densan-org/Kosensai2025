@@ -21,12 +21,12 @@
     "hono": "^4.9.8",
     "lucide-react": "^0.544.0",
     "motion": "^12.23.22",
-    "next": "16.0.0",
-    "react": "19.2.0",
-    "react-dom": "19.2.0",
+    "next": "15.5.4",
+    "react": "19.1.0",
+    "react-dom": "19.1.0",
     "react-scroll": "^1.9.3",
-    "react-zoom-pan-pinch": "^3.7.0",
     "swiper": "^12.0.2",
+    "react-zoom-pan-pinch": "^3.7.0",
     "tailwind-merge": "^3.3.1"
   },
   "devDependencies": {
