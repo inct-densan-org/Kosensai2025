@@ -58,7 +58,7 @@ export default async function Page() {
                       少し時間を置いてから再度お試し下さい。解決しない場合はTeamsでf22092までお知らせ下さい。
                   </p>
                   <div className="text-center mt-8">
-                      <Link href="/" className="text-white hover:underline">
+                      <Link href="/front/public" className="text-white hover:underline">
                           トップページに戻る
                       </Link>
                   </div>
@@ -90,7 +90,7 @@ export default async function Page() {
                   ))}
               </div>
               <div className="text-center mt-8">
-                  <Link href="/" className="text-white hover:underline">
+                  <Link href="/front/public" className="text-white hover:underline">
                       トップページに戻る
                   </Link>
               </div>

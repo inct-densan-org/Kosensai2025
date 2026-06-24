@@ -12,7 +12,7 @@ export default function CcdMapPage() {
             <div className={"relative w-screen h-auto flex items-center justify-center"}>
                 {errorMsg && <p className={"absolute top-4 left-4 text-red-500"}>{errorMsg}</p>}
                 <section className={"w-full h-full flex items-center justify-center"}>
-                    <MapViewer imageUrl={"/img/maps/entire-map.png"} imageWidth={700} imageHeight={550}
+                    <MapViewer imageUrl={"/img/maps/entire-map.webp"} imageWidth={700} imageHeight={550}
                                currentPos={currentPos}/>
                 </section>
 
