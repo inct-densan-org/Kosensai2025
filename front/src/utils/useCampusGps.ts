@@ -38,13 +38,28 @@ function latLngToRatio(lat: number, lng: number) {
 export function useCampusGps(isEnabled: boolean) {
     const [currentPos, setCurrentPos] = useState<{ xRatio: number; yRatio: number } | null>(null);
     const [errorMsg, setErrorMsg] = useState('');
+    
+    const [permission, setPermission] = useState<PermissionState | 'loading'>('loading');
 
     useEffect(() => {
         if (!isEnabled || !navigator.geolocation) {
             if (isEnabled) setErrorMsg('お使いのブラウザは位置情報に対応していません。');
             return;
         }
-
+        
+        navigator.permissions.query({ name: 'geolocation' as PermissionName })
+            .then((status) => {
+                setPermission(status.state);
+                
+                status.onchange = () => {
+                    setPermission(status.state);
+                };
+            })
+            .catch(() => {
+                setPermission('loading');
+            });
+        if (permission !== 'granted') return;
+        
         const watchId = navigator.geolocation.watchPosition(
             (position) => {
                 const { latitude, longitude } = position.coords;
@@ -56,7 +71,24 @@ export function useCampusGps(isEnabled: boolean) {
         );
 
         return () => navigator.geolocation.clearWatch(watchId);
-    }, [isEnabled]);
+    }, [isEnabled, permission]);
 
-    return { currentPos, errorMsg };
+
+    const requestLocation = () => {
+        navigator.geolocation.getCurrentPosition(
+            () => {
+                setPermission('granted');
+            },
+            (err) => {
+                // 取得失敗時（ユーザーが拒否した場合など）
+                if (err.code === err.PERMISSION_DENIED) {
+                    setPermission('denied');
+                }else {
+                    console.error(err);
+                }
+            }
+        );
+    };
+    
+    return { currentPos, permission, errorMsg, requestLocation };
 }
