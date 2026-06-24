@@ -59,7 +59,7 @@ export const MapViewer = ({
     })();
 
     return (
-        <div ref={mapContainerRef} className="relative h-full w-full bg-gray-200 overflow-hidden">
+        <div ref={mapContainerRef} className="relative h-full w-full max-h-[70dvh] bg-gray-200 overflow-hidden">
             {minScale !== null && (
                 <TransformWrapper
                     initialScale={minScale}

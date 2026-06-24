@@ -11,14 +11,14 @@ export default function CcdMapPage() {
     return (
         <div className={"w-screen h-screen"}>
             <h3 className={"text-center text-lg py-2 bg-[#000077] text-white"}>一関高専 - キャンパスカミングデー</h3>
-            <div className={"relative w-screen h-auto flex items-center justify-center"}>
+            <div className={"relative w-screen h-auto max-h-[70dvh] flex items-center justify-center mt-2"}>
                 {errorMsg && <p className={"absolute top-4 left-4 text-red-500"}>{errorMsg}</p>}
-                <section className={"w-full h-full flex items-center justify-center"}>
+                <section className={"w-full h-full  flex items-center justify-center"}>
                     <MapViewer imageUrl={"/img/maps/entire-map.webp"} imageWidth={700} imageHeight={550}
                                currentPos={currentPos}/>
                 </section>
             </div>
-            <div className={"w-full h-auto flex flex-col items-center justify-center"}>
+            <div className={"w-full h-auto flex flex-col items-center justify-center mt-2"}>
                 {permission === "prompt" &&
                     <button onClick={requestLocation}
                             className={"border-[1px] border-black px-2 mt-2 mb-1 rounded shadow-lg bg-white"}>現在地を表示する</button>
