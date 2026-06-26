@@ -10,10 +10,13 @@ export type MapPin = {
     name: string;
     xRatio: number; // 0-100
     yRatio: number; // 0-100
-    isHighlighted?: boolean;
+    isHavePhoto?: boolean;
     locationIds?: number[];
-    type: "photo" | "venue";
+    type: "photo" | "venue" | "place" | "WC" | "door";
+    desc?: string;
+    labelPlace: "left" | "right"
     rotation?: number;
+    owner?: string;
 };
 
 type MapViewerProps = {
@@ -96,28 +99,23 @@ export const MapViewer = ({
                                 <button
                                     key={pin.id}
                                     onClick={() => onPinClick?.(pin)}
-                                    className="absolute flex flex-col items-center justify-center -translate-x-1/2 -translate-y-full transition-transform hover:scale-110 active:scale-95"
+                                    className={`absolute flex flex-col  items-center justify-center -translate-x-1/2 -translate-y-full scale-50 transition-transform  ${pin.isHavePhoto ? "hover:scale-60 active:scale-45" : ""}`}
                                     style={{left: `${pin.xRatio}%`, top: `${pin.yRatio}%`}}
                                 >
-                                    {pin.type === 'venue' ? (
+                                    {pin.type === 'venue' || pin.type === 'place' ? (
                                             <>
+                                                {/*<span className={`absolute rounded border-[1px] ${pin.type === "venue" ? 'border-red-500' : 'border-blue-500'} -translate-x-1/2 bg-white/90 px-1.5 py-0.5 text-[8px] font-bold text-dark shadow-sm whitespace-nowrap`} style={{left: `calc(50% + ${pin.labelTransformX ?? 0}px)`, top: `calc(50% + ${pin.labelTransformY ?? 0}px)`}}>{pin.name}</span>*/}
+                                                <span className={`absolute rounded border-[1px] ${pin.type === "venue" ? 'border-red-500' : 'border-blue-500'} translate-y-[-3px] bg-white/90 px-1.5 py-0.5 text-[8px] font-bold text-dark shadow-sm whitespace-nowrap ${pin.labelPlace === "left" ? "right-full translate-x-1.5 pr-2.5" : "left-full -translate-x-1.5 pl-2.5" }`}>{pin.name}</span>
                                                 <svg
-                                                    className={`w-8 h-8 ${pin.isHighlighted ? 'text-primary' : 'text-blue-500'} drop-shadow-md`}
+                                                    className={`w-8 h-8 ${pin.type === "venue" ? 'text-red-500' : 'text-blue-500'} drop-shadow-md`}
                                                     xmlns="http://www.w3.org/2000/svg" width="32" height="32"
                                                     viewBox="0 0 56 56">
                                                     {/* <!-- Icon from Framework7 Icons by Vladimir Kharlampidi - https://github.com/framework7io/framework7-icons/blob/master/LICENSE -->*/}
                                                     <path fill="currentColor"
                                                           d="M27.953 52.363c1.055 0 2.04-.445 2.977-2.062l4.336-7.242h7.828c6.984 0 10.734-3.868 10.734-10.735V14.371c0-6.867-3.75-10.734-10.734-10.734H12.906c-6.96 0-10.734 3.844-10.734 10.734v17.953c0 6.89 3.773 10.735 10.734 10.735h7.735l4.336 7.242c.937 1.617 1.921 2.062 2.976 2.062"/>
                                                 </svg>
+                                                <span className="absolute mt-1 top-0 rounded  px-1.5 py-0.5 text-[10px] font-bold text-white  whitespace-nowrap">{pin.label}</span>
 
-                                                <span
-                                                    className="absolute mt-1 -translate-y-4 rounded  px-1.5 py-0.5 text-[10px] font-bold text-white shadow-sm whitespace-nowrap">
-                                    {pin.label}
-                                </span>
-                                                <span
-                                                    className="mt-1 rounded bg-white/90 px-1.5 py-0.5 text-[10px] font-bold text-dark shadow-sm whitespace-nowrap">
-                            {pin.name}
-                        </span>
                                             </>
                                         ) :
                                         (

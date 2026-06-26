@@ -53,7 +53,7 @@ const Modal = ({
             >
                 {/* ヘッダー部分 */}
                 <header className="flex items-center justify-between border-b border-primary-lite2 px-5 py-4">
-                    <h2 className="text-[18px] font-bold leading-normal text-dark">
+                    <h2 className="text-[18px] font-bold leading-normal text-dark ">
                         {title}
                     </h2>
                     <button

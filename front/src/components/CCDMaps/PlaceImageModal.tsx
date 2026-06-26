@@ -8,19 +8,24 @@ type Props = {
     onClose: () => void;
     locationId: number;
     locationName: string;
+    locationLabel: string;
+    locationOwner?: string;
+    locationDesc?: string;
 };
 
-export const PlaceImageModal = ({ isOpen, onClose, locationName, locationId }: Props) => {
+export const PlaceImageModal = ({ isOpen, onClose, locationName, locationId, locationLabel, locationOwner, locationDesc }: Props) => {
     
     return (
-        <Modal isOpen={isOpen} onClose={onClose} title={`${locationName}`}>
-            
+        <Modal isOpen={isOpen} onClose={onClose} title={`${locationName}　（ ${locationLabel}` + (locationOwner ? `  ${locationOwner}` : '') + " ）" }>
+            {locationDesc&& <p className={"ml-2 mb-4"}>{locationDesc}</p>}
             {/*    ここに指定されたIDの画像を表示する処理*/}
-            {locationId ? (
+            {locationId && locationId != -1 ? (
                 <div className={"w-full h-auto aspect-video "}>
                     <Image
                     alt={locationName+"の写真"}
                     src={`/img/ccd/${locationId}`}
+                    fill
+                    className={"!relative !h-full "}
                     />
                 </div>
             ) : (

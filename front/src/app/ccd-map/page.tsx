@@ -1,9 +1,10 @@
 "use client"
 
 import {useCampusGps} from "@/utils/useCampusGps";
-import {MapPin, MapViewer} from "@/components/Maps/MapViewer";
+import {MapPin, MapViewer} from "@/components/CCDMaps/MapViewer";
 import Link from "next/link";
 import {useState} from "react";
+import {PlaceImageModal} from "@/components/CCDMaps/PlaceImageModal";
 
 
 export default function CcdMapPage() {
@@ -13,54 +14,128 @@ export default function CcdMapPage() {
     const pins: MapPin[] = [
         {
             id: 1,
-            label: "2F",
-            name: "情報系",
-            xRatio: 50,
-            yRatio: 50,
-            isHighlighted: false,
-            type: "photo"
+            label: "２Ｆ",
+            name: "ファーストペンギンファブ",
+            xRatio: 49.5,
+            yRatio: 56,
+            labelPlace: "left",
+            isHavePhoto: true,
+            type: "venue",
+            owner: "機械･知能系"
     },
         {
             id: 2,
-            label: "1F",
-            name: "交差",
-            xRatio: 20,
-            yRatio: 50,
-            isHighlighted: false,
-            type: "photo"
+            label: "１Ｆ",
+            name: "講義室2",
+            xRatio: 49.1,
+            yRatio: 85.7,
+            labelPlace: "right",
+            isHavePhoto: true,
+            type: "venue",
+            owner: "電気･電子系"
+            
         },
+        {
+            id: 3,
+            label: "２Ｆ",
+            name: "サイバーセキュリティラボ",
+            xRatio: 68,
+            yRatio: 73.5,
+            labelPlace: "right",
+            isHavePhoto: true,
+            type: "venue",
+            owner: "情報･ソフトウェア系"
+        },
+        {
+            id: 4,
+            label: "１Ｆ",
+            name: "一般化学実験室",
+            xRatio: 58.4,
+            yRatio: 65,
+            labelPlace: "right",
+            isHavePhoto: true,
+            type: "venue",
+            owner: "化学･バイオ系",
+        },
+        {
+            id: 5,
+            label: "",
+            name: "Idemitsu ミライチ",
+            xRatio: 57.9,
+            yRatio: 49.4,
+            labelPlace: "right",
+            isHavePhoto: true,
+            type: "venue",
+            owner: "化学･バイオ系",
+            desc: " (化学工学実習工場) "
+        },
+        {
+            id: 6,
+            label: "",
+            name: "メディアセンター",
+            xRatio: 33,
+            yRatio: 72,
+            labelPlace: "left",
+            isHavePhoto: true,
+            type: "venue",
+            owner: "１Ｆ 図書館"
+            
+        },
+        {
+            id: 7,
+            label: "",
+            name: "学生寮",
+            xRatio: 18,
+            yRatio: 34,
+            labelPlace: "right",
+            isHavePhoto: true,
+            type: "venue",
+            owner: "エリア",
+            desc: "(男子寮のみ見学可)"
+        },
+        {
+            id: 8,
+            label: "３Ｆ",
+            name: "工学デザイン室",
+            xRatio: 51.2,
+            yRatio: 58,
+            labelPlace: "right",
+            isHavePhoto: true,
+            type: "venue",
+            owner: "機械技術部"
+        },
+        {
+            id: 9,
+            label: "",
+            name: "第一体育館",
+            xRatio: 32.1,
+            yRatio: 48,
+            labelPlace: "right",
+            isHavePhoto: true,
+            type: "place",
+            owner: "全体説明会会場"
+        },
+        {
+            id: 10,
+            label: "１Ｆ",
+            name: "第一講義室",
+            xRatio: 40.5,
+            yRatio: 72.8,
+            labelPlace: "left",
+            isHavePhoto: true,
+            type: "place",
+            owner: "全体説明会会場"
+        },
+
+
+
     ]
     
-    const selectedLocationIds = selectedPin?.locationIds ?? [];
-    const selectedLocationName = selectedPin?.label ??  '';
+    const selectedLocationId = selectedPin?.id ?? -1;
+    const selectedLocationLabel = selectedPin?.label ??  '';
+    const selectedLocationName = selectedPin?.name ??  '';
     
-    // const pins: MapPin[] = useMemo(() => {
-    //     const groupedByCoordinate = new Map<string, typeof activeLocations>();
-    //
-    //     for (const location of activeLocations) {
-    //         const key = `${location.xRatio}:${location.yRatio}`;
-    //         const current = groupedByCoordinate.get(key) ?? [];
-    //         current.push(location);
-    //         groupedByCoordinate.set(key, current);
-    //     }
-    //
-    //     return [...groupedByCoordinate.values()].map((group, index) => {
-    //         const primary = group[0];
-    //         const locationIds = group.map((location) => location.id);
-    //         const isMerged = group.length > 1;
-    //         const label = getMergedPinLabel(group.map((location) => location.name)) || primary.name;
-    //
-    //         return {
-    //             id: isMerged ? -(currentMapId * 1000 + index + 1) : primary.id,
-    //             label,
-    //             xRatio: primary.xRatio,
-    //             yRatio: primary.yRatio,
-    //             isHighlighted: false,
-    //             locationIds,
-    //         };
-    //     });
-    // }, [activeLocations, currentMapId]);
-
+    
     
     return (
         <div className={"w-screen h-screen"}>
@@ -69,7 +144,7 @@ export default function CcdMapPage() {
                 {errorMsg && <p className={"absolute top-4 left-4 text-red-500"}>{errorMsg}</p>}
                 <section className={"w-full h-full  flex items-center justify-center"}>
                     <MapViewer imageUrl={"/img/maps/entire-map.webp"} imageWidth={700} imageHeight={550} pins={pins}
-                               onPinClick={(pin) => setSelectedPin(pin)}
+                               onPinClick={(pin) => pin.isHavePhoto && setSelectedPin(pin)}
                                currentPos={currentPos}/>
                     
                 </section>
@@ -100,10 +175,14 @@ export default function CcdMapPage() {
                     ホームページ</Link>
                 <Link className={"block text-blue-500 underline  text-sm"} href={"/"}>ページトップ (高専祭HP)</Link>
             </div>
-            <LocationMatchesModal
+            <PlaceImageModal
                 isOpen={selectedPin !== null}
                 onClose={() => setSelectedPin(null)}
                 locationName={selectedLocationName}
+                locationLabel={selectedLocationLabel}
+                locationId={selectedLocationId}
+                locationOwner={selectedPin?.owner}
+                locationDesc={selectedPin?.desc}
             />
         </div>
     )
