@@ -1,16 +1,19 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
+import {useEffect, useRef, useState} from 'react';
 import Image from 'next/image';
-import { TransformComponent, TransformWrapper } from 'react-zoom-pan-pinch';
+import {TransformComponent, TransformWrapper} from 'react-zoom-pan-pinch';
 
 export type MapPin = {
     id: number;
     label: string;
+    name: string;
     xRatio: number; // 0-100
     yRatio: number; // 0-100
     isHighlighted?: boolean;
     locationIds?: number[];
+    type: "photo" | "venue";
+    rotation?: number;
 };
 
 type MapViewerProps = {
@@ -28,7 +31,7 @@ export const MapViewer = ({
                               imageHeight,
                               pins = [],
                               currentPos,
-                          onPinClick,
+                              onPinClick,
                           }: MapViewerProps) => {
     const [minScale, setMinScale] = useState<number | null>(1);
     const mapContainerRef = useRef<HTMLDivElement | null>(null);
@@ -67,9 +70,9 @@ export const MapViewer = ({
                     maxScale={4}
                     centerOnInit={true}
                     limitToBounds={true}
-                    wheel={{ step: 0.1 }}
+                    wheel={{step: 0.1}}
                 >
-                    <TransformComponent wrapperStyle={{ width: '100%', height: '100%' }}>
+                    <TransformComponent wrapperStyle={{width: '100%', height: '100%'}}>
                         <div
                             style={{
                                 position: 'relative',
@@ -85,7 +88,7 @@ export const MapViewer = ({
                                 height={imageHeight}
                                 unoptimized
                                 priority
-                                style={{ width: '100%', height: '100%', display: 'block' }}
+                                style={{width: '100%', height: '100%', display: 'block'}}
                             />
 
                             {/* 会場ピンの描画 */}
@@ -94,14 +97,39 @@ export const MapViewer = ({
                                     key={pin.id}
                                     onClick={() => onPinClick?.(pin)}
                                     className="absolute flex flex-col items-center justify-center -translate-x-1/2 -translate-y-full transition-transform hover:scale-110 active:scale-95"
-                                    style={{ left: `${pin.xRatio}%`, top: `${pin.yRatio}%` }}
+                                    style={{left: `${pin.xRatio}%`, top: `${pin.yRatio}%`}}
                                 >
-                                    <svg className={`w-8 h-8 ${pin.isHighlighted ? 'text-primary' : 'text-blue-500'} drop-shadow-md`} viewBox="0 0 24 24" fill="currentColor">
-                                        <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z" />
-                                    </svg>
-                                    <span className="mt-1 rounded bg-white/90 px-1.5 py-0.5 text-[10px] font-bold text-dark shadow-sm whitespace-nowrap">
-                                        {pin.label}
-                                    </span>
+                                    {pin.type === 'venue' ? (
+                                            <>
+                                                <svg
+                                                    className={`w-8 h-8 ${pin.isHighlighted ? 'text-primary' : 'text-blue-500'} drop-shadow-md`}
+                                                    xmlns="http://www.w3.org/2000/svg" width="32" height="32"
+                                                    viewBox="0 0 56 56">
+                                                    {/* <!-- Icon from Framework7 Icons by Vladimir Kharlampidi - https://github.com/framework7io/framework7-icons/blob/master/LICENSE -->*/}
+                                                    <path fill="currentColor"
+                                                          d="M27.953 52.363c1.055 0 2.04-.445 2.977-2.062l4.336-7.242h7.828c6.984 0 10.734-3.868 10.734-10.735V14.371c0-6.867-3.75-10.734-10.734-10.734H12.906c-6.96 0-10.734 3.844-10.734 10.734v17.953c0 6.89 3.773 10.735 10.734 10.735h7.735l4.336 7.242c.937 1.617 1.921 2.062 2.976 2.062"/>
+                                                </svg>
+
+                                                <span
+                                                    className="absolute mt-1 -translate-y-4 rounded  px-1.5 py-0.5 text-[10px] font-bold text-white shadow-sm whitespace-nowrap">
+                                    {pin.label}
+                                </span>
+                                                <span
+                                                    className="mt-1 rounded bg-white/90 px-1.5 py-0.5 text-[10px] font-bold text-dark shadow-sm whitespace-nowrap">
+                            {pin.name}
+                        </span>
+                                            </>
+                                        ) :
+                                        (
+                                            <div>
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32"
+                                                     viewBox="0 0 24 24">
+                                                    {/*<!-- Icon from Material Symbols by Google - https://github.com/google/material-design-icons/blob/master/LICENSE -->*/}
+                                                    <path fill="currentColor"
+                                                          d="M5 21q-.825 0-1.412-.587T3 19V5q0-.825.588-1.412T5 3h14q.825 0 1.413.588T21 5v14q0 .825-.587 1.413T19 21zm0-2h14V5H5zm0 0V5zm2-2h10q.3 0 .45-.275t-.05-.525l-2.75-3.675q-.15-.2-.4-.2t-.4.2L11.25 16L9.4 13.525q-.15-.2-.4-.2t-.4.2l-2 2.675q-.2.25-.05.525T7 17"/>
+                                                </svg>
+                                            </div>
+                                        )}
                                 </button>
                             ))}
 
@@ -109,9 +137,10 @@ export const MapViewer = ({
                             {currentPos && (
                                 <div
                                     className="absolute -translate-x-1/2 -translate-y-1/2 pointer-events-none"
-                                    style={{ left: `${currentPos.xRatio}%`, top: `${currentPos.yRatio}%` }}
+                                    style={{left: `${currentPos.xRatio}%`, top: `${currentPos.yRatio}%`}}
                                 >
-                                    <div className="w-4 h-4 bg-red-500 rounded-full border-2 border-white shadow-md animate-pulse" />
+                                    <div
+                                        className="w-4 h-4 bg-red-500 rounded-full border-2 border-white shadow-md animate-pulse"/>
                                 </div>
                             )}
                         </div>

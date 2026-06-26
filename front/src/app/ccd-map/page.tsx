@@ -1,21 +1,77 @@
 "use client"
 
 import {useCampusGps} from "@/utils/useCampusGps";
-import {MapViewer} from "@/components/Maps/MapViewer";
+import {MapPin, MapViewer} from "@/components/Maps/MapViewer";
 import Link from "next/link";
+import {useState} from "react";
+
 
 export default function CcdMapPage() {
     const {currentPos, errorMsg, permission, requestLocation} = useCampusGps(true);
+    const [selectedPin, setSelectedPin] = useState<MapPin | null>(null);
 
+    const pins: MapPin[] = [
+        {
+            id: 1,
+            label: "2F",
+            name: "情報系",
+            xRatio: 50,
+            yRatio: 50,
+            isHighlighted: false,
+            type: "photo"
+    },
+        {
+            id: 2,
+            label: "1F",
+            name: "交差",
+            xRatio: 20,
+            yRatio: 50,
+            isHighlighted: false,
+            type: "photo"
+        },
+    ]
+    
+    const selectedLocationIds = selectedPin?.locationIds ?? [];
+    const selectedLocationName = selectedPin?.label ??  '';
+    
+    // const pins: MapPin[] = useMemo(() => {
+    //     const groupedByCoordinate = new Map<string, typeof activeLocations>();
+    //
+    //     for (const location of activeLocations) {
+    //         const key = `${location.xRatio}:${location.yRatio}`;
+    //         const current = groupedByCoordinate.get(key) ?? [];
+    //         current.push(location);
+    //         groupedByCoordinate.set(key, current);
+    //     }
+    //
+    //     return [...groupedByCoordinate.values()].map((group, index) => {
+    //         const primary = group[0];
+    //         const locationIds = group.map((location) => location.id);
+    //         const isMerged = group.length > 1;
+    //         const label = getMergedPinLabel(group.map((location) => location.name)) || primary.name;
+    //
+    //         return {
+    //             id: isMerged ? -(currentMapId * 1000 + index + 1) : primary.id,
+    //             label,
+    //             xRatio: primary.xRatio,
+    //             yRatio: primary.yRatio,
+    //             isHighlighted: false,
+    //             locationIds,
+    //         };
+    //     });
+    // }, [activeLocations, currentMapId]);
 
+    
     return (
         <div className={"w-screen h-screen"}>
             <h3 className={"text-center text-lg py-2 bg-[#000077] text-white"}>一関高専 - キャンパスカミングデー</h3>
             <div className={"relative w-screen h-auto max-h-[70dvh] flex items-center justify-center mt-2"}>
                 {errorMsg && <p className={"absolute top-4 left-4 text-red-500"}>{errorMsg}</p>}
                 <section className={"w-full h-full  flex items-center justify-center"}>
-                    <MapViewer imageUrl={"/img/maps/entire-map.webp"} imageWidth={700} imageHeight={550}
+                    <MapViewer imageUrl={"/img/maps/entire-map.webp"} imageWidth={700} imageHeight={550} pins={pins}
+                               onPinClick={(pin) => setSelectedPin(pin)}
                                currentPos={currentPos}/>
+                    
                 </section>
             </div>
             <div className={"w-full h-auto flex flex-col items-center justify-center mt-2"}>
@@ -38,12 +94,17 @@ export default function CcdMapPage() {
                 <p>ここに残り時間等を置く?</p>
                 <p>ここに場所一覧等を置く?</p>
             </div>
-
+            
             <div className={"w-full h-auto flex flex-col items-center justify-center gap-2 mt-16"}>
                 <Link className={"block text-blue-500 underline "} href={"https://www.ichinoseki.ac.jp"}>一関高専
                     ホームページ</Link>
                 <Link className={"block text-blue-500 underline  text-sm"} href={"/"}>ページトップ (高専祭HP)</Link>
             </div>
+            <LocationMatchesModal
+                isOpen={selectedPin !== null}
+                onClose={() => setSelectedPin(null)}
+                locationName={selectedLocationName}
+            />
         </div>
     )
 }

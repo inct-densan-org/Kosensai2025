@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 
 // 元の画像サイズ（アンカーポイント計算の基準値）
 const BASE_WIDTH = 700;
@@ -28,7 +28,6 @@ function latLngToRatio(lat: number, lng: number) {
     const px = p1.x + u * (p2.x - p1.x) + v * (p3.x - p1.x);
     const py = p1.y + u * (p2.y - p1.y) + v * (p3.y - p1.y);
 
-    // 画像サイズに対するパーセンテージ (0-100) に変換
     return {
         xRatio: (px / BASE_WIDTH) * 100,
         yRatio: (py / BASE_HEIGHT) * 100,
@@ -38,57 +37,69 @@ function latLngToRatio(lat: number, lng: number) {
 export function useCampusGps(isEnabled: boolean) {
     const [currentPos, setCurrentPos] = useState<{ xRatio: number; yRatio: number } | null>(null);
     const [errorMsg, setErrorMsg] = useState('');
-    
     const [permission, setPermission] = useState<PermissionState | 'loading'>('loading');
 
+    // watchIdをStateではなくRefで管理し、再レンダリングによる意図しないクリアを防ぐ
+    const watchIdRef = useRef<number | null>(null);
+
+    // 初回の権限チェックのみを行う（Firefox対策：onchangeで過剰に状態を上書きしない）
     useEffect(() => {
         if (!isEnabled || !navigator.geolocation) {
             if (isEnabled) setErrorMsg('お使いのブラウザは位置情報に対応していません。');
             return;
         }
-        
-        navigator.permissions.query({ name: 'geolocation' as PermissionName })
+
+        navigator.permissions?.query({ name: 'geolocation' as PermissionName })
             .then((status) => {
                 setPermission(status.state);
-                
-                status.onchange = () => {
-                    setPermission(status.state);
-                };
+                // 既に許可済みの場合は自動的に監視を開始する
+                if (status.state === 'granted') {
+                    startWatching();
+                }
             })
             .catch(() => {
                 setPermission('loading');
             });
-        if (permission !== 'granted') return;
-        
-        const watchId = navigator.geolocation.watchPosition(
+
+        // アンマウント時のみ監視をクリア
+        return () => {
+            if (watchIdRef.current !== null) {
+                navigator.geolocation.clearWatch(watchIdRef.current);
+            }
+        };
+    }, [isEnabled]); // 依存配列から permission を外す
+
+    // GPS監視を開始する関数
+    const startWatching = () => {
+        if (watchIdRef.current !== null) return; // 既に監視中の場合は何もしない
+
+        watchIdRef.current = navigator.geolocation.watchPosition(
             (position) => {
+                setPermission('granted'); // 取得成功時に確実なステータスへ更新
                 const { latitude, longitude } = position.coords;
                 const ratio = latLngToRatio(latitude, longitude);
                 if (ratio) setCurrentPos(ratio);
             },
-            () => setErrorMsg('位置情報の取得に失敗しました。'),
-            { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 }
-        );
-
-        return () => navigator.geolocation.clearWatch(watchId);
-    }, [isEnabled, permission]);
-
-
-    const requestLocation = () => {
-        navigator.geolocation.getCurrentPosition(
-            () => {
-                setPermission('granted');
-            },
             (err) => {
-                // 取得失敗時（ユーザーが拒否した場合など）
                 if (err.code === err.PERMISSION_DENIED) {
                     setPermission('denied');
-                }else {
-                    console.error(err);
+                } else {
+                    setErrorMsg('位置情報の取得に失敗しました。');
                 }
-            }
+                // エラー時は監視をリセット
+                if (watchIdRef.current !== null) {
+                    navigator.geolocation.clearWatch(watchIdRef.current);
+                    watchIdRef.current = null;
+                }
+            },
+            { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 }
         );
     };
-    
+
+    const requestLocation = () => {
+        // getCurrentPositionを挟まず、直接watchPositionをトリガーする
+        startWatching();
+    };
+
     return { currentPos, permission, errorMsg, requestLocation };
 }
