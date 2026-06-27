@@ -21,7 +21,10 @@ export default function CcdMapPage() {
             labelPlace: "left",
             isHavePhoto: true,
             type: "venue",
-            owner: "機械･知能系"
+            owner: "機械･知能系",
+            photos: ["fp-fab1.jpg", "fp-fab2.jpg", "fp-fab3.jpg"],
+            photoDescriptions:["ファーストペンギンファブ入口", "経路情報1: 2F 渡り廊下を背にする方向の廊下に進む (階段を上がって左方向)", "経路情報2: またはすぐ横の階段からもアクセスできます"],
+            
         },
         {
             id: 2,
@@ -32,8 +35,10 @@ export default function CcdMapPage() {
             labelPlace: "right",
             isHavePhoto: true,
             type: "venue",
-            owner: "電気･電子系"
-
+            owner: "電気･電子系",
+            photos: ["lecture-room-2-1.jpg", "lecture-room-2-2.jpg", "lecture-room-2-3.jpg", "lecture-room-2-4.jpg"],
+            photoDescriptions:["講義室2入口", "経路情報1: この写真の右下の部屋", "経路情報2: 入口のすぐ右の部屋", "経路情報3: 渡り廊下から来ることもできます"],
+            desc: "(第一講義室との混同に注意!)"
         },
         {
             id: 3,
@@ -44,7 +49,9 @@ export default function CcdMapPage() {
             labelPlace: "right",
             isHavePhoto: true,
             type: "venue",
-            owner: "情報･ソフトウェア系"
+            owner: "情報･ソフトウェア系",
+            photos: ["cs1.jpg","cs2.jpg"],
+            photoDescriptions: ["サイバーセキュリティラボ前", "経路情報: 2F 廊下の目印"],
         },
         {
             id: 4,
@@ -56,6 +63,8 @@ export default function CcdMapPage() {
             isHavePhoto: true,
             type: "venue",
             owner: "化学･バイオ系",
+            photos: ["c-exp-lab1.jpg","c-exp-lab2.jpg", "c-exp-lab3.jpg"],
+            photoDescriptions:["一般化学実験室入口", "経路情報1: 1F 階段横の十字路を左に行き", "経路情報2: つきあたりの部屋",],
         },
         {
             id: 5,
@@ -67,7 +76,9 @@ export default function CcdMapPage() {
             isHavePhoto: true,
             type: "venue",
             owner: "化学･バイオ系",
-            desc: " (化学工学実習工場) "
+            desc: " (化学工学実習工場) ",
+            photos: ["miraichi-1.jpg", "miraichi-2.jpg", "miraichi-3.jpg"],
+            photoDescriptions:["Idemitsu ミライチ 外観", "経路情報1: 第一体育館を出て左方向", "経路情報2: 校舎からのアクセスはこの1F出入り口が便利 (工学デザイン室下)"],
         },
         {
             id: 6,
@@ -78,7 +89,9 @@ export default function CcdMapPage() {
             labelPlace: "left",
             isHavePhoto: true,
             type: "venue",
-            owner: "１Ｆ 図書館"
+            owner: "１Ｆ 図書館",
+            photos: ["media-center-1.jpg", "media-center-2.jpg"],
+            photoDescriptions:["メディアセンター入口", "経路情報1: 校舎からのアクセスは第一講義室横の出入り口が便利"],
 
         },
         {
@@ -91,7 +104,9 @@ export default function CcdMapPage() {
             isHavePhoto: true,
             type: "venue",
             owner: "エリア",
-            desc: "(男子寮のみ見学可)"
+            desc: "(男子寮のみ見学可)",
+            photos: ["dormitory-1.jpg", "dormitory-2.jpg"],
+            photoDescriptions: ["北寮入口", "経路情報: 第一体育館を出て右側"],
         },
         {
             id: 8,
@@ -102,7 +117,9 @@ export default function CcdMapPage() {
             labelPlace: "right",
             isHavePhoto: true,
             type: "venue",
-            owner: "機械技術部"
+            owner: "機械技術部",
+            photos: ["robocon-1.jpg", "robocon-2.jpg", "robocon-3.jpg"],
+            photoDescriptions:["工学デザイン室入口", "経路情報1: すこし奥まったところにあります", "経路情報2: 入口を背にするとすぐ階段があります"],
         },
         {
             id: 9,
@@ -113,7 +130,9 @@ export default function CcdMapPage() {
             labelPlace: "right",
             isHavePhoto: true,
             type: "place",
-            owner: "全体説明会会場"
+            owner: "全体説明会会場",
+            photos: ["first-gym1.jpg"],
+            photoDescriptions:[""],
         },
         {
             id: 10,
@@ -124,7 +143,9 @@ export default function CcdMapPage() {
             labelPlace: "left",
             isHavePhoto: true,
             type: "place",
-            owner: "質問･相談会場"
+            owner: "質問･相談会場",
+            photos: [],
+            photoDescriptions:[],
             
         },
         {
@@ -368,7 +389,6 @@ export default function CcdMapPage() {
             isHavePhoto: false,
             type: "door",
         },
-
         {
             id: 35,
             label: "",
@@ -378,6 +398,16 @@ export default function CcdMapPage() {
             labelPlace: "left",
             isHavePhoto: false,
             type: "prohibit",
+        },
+        {
+            id: 36,
+            label: "",
+            name: "",
+            xRatio: 52.5,
+            yRatio: 59.8,
+            labelPlace: "left",
+            isHavePhoto : false,
+            type: "door",
         },
 
 
@@ -479,6 +509,8 @@ export default function CcdMapPage() {
                 locationId={selectedLocationId}
                 locationOwner={selectedPin?.owner}
                 locationDesc={selectedPin?.desc}
+                photos={selectedPin?.photos}
+                photoDescriptions={selectedPin?.photoDescriptions}
             />
         </div>
     )

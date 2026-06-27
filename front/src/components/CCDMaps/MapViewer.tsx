@@ -17,6 +17,8 @@ export type MapPin = {
     labelPlace: "left" | "right"
     rotation?: number;
     owner?: string;
+    photos?: string[];
+    photoDescriptions?: string[];
 };
 
 type MapViewerProps = {
