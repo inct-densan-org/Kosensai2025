@@ -1,11 +1,10 @@
 import {MotionDivInClient} from "@/components/MotionDivInClient";
 import Image from "next/image";
-import {checkIsFromSameOrigin} from "@/utils/checkIsFromSameOrigin";
-import {headers} from "next/headers";
+import {useIsFirstVisit} from "@/utils/useIsFirstVisit";
 
 const LOAD_ANIMATION_TIME = 2.5 // 秒
 export async function Hero() {
-    const animationDelay = checkIsFromSameOrigin(await headers()) ? 0 : LOAD_ANIMATION_TIME; // 同じサイト内から遷移してきたならすぐアニメーション
+    const animationDelay = useIsFirstVisit() ? LOAD_ANIMATION_TIME : 0; // 同じサイト内から遷移してきたならアニメーションを待たない
     return (
         <>
             <Image
@@ -14,18 +13,19 @@ export async function Hero() {
                 fill={true}
                 className={"absolute w-screen! h-full! object-cover md:object-fill after:pointer-events-none drag-none select-none pointer-events-none "}
             />
-            <Parts animationDelay={animationDelay} />
-            <Title animationDelay={animationDelay} />
+            <Parts animationDelay={animationDelay}/>
+            <Title animationDelay={animationDelay}/>
         </>
     )
 }
 
 
-async function Parts({animationDelay}: {animationDelay: number}) {
+async function Parts({animationDelay}: { animationDelay: number }) {
     return (
         <>
-            
-            <MotionDivInClient isImg={true} initial={{translateY: -600, opacity: 0}} animate={{translateY: 0, opacity: 1}}
+
+            <MotionDivInClient isImg={true} initial={{translateY: -600, opacity: 0}}
+                               animate={{translateY: 0, opacity: 1}}
                                transition={{type: "spring", stiffness: 120, damping: 20, delay: animationDelay + .40}}
             >
                 <Image
@@ -56,7 +56,7 @@ async function Parts({animationDelay}: {animationDelay: number}) {
                     className={"absolute w-screen! h-full! object-cover md:object-contain after:pointer-events-none drag-none select-none pointer-events-none  "}
                 />
             </MotionDivInClient>
-            
+
             <MotionDivInClient isImg={true} initial={{y: -1200}} animate={{y: 0}}
                                transition={{type: "spring", stiffness: 220, damping: 20, delay: animationDelay + .40}}
             >
@@ -139,7 +139,8 @@ async function Parts({animationDelay}: {animationDelay: number}) {
                 />
             </MotionDivInClient>
 
-            <MotionDivInClient isImg={true} initial={{translateY: 600, opacity: 0}} animate={{translateY: 0, opacity: 1}}
+            <MotionDivInClient isImg={true} initial={{translateY: 600, opacity: 0}}
+                               animate={{translateY: 0, opacity: 1}}
                                transition={{type: "spring", stiffness: 120, damping: 20, delay: animationDelay + .40}}
             >
                 <Image
@@ -160,7 +161,7 @@ async function Parts({animationDelay}: {animationDelay: number}) {
                 />
             </MotionDivInClient>
 
-            <MotionDivInClient isImg={true} initial={{scaleX: 0, translateX: 1200 }} animate={{scaleX: 1, translateX: 0}}
+            <MotionDivInClient isImg={true} initial={{scaleX: 0, translateX: 1200}} animate={{scaleX: 1, translateX: 0}}
                                transition={{type: "spring", stiffness: 120, damping: 20, delay: animationDelay + .40}}
             >
                 <Image
@@ -196,25 +197,36 @@ async function Parts({animationDelay}: {animationDelay: number}) {
         </>
     )
 }
-function Title({animationDelay}: {animationDelay: number}) {
+
+function Title({animationDelay}: { animationDelay: number }) {
     return (
         <>
             {/*タイトル*/}
             <div className={"relative left-0 top-5 h-fit w-full text-center flex flex-col"}>
-                
+
                 <div className={"block w-full h-fit"}>
                     <MotionDivInClient isImg={false} initial={{y: -100, opacity: 0}} animate={{y: 0, opacity: 1}}
-                                       transition={{type: "spring", stiffness: 120, damping: 20, delay: animationDelay + .25}}
+                                       transition={{
+                                           type: "spring",
+                                           stiffness: 120,
+                                           damping: 20,
+                                           delay: animationDelay + .25
+                                       }}
                     >
                         <h1 className={"drop-shadow-2xl/100 w-full text-center text-[min(20vw,20vh)] text-[#f5ff71] tracking-widest font-light"}>高専祭</h1>
                     </MotionDivInClient>
                 </div>
                 <div className={"block w-full h-fit"}>
                     <MotionDivInClient isImg={false}
-                        initial={{y: -100, opacity: 0}}
-                        animate={{y: 0, opacity: 1}}
+                                       initial={{y: -100, opacity: 0}}
+                                       animate={{y: 0, opacity: 1}}
 
-                        transition={{type: "spring", stiffness: 120, damping: 20, delay: animationDelay + .25}}
+                                       transition={{
+                                           type: "spring",
+                                           stiffness: 120,
+                                           damping: 20,
+                                           delay: animationDelay + .25
+                                       }}
                     >
                         <p className={"drop-shadow-2xl/60 w-full text-center  text-[min(6vw,6vh)] text-white tracking-widest font-light"}>一関工業高等専門学校</p>
                     </MotionDivInClient>

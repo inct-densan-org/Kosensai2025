@@ -1,3 +1,4 @@
+"use client"
 import {ChairmanMessage, PrincipalMessage} from "@/components/top/Messages";
 import {News} from "@/components/top/News";
 import Navigation from "@/components/top/Navigation";
@@ -11,11 +12,8 @@ import {SponsorsSection} from "@/components/top/SponsorsSection";
 import Image from "next/image";
 import Link from "next/link";
 
-export const revalidate = 0;
 
 export default function Home() {
-
-
     return (
         <>
 
@@ -226,15 +224,4 @@ export default function Home() {
         </>
     );
 
-    // モーダル使用例
-    // return (
-    //   <div className="p-10">
-    //     {/* ボタンはコンポーネントに埋めてあるので、こちらからは中身のみ渡す */}
-    //     <Modal button={<MapPinHouseIcon/>}>
-    //       <li>hoge</li>
-    //       <li>huga</li>
-    //       <li>poo</li>
-    //     </Modal>
-    //   </div>
-    // );
 }
