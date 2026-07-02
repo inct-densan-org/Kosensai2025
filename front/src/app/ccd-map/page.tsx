@@ -144,9 +144,8 @@ export default function CcdMapPage() {
             isHavePhoto: true,
             type: "place",
             owner: "質問･相談会場",
-            photos: [],
-            photoDescriptions:[],
-            
+            photos: ["first-lecture-room1.jpg", "first-lecture-room2.jpg"],
+            photoDescriptions:["第一講義室入口", "経路情報: 正面入口から入って左側"],
         },
         {
             id: 11,
