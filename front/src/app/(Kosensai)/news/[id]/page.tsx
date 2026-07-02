@@ -3,6 +3,7 @@ import {NewsData} from "@api/schema";
 import Link from "next/link";
 import Navigation from "@/components/top/Navigation";
 import { Metadata } from "next";
+import {data} from "framer-motion/m";
 
 // HTMLタグを除去し、テキストを要約するヘルパー
 const createDescription = (html: string) => {
@@ -47,7 +48,6 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
     }
 }
 
-export const revalidate = 0;
 
 export default async function HtmlDisplayPage({params}: { params: Promise<{ id: string }> }) {
     const {id} = await params;
@@ -137,4 +137,17 @@ export default async function HtmlDisplayPage({params}: { params: Promise<{ id: 
         </>
 
     );
+}
+
+// ビルド時に静的なパスを生成するための設定
+export async function generateStaticParams() {
+    const data = (await (await client.news.$get()).json()).data;
+    const id = data.reduce((acc: any, news: any) => {
+        acc[news.id] = true;
+        return acc;
+    }, {})
+    
+    return Object.keys(id).map((id) => ({
+        id: id,
+    }));
 }

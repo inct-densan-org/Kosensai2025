@@ -10,18 +10,19 @@ import { Button } from "@/components/ui/button";
 import "./style.css"
 import { AnimatedContentSection } from "@/components/top/AnimatedContentSection";
 import Navigation from "@/components/top/Navigation";
+import {useIsSameOrigin} from "@/utils/useIsSameOrigin";
 
 const MAX_INDEX = 54
-export function MapPageClient({sameOrigin}:{sameOrigin:boolean}) {
+export function MapPageClient() {
     const cache = useSearchParams().get("index") ?? undefined
     const [fromCarousel, setFromCarousel] = useState<boolean>(useSearchParams().get("t") === "true");
     const [index, setIndex] = useState<number|undefined>(cache !== undefined?Number(cache):undefined);
     const [width, setWidth] = useState(0)
     const [height, setHeight] = useState(0)
     const [open, onOpenChange] = useState(false)
-    const [isSameOrigin, setIsSameOrigin] = useState(sameOrigin);
-    console.log(sameOrigin)
+    const [isSameOrigin, setIsSameOrigin] = useState(useIsSameOrigin());
 
+        
     useEffect(() => {
         setIndex(cache !== undefined ? Number(cache) : undefined);
     }, [cache]);
