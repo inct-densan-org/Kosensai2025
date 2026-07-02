@@ -27,7 +27,10 @@ const app = new Hono()
 
   .get('/news',async (c)=>{
       const contents = (await client.get({
-        endpoint: "list"
+        endpoint: "list",
+        queries: {
+          limit:95
+        }
       }))["contents"] as NewsData[];
       const data: NewsList[] = contents.map(i => ({
         id: i.id,
