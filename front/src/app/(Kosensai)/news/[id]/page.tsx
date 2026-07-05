@@ -3,7 +3,6 @@ import {NewsData} from "@api/schema";
 import Link from "next/link";
 import Navigation from "@/components/top/Navigation";
 import { Metadata } from "next";
-import {data} from "framer-motion/m";
 
 // HTMLタグを除去し、テキストを要約するヘルパー
 const createDescription = (html: string) => {

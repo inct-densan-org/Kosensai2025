@@ -1,6 +1,6 @@
 'use client';
 
-import Image from "next/image";
+import Image from "@/components/StaticImage";
 import { Modal } from "@/components/Modal";
 import { useRouter } from "next/navigation";
 import { DialogClose } from "../ui/dialog";

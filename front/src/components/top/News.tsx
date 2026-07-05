@@ -1,45 +1,11 @@
 import {Window} from "@/components/ui/window";
 import {FadeInWhenVisible} from "@/components/top/FadeInWhenVisible";
-import { client } from "@/utils/api-client";
 import { NewsList } from "@api/schema";
 import Link from "next/link";
 
-export const revalidate = 0;
 
-export async function News() {
-    let data: NewsList[] | null = null;
-    let error: Error | null = null; // エラーを保持する変数を追加
-
-    try {
-        const res = await client.news.$get();
-        if (!res.ok) {
-            throw new Error(`Failed to fetch: ${res.status} ${res.statusText}`);
-        }
-        data = (await res.json()).data;
-    } catch (e) {
-        console.error("Error fetching top news:", e);
-        if (e instanceof Error) {
-            error = e; // エラーオブジェクトを保持
-        }
-    }
-
-    // エラーが発生した場合の表示
-    if (error) {
-        return (
-            <FadeInWhenVisible className={""}>
-                <Window title={"News"} color={"white"}
-                        className={"overflow-y-scroll hidden-scrollbar h-full md:h-[calc(100dvh_-_128px)] md:w-full m-4 mt-8 flex flex-col"}>
-                    <div className="p-4 text-red-400">
-                        <p className="font-bold">ニュースの読み込みに失敗しました。</p>
-                        <p className="mt-2 text-sm text-white/80">エラー: {error.message}</p>
-                        <p className="mt-4 text-xs text-white/60">
-                            少し時間を置いてから再度お試し下さい。解決しない場合はTeamsでf22092までお知らせ下さい。
-                        </p>
-                    </div>
-                </Window>
-            </FadeInWhenVisible>
-        )
-    }
+export function News({ data: propData }: { data: NewsList[] | null }) {
+    let data = propData;
 
     if (!data || data.length === 0) {
         data = [{

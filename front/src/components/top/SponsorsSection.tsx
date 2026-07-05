@@ -1,5 +1,5 @@
 
-import Image from 'next/image';
+import Image from '@/components/StaticImage';
 
 const sponsors = [
   { id: '01', name: '株式会社前川製作所 様', image: '/companies/01.webp' },

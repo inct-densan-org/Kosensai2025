@@ -2,7 +2,8 @@
 import { Shop, Label, Static } from "@/types/type";
 import { useEffect, useState, useRef } from "react";
 import { TransformWrapper, TransformComponent } from "react-zoom-pan-pinch"
-import Image, { StaticImageData } from "next/image"
+import Image from "@/components/StaticImage"
+import type { StaticImageData } from "next/image"
 import { Modal } from "../Modal";
 import { postersData } from "@/posters.data";
 import "./style.css"

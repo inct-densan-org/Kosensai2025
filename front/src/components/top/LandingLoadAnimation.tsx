@@ -3,7 +3,7 @@ import './LandingLoadAnimation.sass';
 import {useIsFirstVisit} from "@/utils/useIsFirstVisit";
 
 
-export async function LandingLoadAnimation() {
+export function LandingLoadAnimation() {
     if (!useIsFirstVisit()) return null
 
     return (

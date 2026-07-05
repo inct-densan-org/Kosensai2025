@@ -1,4 +1,3 @@
-"use client"
 import {ChairmanMessage, PrincipalMessage} from "@/components/top/Messages";
 import {News} from "@/components/top/News";
 import Navigation from "@/components/top/Navigation";
@@ -9,11 +8,27 @@ import {AnimatedContentSection} from "@/components/top/AnimatedContentSection";
 import Scroller from "@/components/top/Scroller";
 import ScrollContextProvider from "@/components/top/ScrollContextProvider";
 import {SponsorsSection} from "@/components/top/SponsorsSection";
-import Image from "next/image";
+import Image from "@/components/StaticImage";
 import Link from "next/link";
+import {client} from "@/utils/api-client";
+import {NewsList} from "@api/schema";
 
 
-export default function Home() {
+export default async function Home() {
+    // ビルド時にAPIからニュースデータを取得（サーバーコンポーネントなのでNode.js上で実行）
+    let newsData: NewsList[] | null = null;
+    try {
+        const res = await client.news.$get(
+            {},
+            { init: { cache: 'force-cache' } }
+        );
+        if (res.ok) {
+            newsData = (await res.json()).data;
+        }
+    } catch (e) {
+        console.error("Error fetching news for top page:", e);
+    }
+
     return (
         <>
 
@@ -35,7 +50,7 @@ export default function Home() {
                 </section>
                 <section
                     className={"md:w-[calc(50%-64px)] md:float-left md:h-[calc(100%-128px)]"}>
-                    <News/>
+                    <News data={newsData}/>
                 </section>
 
                 {/*<AnimatedContentSection title="PV" colorReverseAnim={"tb"} className={"h-dvh"}>*/}
