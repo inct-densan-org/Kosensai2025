@@ -1,4 +1,4 @@
-import Image from "next/image";
+import Image from "@/components/StaticImage";
 import {Window} from "@/components/ui/window";
 export function PrincipalMessage() {
     return (

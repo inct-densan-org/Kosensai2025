@@ -1,6 +1,6 @@
 import { ShopData } from "@/types/type";
 import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
-import Image from "next/image"
+import Image from "@/components/StaticImage"
 import { Separator } from "./ui/separator";
 import { cn } from "@/lib/utils";
 

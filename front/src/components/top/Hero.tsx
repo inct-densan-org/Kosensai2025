@@ -1,10 +1,13 @@
+"use client"
+
 import {MotionDivInClient} from "@/components/MotionDivInClient";
-import Image from "next/image";
+import Image from "@/components/StaticImage";
 import {useIsFirstVisit} from "@/utils/useIsFirstVisit";
 
 const LOAD_ANIMATION_TIME = 2.5 // 秒
-export async function Hero() {
-    const animationDelay = useIsFirstVisit() ? LOAD_ANIMATION_TIME : 0; // 同じサイト内から遷移してきたならアニメーションを待たない
+export function Hero() {
+    const isFirstVisit = useIsFirstVisit();
+    const animationDelay = isFirstVisit ? LOAD_ANIMATION_TIME : 0; // 同じサイト内から遷移してきたならアニメーションを待たない
     return (
         <>
             <Image
@@ -20,7 +23,7 @@ export async function Hero() {
 }
 
 
-async function Parts({animationDelay}: { animationDelay: number }) {
+function Parts({animationDelay}: { animationDelay: number }) {
     return (
         <>
 
