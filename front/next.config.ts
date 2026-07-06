@@ -2,6 +2,7 @@ import type { NextConfig } from "next";
 export const prefixPath = "/archive/2025";
 const nextConfig: NextConfig = {
     output: 'export',
+    trailingSlash: true,
     distDir: './archive/2025',  // 静的ビルド用
     assetPrefix: prefixPath,
     basePath: prefixPath,
