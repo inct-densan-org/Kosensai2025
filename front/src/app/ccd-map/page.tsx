@@ -3,6 +3,7 @@
 import {useCampusGps} from "@/utils/useCampusGps";
 import {MapPin, MapViewer} from "@/components/CCDMaps/MapViewer";
 import Link from "next/link";
+import Image from "@/components/StaticImage";
 import {useState} from "react";
 import {PlaceImageModal} from "@/components/CCDMaps/PlaceImageModal";
 
@@ -492,13 +493,14 @@ export default function CcdMapPage() {
                 <Link className={"block text-blue-500 underline  text-sm mb-8"} href={"/"}>ページトップ (昨年度高専祭HP)</Link>
             </div>
                 <Link href={"https://inct-densan.club/"} className={"ml-auto block w-fit -translate-y-4"}>
-                    <img
+                    <Image
                         className={"invert"}
                         width={16}
                         height={16}
                         src={"https://inct-densan.club/resource/logo.webp"}
+                        alt={"inct-densan.club"}
                     >
-                    </img>
+                    </Image>
                 </Link>
             <PlaceImageModal
                 isOpen={selectedPin !== null}

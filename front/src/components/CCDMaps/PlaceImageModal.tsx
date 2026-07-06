@@ -1,7 +1,8 @@
 
 
 import Modal from './Modal';
-import Image from 'next/image';
+import Image from "@/components/StaticImage";
+
 
 type Props = {
     isOpen: boolean;

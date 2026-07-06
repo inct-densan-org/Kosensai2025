@@ -1,7 +1,7 @@
 'use client';
 
 import {useEffect, useRef, useState} from 'react';
-import Image from 'next/image';
+import Image from "@/components/StaticImage";
 import {TransformComponent, TransformWrapper} from 'react-zoom-pan-pinch';
 
 export type MapPin = {
